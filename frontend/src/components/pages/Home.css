@@ -1,0 +1,60 @@
+.hero-overlay {
+  background: linear-gradient(to right, rgba(0, 92, 185, 0.8), rgba(0, 60, 120, 0.6));
+}
+
+.airport-card {
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.airport-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  border-color: var(--onda-orange);
+}
+
+.airport-card .card-title {
+  color: var(--onda-blue);
+}
+
+.services-showcase {
+  background-size: cover;
+  background-position: center;
+}
+
+.services-showcase .card-title {
+  color: var(--onda-blue);
+  font-weight: 600;
+}
+
+.services-showcase .card {
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.services-showcase .card:hover {
+  border-bottom-color: var(--onda-orange);
+}
+
+.map-section {
+  background-color: var(--onda-gray);
+}
+
+.map-section h2 {
+  color: var(--onda-blue);
+  position: relative;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.map-section h2:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: var(--onda-orange);
+}

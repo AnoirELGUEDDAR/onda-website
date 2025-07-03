@@ -1,0 +1,59 @@
+.search-card {
+  margin-top: -50px;
+  z-index: 100;
+  position: relative;
+  border-radius: 10px;
+  border-top: 4px solid var(--onda-orange);
+}
+
+.info-cards {
+  background-size: 300px;
+  background-repeat: repeat;
+  background-color: rgba(245, 245, 245, 0.9);
+  background-blend-mode: lighten;
+}
+
+.info-icon {
+  width: 60px;
+  height: 60px;
+  color: var(--onda-orange);
+}
+
+.info-card {
+  transition: transform 0.3s ease;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.info-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+  border-bottom: 3px solid var(--onda-orange);
+}
+
+.info-card .card-title {
+  color: var(--onda-blue);
+  font-weight: 600;
+}
+
+.window-view {
+  background-color: var(--onda-gray);
+}
+
+.window-view h3 {
+  color: var(--onda-blue);
+  position: relative;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.window-view h3:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--onda-orange);
+}

@@ -1,0 +1,25 @@
+.language-dropdown .dropdown-menu {
+  min-width: 10rem;
+}
+
+.language-dropdown .dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+}
+
+.language-dropdown .dropdown-item:hover {
+  background-color: var(--onda-blue-light);
+}
+
+.language-dropdown .dropdown-item.active {
+  background-color: var(--onda-blue-light);
+  color: var(--onda-blue);
+  font-weight: 500;
+}
+
+.language-buttons .btn {
+  margin-right: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+}

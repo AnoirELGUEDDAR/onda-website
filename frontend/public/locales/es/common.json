@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "ONDA",
+    "fullName": "Oficina Nacional de Aeropuertos"
+  },
+  "nav": {
+    "home": "Inicio",
+    "airports": "Aeropuertos",
+    "flights": "Vuelos",
+    "services": "Servicios",
+    "about": "Acerca de",
+    "contact": "Contacto"
+  },
+  "flights": {
+    "search": "Búsqueda de vuelos",
+    "departures": "Salidas",
+    "arrivals": "Llegadas",
+    "from": "Desde",
+    "to": "Hasta",
+    "date": "Fecha",
+    "searchButton": "Buscar vuelos",
+    "selectDeparture": "Seleccionar aeropuerto de salida",
+    "selectArrival": "Seleccionar aeropuerto de llegada"
+  },
+  "airports": {
+    "explore": "Explore nuestros aeropuertos",
+    "major": "Principales aeropuertos en Marruecos",
+    "viewDetails": "Ver detalles",
+    "about": "Acerca de",
+    "facilities": "Instalaciones y servicios",
+    "code": "Código de aeropuerto",
+    "location": "Ubicación"
+  },
+  "weather": {
+    "title": "El tiempo en los principales aeropuertos",
+    "feelsLike": "Sensación",
+    "humidity": "Humedad",
+    "wind": "Viento",
+    "updated": "Actualizado a las",
+    "forecast": "Pronóstico de 5 días"
+  },
+  "home": {
+    "welcome": "Bienvenido a los aeropuertos de Marruecos",
+    "tagline": "Descubra las puertas de entrada a los tesoros del reino",
+    "services": "Nuestros servicios aeroportuarios",
+    "checkIn": "Check-in eficiente",
+    "checkInDesc": "Servicios de check-in rápidos y modernos en todos nuestros aeropuertos.",
+    "shopping": "Compras libres de impuestos",
+    "shoppingDesc": "Descubra productos marroquíes auténticos y marcas internacionales.",
+    "dining": "Opciones gastronómicas",
+    "diningDesc": "Experimente la cocina marroquí e internacional en nuestras terminales.",
+    "network": "Nuestra red de aeropuertos",
+    "networkDesc": "ONDA gestiona 25 aeropuertos en todo el Reino de Marruecos, atendiendo a millones de pasajeros anualmente.",
+    "networkText": "Desde el bullicioso centro de Casablanca hasta los pintorescos aeropuertos de Tánger y Dakhla, conectamos Marruecos con el mundo."
+  },
+  "footer": {
+    "quickLinks": "Enlaces rápidos",
+    "contact": "Contacto",
+    "address": "Nouaceur, Casablanca, Marruecos",
+    "language": "Seleccionar idioma",
+    "rights": "Todos los derechos reservados",
+    "terms": "Términos de servicio",
+    "privacy": "Política de privacidad",
+    "sitemap": "Mapa del sitio"
+  },
+  "languages": {
+    "english": "English",
+    "arabic": "العربية",
+    "french": "Français",
+    "spanish": "Español"
+  }
+}

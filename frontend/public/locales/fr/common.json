@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "ONDA",
+    "fullName": "Office National Des Aéroports"
+  },
+  "nav": {
+    "home": "Accueil",
+    "airports": "Aéroports",
+    "flights": "Vols",
+    "services": "Services",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "flights": {
+    "search": "Recherche de vols",
+    "departures": "Départs",
+    "arrivals": "Arrivées",
+    "from": "De",
+    "to": "À",
+    "date": "Date",
+    "searchButton": "Rechercher",
+    "selectDeparture": "Sélectionner l'aéroport de départ",
+    "selectArrival": "Sélectionner l'aéroport d'arrivée"
+  },
+  "airports": {
+    "explore": "Explorez nos aéroports",
+    "major": "Principaux aéroports au Maroc",
+    "viewDetails": "Voir les détails",
+    "about": "À propos de",
+    "facilities": "Installations et services",
+    "code": "Code d'aéroport",
+    "location": "Emplacement"
+  },
+  "weather": {
+    "title": "Météo aux principaux aéroports",
+    "feelsLike": "Ressenti",
+    "humidity": "Humidité",
+    "wind": "Vent",
+    "updated": "Mis à jour à",
+    "forecast": "Prévisions sur 5 jours"
+  },
+  "home": {
+    "welcome": "Bienvenue aux aéroports du Maroc",
+    "tagline": "Découvrez les portes d'entrée vers les trésors du royaume",
+    "services": "Nos services aéroportuaires",
+    "checkIn": "Enregistrement efficace",
+    "checkInDesc": "Services d'enregistrement rapides et modernes dans tous nos aéroports.",
+    "shopping": "Shopping hors taxes",
+    "shoppingDesc": "Découvrez des produits marocains authentiques et des marques internationales.",
+    "dining": "Options de restauration",
+    "diningDesc": "Découvrez la cuisine marocaine et internationale dans nos terminaux.",
+    "network": "Notre réseau d'aéroports",
+    "networkDesc": "L'ONDA gère 25 aéroports à travers le Royaume du Maroc, servant des millions de passagers chaque année.",
+    "networkText": "Du hub animé de Casablanca aux aéroports pittoresques de Tanger et Dakhla, nous connectons le Maroc au monde."
+  },
+  "footer": {
+    "quickLinks": "Liens rapides",
+    "contact": "Contact",
+    "address": "Nouaceur, Casablanca, Maroc",
+    "language": "Choisir la langue",
+    "rights": "Tous droits réservés",
+    "terms": "Conditions d'utilisation",
+    "privacy": "Politique de confidentialité",
+    "sitemap": "Plan du site"
+  },
+  "languages": {
+    "english": "English",
+    "arabic": "العربية",
+    "french": "Français",
+    "spanish": "Español"
+  }
+}

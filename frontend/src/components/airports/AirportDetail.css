@@ -1,0 +1,49 @@
+.airport-detail .facility-img {
+  height: 160px;
+  object-fit: cover;
+}
+
+.sticky-top {
+  z-index: 100;
+}
+
+.night-view {
+  margin-top: 3rem;
+  background-color: var(--onda-dark) !important;
+}
+
+.airport-detail h2, 
+.airport-detail h3 {
+  color: var(--onda-blue);
+  position: relative;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.airport-detail h2:after,
+.airport-detail h3:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: var(--onda-orange);
+}
+
+.airport-facilities .card {
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.airport-facilities .card:hover {
+  border-bottom-color: var(--onda-orange);
+}
+
+.airport-facilities .card-title {
+  color: var(--onda-blue);
+}
+
+.card-header.bg-primary {
+  background: linear-gradient(to right, var(--onda-blue), var(--onda-blue-dark)) !important;
+}

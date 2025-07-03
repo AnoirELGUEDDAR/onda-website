@@ -1,0 +1,69 @@
+.footer {
+  background-color: var(--onda-blue);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  color: var(--onda-white);
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 60, 120, 0.9);
+}
+
+.footer .container {
+  position: relative;
+  z-index: 1;
+}
+
+.footer a {
+  color: var(--onda-white);
+  transition: all 0.3s ease;
+}
+
+.footer a:hover {
+  color: var(--onda-orange);
+  opacity: 1;
+  text-decoration: none;
+}
+
+.footer h5 {
+  color: var(--onda-white);
+  position: relative;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.footer h5:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--onda-orange);
+}
+
+.footer .btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.footer .btn-outline-light:hover {
+  background-color: var(--onda-orange);
+  border-color: var(--onda-orange);
+}
+
+.footer .btn-light {
+  background-color: var(--onda-white);
+  color: var(--onda-blue);
+}
+
+.footer .btn-light:hover {
+  background-color: var(--onda-orange);
+  color: var(--onda-white);
+}

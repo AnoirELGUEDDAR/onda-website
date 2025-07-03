@@ -1,0 +1,72 @@
+{
+  "app": {
+    "name": "ONDA",
+    "fullName": "National Office of Airports"
+  },
+  "nav": {
+    "home": "Home",
+    "airports": "Airports",
+    "flights": "Flights",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "flights": {
+    "search": "Flight Search",
+    "departures": "Departures",
+    "arrivals": "Arrivals",
+    "from": "From",
+    "to": "To",
+    "date": "Date",
+    "searchButton": "Search Flights",
+    "selectDeparture": "Select departure airport",
+    "selectArrival": "Select arrival airport"
+  },
+  "airports": {
+    "explore": "Explore Our Airports",
+    "major": "Major Airports in Morocco",
+    "viewDetails": "View Details",
+    "about": "About",
+    "facilities": "Facilities & Services",
+    "code": "Airport Code",
+    "location": "Location"
+  },
+  "weather": {
+    "title": "Weather at Major Airports",
+    "feelsLike": "Feels like",
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "updated": "Updated at",
+    "forecast": "5-Day Forecast"
+  },
+  "home": {
+    "welcome": "Welcome to Morocco's Airports",
+    "tagline": "Discover the gateways to the kingdom's treasures",
+    "services": "Our Airport Services",
+    "checkIn": "Efficient Check-in",
+    "checkInDesc": "Fast and modern check-in services at all our airports.",
+    "shopping": "Duty-Free Shopping",
+    "shoppingDesc": "Discover authentic Moroccan products and international brands.",
+    "dining": "Dining Options",
+    "diningDesc": "Experience Moroccan and international cuisine at our terminals.",
+    "network": "Our Airport Network",
+    "networkDesc": "ONDA manages 25 airports across the Kingdom of Morocco, serving millions of passengers annually.",
+    "networkText": "From the bustling hub of Casablanca to scenic airports in Tangier and Dakhla, we connect Morocco to the world."
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "address": "Nouaceur, Casablanca, Morocco",
+    "language": "Select Language",
+    "rights": "All Rights Reserved",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "sitemap": "Sitemap"
+  },
+  "languages": {
+    "english": "English",
+    "arabic": "العربية",
+    "french": "Français",
+    "spanish": "Español"
+  }
+}
