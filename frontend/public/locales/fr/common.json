@@ -28,16 +28,31 @@
     "viewDetails": "Voir les détails",
     "about": "À propos de",
     "facilities": "Installations et services",
+    "seeMore": "Voir Plus d'Aéroports",
     "code": "Code d'aéroport",
     "location": "Emplacement"
   },
+  "cities": {
+    "casablanca": "Casablanca",
+    "marrakech": "Marrakech",
+    "rabat": "Rabat",
+    "tangier": "Tanger",
+    "agadir": "Agadir",
+    "fez": "Fès",
+    "meknes": "Meknès",
+    "oujda": "Oujda",
+    "essaouira": "Essaouira",
+    "tetouan": "Tétouan"
+  },
   "weather": {
-    "title": "Météo aux principaux aéroports",
+    "titleWithCity": "Météo à {{city}}",
+    "title": "Météo",
+    "loading": "Chargement de la météo...",
+    "updated": "Mis à jour",
+    "tryRefresh": "Essayez de rafraîchir la page",
     "feelsLike": "Ressenti",
-    "humidity": "Humidité",
     "wind": "Vent",
-    "updated": "Mis à jour à",
-    "forecast": "Prévisions sur 5 jours"
+    "humidity": "Humidité"
   },
   "home": {
     "welcome": "Bienvenue aux aéroports du Maroc",
@@ -46,6 +61,7 @@
     "checkIn": "Enregistrement efficace",
     "checkInDesc": "Services d'enregistrement rapides et modernes dans tous nos aéroports.",
     "shopping": "Shopping hors taxes",
+    "seeMoreAirports": "Voir Plus d'Aéroports",
     "shoppingDesc": "Découvrez des produits marocains authentiques et des marques internationales.",
     "dining": "Options de restauration",
     "diningDesc": "Découvrez la cuisine marocaine et internationale dans nos terminaux.",

@@ -28,16 +28,31 @@
     "viewDetails": "Ver detalles",
     "about": "Acerca de",
     "facilities": "Instalaciones y servicios",
+    "seeMore": "Ver Más Aeropuertos",
     "code": "Código de aeropuerto",
     "location": "Ubicación"
   },
+    "cities": {
+    "casablanca": "Casablanca",
+    "marrakech": "Marrakech",
+    "rabat": "Rabat",
+    "tangier": "Tanger",
+    "agadir": "Agadir",
+    "fez": "Fez",
+    "meknes": "Meknes",
+    "oujda": "Uchda",
+    "essaouira": "Esauira",
+    "tetouan": "Tetuán"
+  },
   "weather": {
-    "title": "El tiempo en los principales aeropuertos",
+    "titleWithCity": "Tiempo en {{city}}",
+    "title": "Tiempo",
+    "loading": "Cargando tiempo...",
+    "updated": "Actualizado",
+    "tryRefresh": "Intenta actualizar la página",
     "feelsLike": "Sensación",
-    "humidity": "Humedad",
     "wind": "Viento",
-    "updated": "Actualizado a las",
-    "forecast": "Pronóstico de 5 días"
+    "humidity": "Humedad"
   },
   "home": {
     "welcome": "Bienvenido a los aeropuertos de Marruecos",
@@ -50,6 +65,7 @@
     "dining": "Opciones gastronómicas",
     "diningDesc": "Experimente la cocina marroquí e internacional en nuestras terminales.",
     "network": "Nuestra red de aeropuertos",
+    "seeMoreAirports": "Ver Más Aeropuertos",
     "networkDesc": "ONDA gestiona 25 aeropuertos en todo el Reino de Marruecos, atendiendo a millones de pasajeros anualmente.",
     "networkText": "Desde el bullicioso centro de Casablanca hasta los pintorescos aeropuertos de Tánger y Dakhla, conectamos Marruecos con el mundo."
   },

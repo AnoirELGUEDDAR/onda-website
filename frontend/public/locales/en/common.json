@@ -25,19 +25,35 @@
   "airports": {
     "explore": "Explore Our Airports",
     "major": "Major Airports in Morocco",
+    "Casablanca": "Casablanca",
     "viewDetails": "View Details",
+     "seeMore": "See More Airports",
     "about": "About",
     "facilities": "Facilities & Services",
     "code": "Airport Code",
     "location": "Location"
   },
+  "cities": {
+    "casablanca": "Casablanca",
+    "marrakech": "Marrakech",
+    "rabat": "Rabat",
+    "tangier": "Tangier",
+    "agadir": "Agadir",
+    "fez": "Fez",
+    "meknes": "Meknes",
+    "oujda": "Oujda",
+    "essaouira": "Essaouira",
+    "tetouan": "Tetouan"
+  },
   "weather": {
-    "title": "Weather at Major Airports",
+    "titleWithCity": "Weather in {{city}}",
+    "title": "Weather",
+    "loading": "Loading weather...",
+    "updated": "Updated",
+    "tryRefresh": "Try refreshing the page",
     "feelsLike": "Feels like",
-    "humidity": "Humidity",
     "wind": "Wind",
-    "updated": "Updated at",
-    "forecast": "5-Day Forecast"
+    "humidity": "Humidity"
   },
   "home": {
     "welcome": "Welcome to Morocco's Airports",

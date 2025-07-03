@@ -6,6 +6,9 @@ import './Home.css';
 
 const Home = () => {
   const { t } = useTranslation();
+  
+  // City codes array (keep these the same for image paths and routing)
+  const cityCodes = ['casablanca', 'marrakech', 'rabat', 'tangier'];
 
   return (
     <div className="home">
@@ -33,17 +36,18 @@ const Home = () => {
         <div className="container">
           <h2 className="text-center mb-5">{t('airports.major')}</h2>
           <div className="row">
-            {['casablanca', 'marrakech', 'rabat', 'tangier'].map(city => (
+            {cityCodes.map(city => (
               <div className="col-md-3 mb-4" key={city}>
                 <div className="card h-100 airport-card">
                   <img 
                     src={`/images/airports/${city}-airport.jpg`} 
                     className="card-img-top" 
-                    alt={`${city} Airport`}
+                    alt={t(`cities.${city}`)}
                     style={{ height: '180px', objectFit: 'cover' }}
                   />
                   <div className="card-body">
-                    <h5 className="card-title text-capitalize">{city}</h5>
+                    {/* Use translation for city name */}
+                    <h5 className="card-title">{t(`cities.${city}`)}</h5>
                     <Link to={`/airports/${city}`} className="btn btn-sm btn-outline-primary">
                       {t('airports.viewDetails')}
                     </Link>
@@ -51,6 +55,13 @@ const Home = () => {
                 </div>
               </div>
             ))}
+          </div>
+          
+          {/* See More Button */}
+          <div className="text-center mt-4">
+            <Link to="/airports" className="btn btn-primary">
+              {t('airports.seeMore', 'See More Airports')}
+            </Link>
           </div>
         </div>
       </section>
@@ -61,13 +72,13 @@ const Home = () => {
           <h2 className="text-center mb-4">{t('weather.title')}</h2>
           <div className="row">
             <div className="col-md-4 mb-4">
-              <WeatherWidget city="Casablanca" />
+              <WeatherWidget city={t('cities.casablanca')} />
             </div>
             <div className="col-md-4 mb-4">
-              <WeatherWidget city="Marrakech" />
+              <WeatherWidget city={t('cities.marrakech')} />
             </div>
             <div className="col-md-4 mb-4">
-              <WeatherWidget city="Tangier" />
+              <WeatherWidget city={t('cities.tangier')} />
             </div>
           </div>
         </div>

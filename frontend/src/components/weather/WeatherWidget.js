@@ -44,13 +44,19 @@ const WeatherWidget = ({ city, compact = false }) => {
     }
   }, [city, apiKey, i18n.language]); // Re-fetch when language changes
 
+  // Get translated city name
+  const getTranslatedCityName = (cityName) => {
+    const cityKey = cityName.toLowerCase();
+    return t(`cities.${cityKey}`, { defaultValue: cityName });
+  };
+
   // Loading state
   if (loading) {
     return (
       <div className={`weather-widget ${compact ? 'weather-widget-compact' : ''}`}>
         <div className="weather-loading p-3 text-center">
           <div className="spinner-border spinner-border-sm text-primary" role="status"></div>
-          <span className="ms-2">Loading weather...</span>
+          <span className="ms-2">{t('weather.loading', 'Loading weather...')}</span>
         </div>
       </div>
     );
@@ -64,7 +70,7 @@ const WeatherWidget = ({ city, compact = false }) => {
           <i className="fas fa-exclamation-triangle text-warning me-2"></i>
           {error}
           <div className="mt-2">
-            <small>Try refreshing the page</small>
+            <small>{t('weather.tryRefresh', 'Try refreshing the page')}</small>
           </div>
         </div>
       </div>
@@ -85,6 +91,9 @@ const WeatherWidget = ({ city, compact = false }) => {
 
   // Get weather icon
   const iconUrl = getWeatherIconUrl(weather.weather[0].icon);
+  
+  // Get translated city name
+  const translatedCityName = getTranslatedCityName(city);
 
   if (compact) {
     return (
@@ -93,7 +102,7 @@ const WeatherWidget = ({ city, compact = false }) => {
           <img src={iconUrl} alt={weather.weather[0].description} className="weather-icon-small" />
           <div className="weather-compact-info">
             <div className="weather-temp">{Math.round(weather.main.temp)}°C</div>
-            <div className="weather-city">{city}</div>
+            <div className="weather-city">{translatedCityName}</div>
           </div>
         </div>
       </div>
@@ -105,9 +114,12 @@ const WeatherWidget = ({ city, compact = false }) => {
       <div className="weather-header">
         <h5 className="weather-city-name">
           <i className="fas fa-map-marker-alt me-2"></i> 
-          {city} {t('weather.title').split(' ')[0]}
+          {/* Use the proper weather title format with city name */}
+          {t('weather.titleWithCity', { city: translatedCityName })}
         </h5>
-        <span className="weather-update-time">{t('weather.updated')} {formattedTime}</span>
+        <span className="weather-update-time">
+          {t('weather.updated', 'Updated')} {formattedTime}
+        </span>
       </div>
       
       <div className="weather-content">
@@ -123,15 +135,15 @@ const WeatherWidget = ({ city, compact = false }) => {
         <div className="weather-details">
           <div className="weather-detail-item">
             <i className="fas fa-temperature-high"></i>
-            <span>{t('weather.feelsLike')}: {Math.round(weather.main.feels_like)}°C</span>
+            <span>{t('weather.feelsLike', 'Feels like')}: {Math.round(weather.main.feels_like)}°C</span>
           </div>
           <div className="weather-detail-item">
             <i className="fas fa-wind"></i>
-            <span>{t('weather.wind')}: {Math.round(weather.wind.speed * 3.6)} km/h</span>
+            <span>{t('weather.wind', 'Wind')}: {Math.round(weather.wind.speed * 3.6)} km/h</span>
           </div>
           <div className="weather-detail-item">
             <i className="fas fa-tint"></i>
-            <span>{t('weather.humidity')}: {weather.main.humidity}%</span>
+            <span>{t('weather.humidity', 'Humidity')}: {weather.main.humidity}%</span>
           </div>
         </div>
       </div>

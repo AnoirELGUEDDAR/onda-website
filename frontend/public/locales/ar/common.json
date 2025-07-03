@@ -25,19 +25,35 @@
   "airports": {
     "explore": "استكشف مطاراتنا",
     "major": "المطارات الرئيسية في المغرب",
+     "Casablanca": "الدار البيضاء",
     "viewDetails": "عرض التفاصيل",
+    "seeMore": "عرض المزيد من المطارات",
     "about": "حول",
     "facilities": "المرافق والخدمات",
     "code": "رمز المطار",
     "location": "الموقع"
   },
+    "cities": {
+    "casablanca": "الدار البيضاء",
+    "marrakech": "مراكش",
+    "rabat": "الرباط",
+    "tangier": "طنجة",
+    "agadir": "أكادير",
+    "fez": "فاس",
+    "meknes": "مكناس",
+    "oujda": "وجدة",
+    "essaouira": "الصويرة",
+    "tetouan": "تطوان"
+  },
   "weather": {
-    "title": "الطقس في المطارات الرئيسية",
-    "feelsLike": "الإحساس",
-    "humidity": "الرطوبة",
+    "titleWithCity": "الطقس في {{city}}",
+    "title": "الطقس",
+    "loading": "جاري تحميل الطقس...",
+    "updated": "محدث",
+    "tryRefresh": "حاول تحديث الصفحة",
+    "feelsLike": "يشعر وكأنه",
     "wind": "الرياح",
-    "updated": "تم التحديث في",
-    "forecast": "توقعات الطقس لـ 5 أيام"
+    "humidity": "الرطوبة"
   },
   "home": {
     "welcome": "مرحبا بكم في مطارات المغرب",
