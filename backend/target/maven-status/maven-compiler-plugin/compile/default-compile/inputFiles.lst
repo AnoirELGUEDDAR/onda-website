@@ -13,4 +13,3 @@
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/models/User.java
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/models/AirportService.java
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/repositories/AirportRepository.java
-/home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/controllers/WeatherController.java

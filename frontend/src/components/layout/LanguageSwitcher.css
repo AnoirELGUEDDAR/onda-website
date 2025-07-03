@@ -1,25 +1,53 @@
-.language-dropdown .dropdown-menu {
-  min-width: 10rem;
-}
+/* Add these rules to your existing LanguageSwitcher.css */
 
-.language-dropdown .dropdown-item {
-  display: flex;
-  align-items: center;
-  padding: 8px 16px;
-}
-
-.language-dropdown .dropdown-item:hover {
-  background-color: var(--onda-blue-light);
-}
-
-.language-dropdown .dropdown-item.active {
-  background-color: var(--onda-blue-light);
-  color: var(--onda-blue);
-  font-weight: 500;
-}
-
+/* Add margin between all language buttons */
 .language-buttons .btn {
-  margin-right: 0.25rem;
-  display: inline-flex;
-  align-items: center;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  width:110px;
+height:30px;
 }
+
+/* Remove margin from the last button */
+.language-buttons .btn:last-child {
+  margin-right: 0;
+}
+
+/* For RTL languages */
+html[dir="rtl"] .language-buttons .btn {
+  margin-right: 0;
+  margin-left: 8px;
+}
+
+html[dir="rtl"] .language-buttons .btn:last-child {
+  margin-left: 0;
+}
+
+/* Specific styling for each language button */
+.language-buttons .btn[data-lang="en"] {
+  background-color: #1d4f91;
+  border-color: #1d4f91;
+}
+
+.language-buttons .btn[data-lang="ar"] {
+  background-color: #006233;
+  border-color: #006233;
+}
+
+.language-buttons .btn[data-lang="fr"] {
+  background-color: #002654;
+  border-color: #002654;
+}
+
+.language-buttons .btn[data-lang="es"] {
+  background-color: #aa151b;
+  border-color: #aa151b;
+}
+
+/* Hover states */
+.language-buttons .btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+

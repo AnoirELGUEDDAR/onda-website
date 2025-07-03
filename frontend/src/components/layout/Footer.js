@@ -16,10 +16,10 @@ const Footer = () => {
             <img src="/images/onda-logo.png" alt={t('app.name')} height="60" className="mb-3" />
             <p className="small">{t('app.fullName')} - Morocco's Airport Authority, managing 25 airports across the kingdom.</p>
             <div className="mt-3">
-              <a href="https://facebook.com" className="text-white me-3"><i className="fab fa-facebook-f"></i></a>
-              <a href="https://twitter.com" className="text-white me-3"><i className="fab fa-twitter"></i></a>
-              <a href="https://instagram.com" className="text-white me-3"><i className="fab fa-instagram"></i></a>
-              <a href="https://linkedin.com" className="text-white"><i className="fab fa-linkedin-in"></i></a>
+              <a href="https://www.facebook.com/OFFICENATIONALDESAEROPORTS/" className="text-white me-3"><i className="fab fa-facebook-f"></i></a>
+              <a href="https://x.com/ondaofficiel" className="text-white me-3"><i className="fab fa-twitter"></i></a>
+              <a href="https://www.instagram.com/ondaeroports/?hl=en" className="text-white me-3"><i className="fab fa-instagram"></i></a>
+              <a href="https://www.linkedin.com/company/office-national-des-a%C3%A9roports/posts/?feedView=all" className="text-white"><i className="fab fa-linkedin-in"></i></a>
             </div>
           </div>
 
