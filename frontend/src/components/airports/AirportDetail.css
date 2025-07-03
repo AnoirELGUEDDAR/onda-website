@@ -1,49 +1,79 @@
-.airport-detail .facility-img {
-  height: 160px;
+.airport-detail-container {
+  min-height: 70vh;
+}
+
+.airport-title {
+  font-weight: 700;
+}
+
+.airport-code-location {
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+.airport-code {
+  font-weight: bold;
+  color: #0d6efd;
+}
+
+.airport-image-main img {
+  max-height: 500px;
+  width: 100%;
   object-fit: cover;
 }
 
-.sticky-top {
-  z-index: 100;
+.facility-item {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f8f9fa;
 }
 
-.night-view {
-  margin-top: 3rem;
-  background-color: var(--onda-dark) !important;
+.facility-item i {
+  color: #0d6efd;
 }
 
-.airport-detail h2, 
-.airport-detail h3 {
-  color: var(--onda-blue);
-  position: relative;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+.airport-sidebar .card {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.airport-detail h2:after,
-.airport-detail h3:after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 50px;
-  height: 3px;
-  background: var(--onda-orange);
+.info-item {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
 }
 
-.airport-facilities .card {
-  transition: all 0.3s ease;
-  border-bottom: 3px solid transparent;
+.info-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
-.airport-facilities .card:hover {
-  border-bottom-color: var(--onda-orange);
+.info-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #6c757d;
 }
 
-.airport-facilities .card-title {
-  color: var(--onda-blue);
+.info-value {
+  font-size: 1.1rem;
 }
 
-.card-header.bg-primary {
-  background: linear-gradient(to right, var(--onda-blue), var(--onda-blue-dark)) !important;
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+/* RTL support */
+html[dir="rtl"] .me-2 {
+  margin-right: 0 !important;
+  margin-left: 0.5rem !important;
+}
+
+html[dir="rtl"] .ms-2 {
+  margin-left: 0 !important;
+  margin-right: 0.5rem !important;
 }

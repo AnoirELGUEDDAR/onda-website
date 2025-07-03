@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import './AirportList.css';
 
 // Complete list of all Moroccan airports
-const airports = [
+// Added "export" keyword here to fix the error
+export const airports = [
   {
     code: 'CMN',
     city: 'casablanca',
@@ -147,7 +148,7 @@ const airports = [
   }
 ];
 
-const AirportsList = () => {
+const AirportList = () => {
   const { t } = useTranslation();
 
   return (
@@ -178,7 +179,8 @@ const AirportsList = () => {
                     })}
                   </p>
                   <div className="airport-actions">
-                    <Link to={`/airport/${airport.code}`} className="btn btn-primary">
+                    {/* Update link to match your route in App.js */}
+                    <Link to={`/airports/${airport.code}`} className="btn btn-primary">
                       {t('airports.viewDetails')}
                     </Link>
                     <Link to={`/flights/${airport.code}`} className="btn btn-outline-primary">
@@ -195,4 +197,4 @@ const AirportsList = () => {
   );
 };
 
-export default AirportsList;
+export default AirportList;

@@ -8,29 +8,96 @@
     "airports": "Aéroports",
     "flights": "Vols",
     "services": "Services",
-    "about": "À propos",
+    "about": "À Propos",
     "contact": "Contact"
   },
   "flights": {
-    "search": "Recherche de vols",
+    "search": "Recherche de Vol",
     "departures": "Départs",
     "arrivals": "Arrivées",
     "from": "De",
     "to": "À",
     "date": "Date",
-    "searchButton": "Rechercher",
+    "searchButton": "Rechercher des Vols",
     "selectDeparture": "Sélectionner l'aéroport de départ",
     "selectArrival": "Sélectionner l'aéroport d'arrivée"
   },
   "airports": {
-    "explore": "Explorez nos aéroports",
-    "major": "Principaux aéroports au Maroc",
-    "viewDetails": "Voir les détails",
-    "about": "À propos de",
-    "facilities": "Installations et services",
+    "explore": "Explorez Nos Aéroports",
+    "major": "Principaux Aéroports du Maroc",
+    "Casablanca": "Casablanca",
+    "viewDetails": "Voir les Détails",
     "seeMore": "Voir Plus d'Aéroports",
-    "code": "Code d'aéroport",
-    "location": "Emplacement"
+    "about": "À Propos",
+    "facilitiesTitle": "Installations et Services",
+    "code": "Code Aéroport",
+    "location": "Emplacement",
+    "type": "Type",
+    "noDetailedDescription": "Des informations détaillées sur cet aéroport seront disponibles prochainement.",
+    "quickInfo": "Informations Rapides",
+    "links": "Liens Utiles",
+    "flightSchedules": "Horaires des Vols",
+    "transportation": "Transport",
+    "services": "Services Aéroportuaires",
+    "loadError": "Impossible de charger les détails de l'aéroport. Veuillez réessayer plus tard.",
+    "pageTitle": "Aéroports du Maroc",
+    "flightInfo": "Informations sur les Vols",
+    "facilities": {
+      "terminals": "Terminaux Passagers",
+      "shops": "Boutiques Duty-Free",
+      "restaurants": "Restaurants et Cafés",
+      "wifi": "Wi-Fi Gratuit",
+      "parking": "Parking",
+      "currency": "Bureau de Change"
+    },
+    "names": {
+      "mohammed_v": "Aéroport International Mohammed V",
+      "menara": "Aéroport de Marrakech-Ménara",
+      "al_massira": "Aéroport d'Al Massira",
+      "cherif_al_idrissi": "Aéroport Cherif Al Idrissi",
+      "beni_mellal": "Aéroport de Béni Mellal",
+      "moulay_ali_cherif": "Aéroport Moulay Ali Chérif",
+      "essaouira_mogador": "Aéroport d'Essaouira-Mogador",
+      "fes_sais": "Aéroport International de Fès-Saïs",
+      "nador_international": "Aéroport International de Nador",
+      "ouarzazate": "Aéroport d'Ouarzazate",
+      "oujda_angads": "Aéroport International d'Oujda-Angads",
+      "rabat_sale": "Aéroport de Rabat-Salé",
+      "tangier_ibn_battouta": "Aéroport Ibn Battouta de Tanger",
+      "tetouan_sania_ramel": "Aéroport Tétouan Sania Ramel",
+      "dakhla": "Aéroport de Dakhla",
+      "hassan_i": "Aéroport Hassan Ier",
+      "tan_tan_plage_blanche": "Aéroport de Tan Tan Plage Blanche",
+      "guelmim": "Aéroport de Guelmim",
+      "zagora": "Aéroport de Zagora",
+      "bouarfa": "Aéroport de Bouarfa"
+    },
+    "descriptions": {
+      "CMN": "L'Aéroport International Mohammed V est la principale porte d'entrée internationale du Maroc située près de Casablanca, accueillant des millions de passagers chaque année.",
+      "RAK": "L'Aéroport de Marrakech-Ménara est un important aéroport international desservant la destination touristique populaire de Marrakech.",
+      "AGA": "L'Aéroport d'Al Massira dessert Agadir, une importante station balnéaire sur la côte atlantique sud du Maroc.",
+      "AHU": "L'Aéroport Cherif Al Idrissi est un aéroport régional desservant Al Hoceima et ses environs dans le nord du Maroc.",
+      "BEM": "L'Aéroport de Béni Mellal est un petit aéroport régional desservant la région de Béni Mellal-Khénifra.",
+      "ERH": "L'Aéroport Moulay Ali Chérif dessert la ville d'Errachidia et ses environs dans l'est du Maroc.",
+      "ESU": "L'Aéroport d'Essaouira-Mogador relie la ville côtière d'Essaouira à d'autres destinations marocaines.",
+      "FEZ": "L'Aéroport International de Fès-Saïs dessert la capitale culturelle et spirituelle du Maroc, Fès.",
+      "NDR": "L'Aéroport International de Nador dessert la région nord-est du Rif au Maroc.",
+      "OZZ": "L'Aéroport d'Ouarzazate sert de porte d'entrée vers le désert du Sahara et les régions sud-est du Maroc.",
+      "OUD": "L'Aéroport International d'Oujda-Angads dessert la ville d'Oujda dans l'est du Maroc et ses environs.",
+      "RBA": "L'Aéroport de Rabat-Salé dessert la capitale du Maroc, Rabat, et la ville jumelle de Salé.",
+      "TNG": "L'Aéroport Ibn Battouta de Tanger relie le nord du Maroc à des destinations à travers l'Europe et le Moyen-Orient.",
+      "TTU": "L'Aéroport Tétouan Sania Ramel dessert la ville de Tétouan dans le nord du Maroc.",
+      "VIL": "L'Aéroport de Dakhla dessert la ville côtière de Dakhla dans le sud du Maroc.",
+      "EUN": "L'Aéroport Hassan Ier dessert Laâyoune, la plus grande ville du territoire du Sahara occidental.",
+      "TTA": "L'Aéroport de Tan Tan Plage Blanche dessert la ville côtière sud-ouest de Tan Tan.",
+      "GLN": "L'Aéroport de Guelmim dessert la ville du sud marocain connue comme la porte du désert.",
+      "OZG": "L'Aéroport de Zagora donne accès aux régions désertiques du sud-est du Maroc.",
+      "UAR": "L'Aéroport de Bouarfa est un petit aéroport régional desservant la ville de Bouarfa dans l'est du Maroc."
+    },
+    "types": {
+      "international": "Aéroport International",
+      "regional": "Aéroport Régional"
+    }
   },
   "cities": {
     "casablanca": "Casablanca",
@@ -42,7 +109,18 @@
     "meknes": "Meknès",
     "oujda": "Oujda",
     "essaouira": "Essaouira",
-    "tetouan": "Tétouan"
+    "tetouan": "Tétouan",
+    "al_hoceima": "Al Hoceima",
+    "beni_mellal": "Béni Mellal",
+    "errachidia": "Errachidia",
+    "nador": "Nador",
+    "ouarzazate": "Ouarzazate",
+    "dakhla": "Dakhla",
+    "laayoune": "Laâyoune",
+    "tan_tan": "Tan Tan",
+    "guelmim": "Guelmim",
+    "zagora": "Zagora",
+    "bouarfa": "Bouarfa"
   },
   "weather": {
     "titleWithCity": "Météo à {{city}}",
@@ -55,34 +133,42 @@
     "humidity": "Humidité"
   },
   "home": {
-    "welcome": "Bienvenue aux aéroports du Maroc",
+    "welcome": "Bienvenue aux Aéroports du Maroc",
     "tagline": "Découvrez les portes d'entrée vers les trésors du royaume",
-    "services": "Nos services aéroportuaires",
-    "checkIn": "Enregistrement efficace",
+    "services": "Nos Services Aéroportuaires",
+    "checkIn": "Enregistrement Efficace",
     "checkInDesc": "Services d'enregistrement rapides et modernes dans tous nos aéroports.",
-    "shopping": "Shopping hors taxes",
-    "seeMoreAirports": "Voir Plus d'Aéroports",
+    "shopping": "Shopping Hors Taxes",
     "shoppingDesc": "Découvrez des produits marocains authentiques et des marques internationales.",
-    "dining": "Options de restauration",
+    "dining": "Options de Restauration",
     "diningDesc": "Découvrez la cuisine marocaine et internationale dans nos terminaux.",
-    "network": "Notre réseau d'aéroports",
+    "network": "Notre Réseau d'Aéroports",
     "networkDesc": "L'ONDA gère 25 aéroports à travers le Royaume du Maroc, servant des millions de passagers chaque année.",
-    "networkText": "Du hub animé de Casablanca aux aéroports pittoresques de Tanger et Dakhla, nous connectons le Maroc au monde."
+    "networkText": "Du hub animé de Casablanca aux aéroports pittoresques de Tanger et Dakhla, nous relions le Maroc au monde."
   },
   "footer": {
-    "quickLinks": "Liens rapides",
+    "quickLinks": "Liens Rapides",
     "contact": "Contact",
     "address": "Nouaceur, Casablanca, Maroc",
-    "language": "Choisir la langue",
-    "rights": "Tous droits réservés",
-    "terms": "Conditions d'utilisation",
-    "privacy": "Politique de confidentialité",
-    "sitemap": "Plan du site"
+    "language": "Choisir la Langue",
+    "rights": "Tous Droits Réservés",
+    "terms": "Conditions d'Utilisation",
+    "privacy": "Politique de Confidentialité",
+    "sitemap": "Plan du Site"
   },
   "languages": {
     "english": "English",
     "arabic": "العربية",
     "french": "Français",
     "spanish": "Español"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "backToList": "Retour aux Aéroports",
+    "backToHome": "Retour à l'Accueil"
+  },
+  "error": {
+    "pageNotFound": "Page Non Trouvée",
+    "pageNotFoundMessage": "La page que vous recherchez a peut-être été supprimée, son nom a été modifié ou est temporairement indisponible."
   }
 }

@@ -1,167 +1,196 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import airportService from '../../services/airportService';
-import WeatherWidget from '../weather/WeatherWidget';
-import WeatherForecast from '../weather/WeatherForecast';
+import { useTranslation } from 'react-i18next';
+import { airports } from './AirportList';
 import './AirportDetail.css';
 
 const AirportDetail = () => {
+  // Updated to use id instead of code to match your route pattern
+  const { id } = useParams();
+  const { t } = useTranslation();
   const [airport, setAirport] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const { id } = useParams();
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    const fetchAirport = async () => {
+    // Find the airport with matching code (from id param)
+    const findAirport = () => {
       try {
-        const data = await airportService.getAirportById(id);
-        setAirport(data);
-        setLoading(false);
+        // Log for debugging
+        console.log("Looking for airport with code:", id);
+        console.log("Available airports:", airports);
+        
+        const foundAirport = airports.find(a => a.code === id.toUpperCase());
+        if (foundAirport) {
+          setAirport(foundAirport);
+          setError(false);
+        } else {
+          setError(true);
+        }
       } catch (err) {
-        console.error('Error fetching airport:', err);
-        setError('Could not load airport details. Please try again later.');
+        console.error("Error loading airport details:", err);
+        setError(true);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchAirport();
+    findAirport();
   }, [id]);
 
-  if (loading) return <div className="container mt-5 text-center"><div className="spinner-border" role="status"></div></div>;
-  if (error) return <div className="container mt-5 alert alert-danger">{error}</div>;
-  if (!airport) return <div className="container mt-5 alert alert-warning">Airport not found</div>;
-
-  // Get airport code in lowercase for image matching
-  const airportCode = airport.code ? airport.code.toLowerCase() : 'default';
-
-  return (
-    <div className="airport-detail">
-      {/* Hero Banner */}
-      <div className="position-relative mb-5">
-        <img 
-          src={`/images/airports/${airportCode}-airport.jpg`} 
-          alt={airport.name}
-          className="img-fluid w-100"
-          style={{ height: '400px', objectFit: 'cover' }}
-        />
-        <div className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end" 
-             style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 70%)' }}>
-          <div className="container text-white pb-4">
-            <h1 className="display-5 fw-bold">{airport.name}</h1>
-            <p className="lead mb-0">
-              <img src="/images/icons/map-marker-icon.png" alt="Location" width="20" className="me-2" />
-              {airport.city}, Morocco
-            </p>
+  if (loading) {
+    return (
+      <div className="airport-detail-container">
+        <div className="container py-5">
+          <div className="loading-indicator">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">{t('common.loading', 'Loading...')}</span>
+            </div>
           </div>
         </div>
       </div>
+    );
+  }
 
-      <div className="container mb-5">
+  if (error || !airport) {
+    return (
+      <div className="airport-detail-container">
+        <div className="container py-5">
+          <div className="alert alert-danger">
+            {t('airports.loadError', 'Could not load airport details. Please try again later.')}
+          </div>
+          <Link to="/airports" className="btn btn-primary">
+            {t('common.backToList', 'Back to Airports')}
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="airport-detail-container">
+      <div className="container py-5">
         <div className="row">
           <div className="col-lg-8">
-            <section className="airport-info mb-4">
-              <h2>About {airport.name}</h2>
-              <p className="lead">{airport.description || `${airport.name} is one of Morocco's key airports, serving the ${airport.city} region and connecting travelers to domestic and international destinations.`}</p>
-              
-              <div className="row mt-4">
-                <div className="col-md-6">
-                  <div className="card mb-3">
-                    <div className="card-body">
-                      <h5 className="card-title">Airport Code</h5>
-                      <p className="card-text display-6">{airport.code}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="card mb-3">
-                    <div className="card-body">
-                      <h5 className="card-title">Location</h5>
-                      <p className="card-text">{airport.city}, {airport.country || 'Morocco'}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
+            <h1 className="airport-title mb-3">
+              {t(`airports.names.${airport.name}`)}
+            </h1>
+            <div className="airport-code-location mb-4">
+              <span className="airport-code">{airport.code}</span> - 
+              <span className="airport-city ms-2">{t(`cities.${airport.city}`)}</span>
+            </div>
 
-            {/* Weather Section - Add this new section */}
-            <section className="airport-weather mb-4">
-              <h3 className="mb-3">Weather Information</h3>
+            <div className="airport-image-main mb-4">
+              <img 
+                src={airport.image} 
+                alt={t(`airports.names.${airport.name}`)}
+                className="img-fluid rounded shadow"
+              />
+            </div>
+
+            <div className="airport-description mb-4">
+              <h2>{t('airports.about', 'About')}</h2>
+              <p className="lead">
+                {t(`airports.descriptions.${airport.code}`, {
+                  city: t(`cities.${airport.city}`),
+                  type: t(`airports.types.${airport.type}`)
+                })}
+              </p>
+              <p>{t(`airports.longDescriptions.${airport.code}`, {
+                city: t(`cities.${airport.city}`),
+                defaultValue: t('airports.noDetailedDescription', 'Detailed information about this airport will be available soon.')
+              })}</p>
+            </div>
+
+            <div className="airport-facilities mb-4">
+              <h2>{t('airports.facilitiesTitle', 'Facilities & Services')}</h2>
               <div className="row">
                 <div className="col-md-6">
-                  <WeatherWidget city={airport.city} />
+                  <div className="facility-item">
+                    <i className="fas fa-plane-departure me-2"></i>
+                    <span>{t('airports.facilitiesTitle.terminals', 'Passenger Terminals')}</span>
+                  </div>
+                  <div className="facility-item">
+                    <i className="fas fa-shopping-bag me-2"></i>
+                    <span>{t('airports.facilitiesTitle.shops', 'Duty-Free Shops')}</span>
+                  </div>
+                  <div className="facility-item">
+                    <i className="fas fa-utensils me-2"></i>
+                    <span>{t('airports.facilitiesTitle.restaurants', 'Restaurants & Cafés')}</span>
+                  </div>
                 </div>
                 <div className="col-md-6">
-                  <div className="card h-100">
-                    <div className="card-body">
-                      <h5 className="card-title">Travel Tips</h5>
-                      <p className="card-text">Check the weather forecast before your trip to plan accordingly. Morocco has a Mediterranean climate with hot summers and mild winters.</p>
-                      <p className="card-text">During summer months (June-August), temperatures can reach 30-40°C (86-104°F), so light clothing is recommended.</p>
-                    </div>
+                  <div className="facility-item">
+                    <i className="fas fa-wifi me-2"></i>
+                    <span>{t('airports.facilitiesTitle.wifi', 'Free Wi-Fi')}</span>
+                  </div>
+                  <div className="facility-item">
+                    <i className="fas fa-parking me-2"></i>
+                    <span>{t('airports.facilitiesTitle.parking', 'Parking')}</span>
+                  </div>
+                  <div className="facility-item">
+                    <i className="fas fa-exchange-alt me-2"></i>
+                    <span>{t('airports.facilitiesTitle.currency', 'Currency Exchange')}</span>
                   </div>
                 </div>
-              </div>
-              
-              {/* 5-Day Forecast */}
-              <WeatherForecast city={airport.city} />
-            </section>
-
-            <section className="airport-facilities mb-4">
-              {/* Existing facilities section remains unchanged */}
-              <h3>Facilities & Services</h3>
-              <div className="row mt-3">
-                <div className="col-md-6 mb-3">
-                  <div className="card h-100">
-                    <img src="/images/facilities/check-in-counters.jpg" className="card-img-top facility-img" alt="Check-in Counters" />
-                    <div className="card-body">
-                      <h5 className="card-title">Check-in Services</h5>
-                      <p className="card-text">Modern check-in counters with self-service kiosks for faster processing.</p>
-                    </div>
-                  </div>
-                </div>
-                {/* Other facility cards remain unchanged */}
-              </div>
-            </section>
-          </div>
-
-          <div className="col-lg-4">
-            <div className="card mb-4 sticky-top" style={{ top: '20px' }}>
-              <div className="card-header bg-primary text-white">
-                <h5 className="mb-0">Flight Information</h5>
-              </div>
-              <div className="card-body">
-                {/* Add weather widget in compact mode to the sidebar */}
-                <div className="mb-4">
-                  <h6 className="mb-2">Current Weather</h6>
-                  <WeatherWidget city={airport.city} compact={true} />
-                </div>
-                
-                <div className="d-grid gap-3">
-                  <Link to={`/flights/departures/${id}`} className="btn btn-outline-primary">
-                    <img src="/images/icons/departures-icon.png" alt="Departures" width="20" className="me-2" />
-                    Departures
-                  </Link>
-                  <Link to={`/flights/arrivals/${id}`} className="btn btn-outline-primary">
-                    <img src="/images/icons/arrivals-icon.png" alt="Arrivals" width="20" className="me-2" />
-                    Arrivals
-                  </Link>
-                </div>
-                
-                <hr className="my-4" />
-                
-                <h6 className="mb-3">Terminal Hours</h6>
-                <div className="d-flex align-items-center mb-2">
-                  <img src="/images/icons/clock-icon.png" alt="Clock" width="18" className="me-2" />
-                  <span>Open 24 hours</span>
-                </div>
-                
-                <hr className="my-4" />
-                
-                <h6 className="mb-3">Customer Service</h6>
-                <img src="/images/misc/customer-service.jpg" alt="Customer Service" className="img-fluid rounded mb-3" />
-                <p className="small">Need assistance? Our friendly staff is available at information desks throughout the terminal.</p>
               </div>
             </div>
           </div>
+
+          <div className="col-lg-4">
+            <div className="airport-sidebar">
+              <div className="card mb-4">
+                <div className="card-header">
+                  <h3 className="h5 mb-0">{t('airports.quickInfo', 'Quick Information')}</h3>
+                </div>
+                <div className="card-body">
+                  <div className="info-item">
+                    <div className="info-label">{t('airports.code', 'Airport Code')}</div>
+                    <div className="info-value">{airport.code}</div>
+                  </div>
+                  <div className="info-item">
+                    <div className="info-label">{t('airports.location', 'Location')}</div>
+                    <div className="info-value">{t(`cities.${airport.city}`)}</div>
+                  </div>
+                  <div className="info-item">
+                    <div className="info-label">{t('airports.type', 'Type')}</div>
+                    <div className="info-value">{t(`airports.types.${airport.type}`)}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="card mb-4">
+                <div className="card-header">
+                  <h3 className="h5 mb-0">{t('airports.links', 'Useful Links')}</h3>
+                </div>
+                <div className="card-body">
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item">
+                      <Link to={`/flights/${airport.code}`} className="text-decoration-none">
+                        <i className="fas fa-plane me-2"></i> {t('airports.flightSchedules', 'Flight Schedules')}
+                      </Link>
+                    </li>
+                    <li className="list-group-item">
+                      <Link to="/transportation" className="text-decoration-none">
+                        <i className="fas fa-bus me-2"></i> {t('airports.transportation', 'Transportation')}
+                      </Link>
+                    </li>
+                    <li className="list-group-item">
+                      <Link to="/services" className="text-decoration-none">
+                        <i className="fas fa-concierge-bell me-2"></i> {t('airports.services', 'Airport Services')}
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="my-4">
+          <Link to="/airports" className="btn btn-outline-primary">
+            <i className="fas fa-arrow-left me-2"></i> {t('common.backToList', 'Back to Airports')}
+          </Link>
         </div>
       </div>
     </div>

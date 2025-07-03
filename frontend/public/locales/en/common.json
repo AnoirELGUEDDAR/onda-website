@@ -27,11 +27,77 @@
     "major": "Major Airports in Morocco",
     "Casablanca": "Casablanca",
     "viewDetails": "View Details",
-     "seeMore": "See More Airports",
+    "seeMore": "See More Airports",
     "about": "About",
-    "facilities": "Facilities & Services",
+    "facilitiesTitle": "Facilities & Services",  
     "code": "Airport Code",
-    "location": "Location"
+    "location": "Location",
+    "type": "Type",
+    "noDetailedDescription": "Detailed information about this airport will be available soon.",
+    "quickInfo": "Quick Information",
+    "links": "Useful Links",
+    "flightSchedules": "Flight Schedules",
+    "transportation": "Transportation",
+    "services": "Airport Services",
+    "loadError": "Could not load airport details. Please try again later.",
+    "pageTitle": "Morocco Airports",
+    "flightInfo": "Flight Information",
+    "facilities": {
+      "terminals": "Passenger Terminals",
+      "shops": "Duty-Free Shops",
+      "restaurants": "Restaurants & Cafés",
+      "wifi": "Free Wi-Fi",
+      "parking": "Parking",
+      "currency": "Currency Exchange"
+    },
+    "names": {
+      "mohammed_v": "Mohammed V International Airport",
+      "menara": "Marrakech Menara Airport",
+      "al_massira": "Al Massira Airport",
+      "cherif_al_idrissi": "Cherif Al Idrissi Airport",
+      "beni_mellal": "Beni Mellal Airport",
+      "moulay_ali_cherif": "Moulay Ali Cherif Airport",
+      "essaouira_mogador": "Essaouira Mogador Airport",
+      "fes_sais": "Fes Sais International Airport",
+      "nador_international": "Nador International Airport",
+      "ouarzazate": "Ouarzazate Airport",
+      "oujda_angads": "Oujda Angads International Airport",
+      "rabat_sale": "Rabat-Salé Airport",
+      "tangier_ibn_battouta": "Tangier Ibn Battouta Airport",
+      "tetouan_sania_ramel": "Tetouan Sania Ramel Airport",
+      "dakhla": "Dakhla Airport",
+      "hassan_i": "Hassan I Airport",
+      "tan_tan_plage_blanche": "Tan Tan Plage Blanche Airport",
+      "guelmim": "Guelmim Airport",
+      "zagora": "Zagora Airport",
+      "bouarfa": "Bouarfa Airport"
+    },
+    "descriptions": {
+      "CMN": "Mohammed V International Airport is Morocco's main international gateway located near Casablanca, serving millions of passengers annually.",
+      "RAK": "Marrakech Menara Airport is a major international airport serving the popular tourist destination of Marrakech.",
+      "AGA": "Al Massira Airport serves Agadir, a major beach resort destination on Morocco's southern Atlantic coast.",
+      "AHU": "Cherif Al Idrissi Airport is a regional airport serving Al Hoceima and the surrounding area in northern Morocco.",
+      "BEM": "Beni Mellal Airport is a small regional airport serving the Beni Mellal-Khenifra region.",
+      "ERH": "Moulay Ali Cherif Airport serves the city of Errachidia and surrounding areas in eastern Morocco.",
+      "ESU": "Essaouira Mogador Airport connects the coastal city of Essaouira to other Moroccan destinations.",
+      "FEZ": "Fes Sais International Airport serves Morocco's cultural and spiritual capital, Fes.",
+      "NDR": "Nador International Airport serves the northeastern Rif region of Morocco.",
+      "OZZ": "Ouarzazate Airport serves as a gateway to the Sahara Desert and Morocco's southeastern regions.",
+      "OUD": "Oujda Angads International Airport serves the eastern Moroccan city of Oujda and nearby areas.",
+      "RBA": "Rabat-Salé Airport serves Morocco's capital city Rabat and the twin city of Salé.",
+      "TNG": "Tangier Ibn Battouta Airport connects northern Morocco to destinations across Europe and the Middle East.",
+      "TTU": "Tetouan Sania Ramel Airport serves the northern Moroccan city of Tetouan.",
+      "VIL": "Dakhla Airport serves the coastal city of Dakhla in southern Morocco.",
+      "EUN": "Hassan I Airport serves Laayoune, the largest city in the Western Sahara territory.",
+      "TTA": "Tan Tan Plage Blanche Airport serves the southwestern coastal town of Tan Tan.",
+      "GLN": "Guelmim Airport serves the southern Moroccan city known as the gateway to the desert.",
+      "OZG": "Zagora Airport provides access to the southeastern desert regions of Morocco.",
+      "UAR": "Bouarfa Airport is a small regional airport serving the eastern Moroccan town of Bouarfa."
+    },
+    "types": {
+      "international": "International Airport",
+      "regional": "Regional Airport"
+    }
   },
   "cities": {
     "casablanca": "Casablanca",
@@ -43,7 +109,18 @@
     "meknes": "Meknes",
     "oujda": "Oujda",
     "essaouira": "Essaouira",
-    "tetouan": "Tetouan"
+    "tetouan": "Tetouan",
+    "al_hoceima": "Al Hoceima",
+    "beni_mellal": "Beni Mellal",
+    "errachidia": "Errachidia",
+    "nador": "Nador",
+    "ouarzazate": "Ouarzazate",
+    "dakhla": "Dakhla",
+    "laayoune": "Laayoune",
+    "tan_tan": "Tan Tan",
+    "guelmim": "Guelmim",
+    "zagora": "Zagora",
+    "bouarfa": "Bouarfa"
   },
   "weather": {
     "titleWithCity": "Weather in {{city}}",
@@ -84,5 +161,14 @@
     "arabic": "العربية",
     "french": "Français",
     "spanish": "Español"
+  },
+  "common": {
+    "loading": "Loading...",
+    "backToList": "Back to Airports",
+    "backToHome": "Back to Homepage"
+  },
+  "error": {
+    "pageNotFound": "Page Not Found",
+    "pageNotFoundMessage": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable."
   }
 }

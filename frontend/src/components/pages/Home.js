@@ -7,8 +7,13 @@ import './Home.css';
 const Home = () => {
   const { t } = useTranslation();
   
-  // City codes array (keep these the same for image paths and routing)
-  const cityCodes = ['casablanca', 'marrakech', 'rabat', 'tangier'];
+  // Airport data with both city and airport code
+  const featuredAirports = [
+    { city: 'casablanca', code: 'CMN' },
+    { city: 'marrakech', code: 'RAK' },
+    { city: 'rabat', code: 'RBA' },
+    { city: 'tangier', code: 'TNG' }
+  ];
 
   return (
     <div className="home">
@@ -36,19 +41,20 @@ const Home = () => {
         <div className="container">
           <h2 className="text-center mb-5">{t('airports.major')}</h2>
           <div className="row">
-            {cityCodes.map(city => (
-              <div className="col-md-3 mb-4" key={city}>
+            {featuredAirports.map(airport => (
+              <div className="col-md-3 mb-4" key={airport.city}>
                 <div className="card h-100 airport-card">
                   <img 
-                    src={`/images/airports/${city}-airport.jpg`} 
+                    src={`/images/airports/${airport.city}-airport.jpg`} 
                     className="card-img-top" 
-                    alt={t(`cities.${city}`)}
+                    alt={t(`cities.${airport.city}`)}
                     style={{ height: '180px', objectFit: 'cover' }}
                   />
                   <div className="card-body">
                     {/* Use translation for city name */}
-                    <h5 className="card-title">{t(`cities.${city}`)}</h5>
-                    <Link to={`/airports/${city}`} className="btn btn-sm btn-outline-primary">
+                    <h5 className="card-title">{t(`cities.${airport.city}`)}</h5>
+                    {/* Fixed: Use airport CODE instead of city name in URL */}
+                    <Link to={`/airports/${airport.code}`} className="btn btn-sm btn-outline-primary">
                       {t('airports.viewDetails')}
                     </Link>
                   </div>
@@ -128,7 +134,7 @@ const Home = () => {
               <h2>{t('home.network')}</h2>
               <p className="lead">{t('home.networkDesc')}</p>
               <p>{t('home.networkText')}</p>
-              <Link to="/airports" className="btn btn-primary">{t('airports.viewDetails')}</Link>
+              <Link to="/airports" className="btn btn-primary">{t('airports.explore')}</Link>
             </div>
             <div className="col-md-6">
               <img src="/images/misc/morocco-map.png" alt="Morocco Airports Map" className="img-fluid rounded shadow" />
