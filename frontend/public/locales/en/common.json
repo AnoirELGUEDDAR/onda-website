@@ -170,5 +170,60 @@
   "error": {
     "pageNotFound": "Page Not Found",
     "pageNotFoundMessage": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable."
+  },
+   "services": {
+    "title": "Nos Services",
+    "subtitle": "Découvrez les services de qualité offerts dans les aéroports marocains",
+    "airportServices": "Services Aéroportuaires",
+    "heroAlt": "Services aéroportuaires",
+    
+    "checkIn": {
+      "title": "Enregistrement",
+      "description": "Enregistrement rapide et efficace aux comptoirs ou via nos bornes en libre-service."
+    },
+    "baggage": {
+      "title": "Services Bagages",
+      "description": "Enregistrement, suivi et récupération des bagages avec des systèmes modernes."
+    },
+    "customs": {
+      "title": "Douanes et Immigration",
+      "description": "Procédures douanières et d'immigration simplifiées pour un voyage sans souci."
+    },
+    "shopping": {
+      "title": "Shopping Hors Taxes",
+      "description": "Large gamme de produits locaux et internationaux à des prix avantageux."
+    },
+    "dining": {
+      "title": "Restauration",
+      "description": "Restaurants et cafés proposant des spécialités marocaines et internationales."
+    },
+    "wifi": {
+      "title": "Wi-Fi Gratuit",
+      "description": "Connexion Wi-Fi gratuite disponible dans tous nos terminaux."
+    },
+    "currencyExchange": {
+      "title": "Bureau de Change",
+      "description": "Services de change de devises aux taux compétitifs dans tous nos aéroports."
+    },
+    "parking": {
+      "title": "Parking",
+      "description": "Options de stationnement sécurisées à court et long terme près des terminaux."
+    },
+
+    "vip": {
+      "title": "Services VIP",
+      "subtitle": "Une expérience de voyage exceptionnelle",
+      "description": "Profitez d'une expérience exclusive avec nos services VIP conçus pour offrir un confort et une commodité inégalés à nos voyageurs les plus exigeants.",
+      "benefit1": "Salons privés luxueux avec rafraîchissements",
+      "benefit2": "Assistance personnalisée pour l'enregistrement et les bagages",
+      "benefit3": "Voies prioritaires pour le contrôle de sécurité et l'immigration",
+      "benefit4": "Transport dédié entre le terminal et l'avion"
+    },
+
+    "contactUs": {
+      "title": "Besoin d'informations supplémentaires ?",
+      "description": "Pour toute question concernant nos services ou pour des demandes spéciales, n'hésitez pas à contacter notre équipe de service client.",
+      "button": "Contactez-nous"
+    }
   }
 }

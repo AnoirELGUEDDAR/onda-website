@@ -1,0 +1,61 @@
+.services-page .hero-section {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.services-page .hero-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2rem 0;
+}
+
+.service-card {
+  transition: transform 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+}
+
+.service-card .card-img-container {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+}
+
+.service-card img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.service-card .icon-overlay {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: var(--bs-primary, #0d6efd);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.service-card .card-body {
+  padding: 1.5rem;
+}
+
+.vip-services {
+  background-color: #f8f9fa;
+}
+
+.vip-services img {
+  max-height: 400px;
+  object-fit: cover;
+  width: 100%;
+}

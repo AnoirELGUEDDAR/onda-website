@@ -6,6 +6,7 @@ import Footer from './components/layout/Footer';
 import Home from './components/pages/Home';
 import AirportList from './components/airports/AirportList';
 import AirportDetail from './components/airports/AirportDetail';
+import Services from './components/pages/Services'; 
 import FlightSearch from './components/flights/FlightSearch';
 import FlightResults from './components/flights/FlightResults';
 import WeatherPage from './components/pages/WeatherPage';
@@ -55,6 +56,8 @@ function App() {
             <Route path="/flights/results" element={<FlightResults />} />
             <Route path="/weather" element={<WeatherPage />} />
             <Route path="*" element={<NotFound />} />
+                        <Route path="/services" element={<Services />} /> {/* Ajoutez cette route */}
+
           </Routes>
         </main>
         <Footer />
