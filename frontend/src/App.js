@@ -6,9 +6,8 @@ import Footer from './components/layout/Footer';
 import Home from './components/pages/Home';
 import AirportList from './components/airports/AirportList';
 import AirportDetail from './components/airports/AirportDetail';
-import Services from './components/pages/Services'; 
-import FlightSearch from './components/flights/FlightSearch';
-import FlightResults from './components/flights/FlightResults';
+import Services from './components/pages/Services';
+import FlightPage from './components/flights/FlightPage'; // Singular, matching your file name
 import WeatherPage from './components/pages/WeatherPage';
 import NotFound from './components/pages/NotFound';
 
@@ -52,12 +51,10 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/airports" element={<AirportList />} />
             <Route path="/airports/:id" element={<AirportDetail />} />
-            <Route path="/flights" element={<FlightSearch />} />
-            <Route path="/flights/results" element={<FlightResults />} />
+            <Route path="/flights" element={<FlightPage />} /> {/* Using singular FlightPage */}
             <Route path="/weather" element={<WeatherPage />} />
+            <Route path="/services" element={<Services />} />
             <Route path="*" element={<NotFound />} />
-                        <Route path="/services" element={<Services />} /> {/* Ajoutez cette route */}
-
           </Routes>
         </main>
         <Footer />

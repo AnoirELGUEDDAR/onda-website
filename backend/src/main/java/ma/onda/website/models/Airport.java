@@ -1,67 +1,57 @@
 package ma.onda.website.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
-import java.util.HashSet;
-import java.util.Set;
-
+@Entity
+@Table(name = "airports")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "airports")
 public class Airport {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @NotBlank
-    @Size(max = 100)
-    private String name;
-    
-    @NotBlank
-    @Size(max = 3)
-    @Column(unique = true)
+    @Column(length = 3, unique = true, nullable = false)
     private String code;
     
-    @NotBlank
-    @Size(max = 100)
+    @Column(nullable = false)
+    private String name;
+    
+    @Column(nullable = false)
     private String city;
     
-    @Size(max = 255)
-    private String description;
+    private String country = "Morocco";
     
-    private double latitude;
+    private Double latitude;
+    private Double longitude;
     
-    private double longitude;
+    private Boolean international;
     
-    @Size(max = 255)
-    private String address;
+    @Column(columnDefinition = "TEXT")
+    private String descriptionEn;
     
-    @Size(max = 100)
-    private String website;
+    @Column(columnDefinition = "TEXT")
+    private String descriptionFr;
     
-    @Size(max = 20)
-    private String phoneNumber;
+    @Column(columnDefinition = "TEXT")
+    private String descriptionAr;
     
-    @Size(max = 255)
-    private String imageUrl;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     
-    @OneToMany(mappedBy = "airport", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AirportService> services = new HashSet<>();
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
     
-    private boolean international;
-    
-    @Enumerated(EnumType.STRING)
-    private AirportStatus status = AirportStatus.ACTIVE;
-    
-    public enum AirportStatus {
-        ACTIVE, UNDER_MAINTENANCE, CLOSED
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import WeatherWidget from '../weather/WeatherWidget';
 import { airports } from './AirportList';
 import './AirportDetail.css';
 
@@ -139,6 +140,11 @@ const AirportDetail = () => {
 
           <div className="col-lg-4">
             <div className="airport-sidebar">
+              {/* Weather Widget - No need for card wrapper, the widget has its own styling */}
+              <div className="mb-4">
+                <WeatherWidget city={t(`cities.${airport.city}`)} />
+              </div>
+
               <div className="card mb-4">
                 <div className="card-header">
                   <h3 className="h5 mb-0">{t('airports.quickInfo', 'Quick Information')}</h3>

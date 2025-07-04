@@ -1,149 +1,121 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import './WeatherWidget.css';
 
-const WeatherWidget = ({ city, compact = false }) => {
+const WeatherWidget = ({ city }) => {
+  const { t } = useTranslation();
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { t, i18n } = useTranslation();
-  
-  // API key
-  const apiKey = "ae6f12542605cd805692f7cb3bc96ecb";
+  const [updateTime, setUpdateTime] = useState(new Date());
+
+  // Replace with your own OpenWeatherMap API key
+  const API_KEY = process.env.REACT_APP_WEATHER_API_KEY || 'ae6f12542605cd805692f7cb3bc96ecb';
 
   useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        setLoading(true);
-        console.log(`Fetching weather for ${city}...`);
-        
-        // Direct API call to OpenWeatherMap
-        // Set language param based on current language selection
-        const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${city},ma&units=metric&lang=${i18n.language}&appid=${apiKey}`
-        );
-        
-        if (!response.ok) {
-          throw new Error(`API returned ${response.status}`);
-        }
-        
-        const data = await response.json();
-        console.log('Weather data received:', data);
-        setWeather(data);
-        setError(null);
-      } catch (err) {
-        console.error(`Error fetching weather for ${city}:`, err);
-        setError(`Could not load weather for ${city}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (city) {
-      fetchWeather();
+    if (!city) {
+      setLoading(false);
+      return;
     }
-  }, [city, apiKey, i18n.language]); // Re-fetch when language changes
 
-  // Get translated city name
-  const getTranslatedCityName = (cityName) => {
-    const cityKey = cityName.toLowerCase();
-    return t(`cities.${cityKey}`, { defaultValue: cityName });
-  };
+    setLoading(true);
+    axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
+      params: {
+        q: `${city},MA`,  // MA for Morocco
+        units: 'metric',
+        appid: API_KEY
+      }
+    })
+    .then(response => {
+      setWeather(response.data);
+      setUpdateTime(new Date());
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error('Weather fetch error:', err);
+      setError(t('weather.loadError', 'Could not load weather data'));
+      setLoading(false);
+    });
+  }, [city, t, API_KEY]);
 
-  // Loading state
+  if (!city) return null;
+
   if (loading) {
     return (
-      <div className={`weather-widget ${compact ? 'weather-widget-compact' : ''}`}>
-        <div className="weather-loading p-3 text-center">
-          <div className="spinner-border spinner-border-sm text-primary" role="status"></div>
-          <span className="ms-2">{t('weather.loading', 'Loading weather...')}</span>
+      <div className="weather-widget">
+        <div className="weather-header">
+          <h4 className="weather-city-name">{city}</h4>
+          <span className="weather-update-time">{t('weather.loading', 'Loading...')}</span>
+        </div>
+        <div className="weather-content">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">{t('weather.loading')}</span>
+          </div>
         </div>
       </div>
     );
   }
 
-  // Error state
   if (error || !weather) {
     return (
-      <div className={`weather-widget ${compact ? 'weather-widget-compact' : ''}`}>
-        <div className="weather-error p-3 text-center">
-          <i className="fas fa-exclamation-triangle text-warning me-2"></i>
-          {error}
-          <div className="mt-2">
-            <small>{t('weather.tryRefresh', 'Try refreshing the page')}</small>
+      <div className="weather-widget">
+        <div className="weather-header">
+          <h4 className="weather-city-name">{city}</h4>
+          <span className="weather-update-time">{t('weather.error', 'Error')}</span>
+        </div>
+        <div className="weather-content">
+          <div className="alert alert-warning py-2 mb-0">
+            <i className="fas fa-exclamation-triangle me-2"></i> 
+            {error || t('weather.loadError', 'Could not load weather data')}
           </div>
         </div>
       </div>
     );
   }
 
-  // Helper function for weather icon
-  const getWeatherIconUrl = (iconCode) => {
-    return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-  };
-
-  // Format date and time based on user's language
-  const updateTime = new Date(weather.dt * 1000);
-  const formattedTime = updateTime.toLocaleTimeString(i18n.language, {
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-
-  // Get weather icon
-  const iconUrl = getWeatherIconUrl(weather.weather[0].icon);
-  
-  // Get translated city name
-  const translatedCityName = getTranslatedCityName(city);
-
-  if (compact) {
-    return (
-      <div className="weather-widget weather-widget-compact">
-        <div className="weather-compact-content">
-          <img src={iconUrl} alt={weather.weather[0].description} className="weather-icon-small" />
-          <div className="weather-compact-info">
-            <div className="weather-temp">{Math.round(weather.main.temp)}°C</div>
-            <div className="weather-city">{translatedCityName}</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Format weather data
+  const temp = Math.round(weather.main.temp);
+  const feelsLike = Math.round(weather.main.feels_like);
+  const description = weather.weather[0].description;
+  const icon = weather.weather[0].icon;
+  const humidity = weather.main.humidity;
+  const windSpeed = Math.round(weather.wind.speed * 3.6); // Convert m/s to km/h
 
   return (
     <div className="weather-widget">
       <div className="weather-header">
-        <h5 className="weather-city-name">
-          <i className="fas fa-map-marker-alt me-2"></i> 
-          {/* Use the proper weather title format with city name */}
-          {t('weather.titleWithCity', { city: translatedCityName })}
-        </h5>
+        <h4 className="weather-city-name">{city}</h4>
         <span className="weather-update-time">
-          {t('weather.updated', 'Updated')} {formattedTime}
+          {updateTime.toLocaleTimeString()}
         </span>
       </div>
-      
       <div className="weather-content">
         <div className="weather-main">
-          <img src={iconUrl} alt={weather.weather[0].description} className="weather-icon" />
-          <div className="weather-temp-large">{Math.round(weather.main.temp)}°C</div>
+          <img 
+            src={`https://openweathermap.org/img/wn/${icon}@2x.png`} 
+            alt={description} 
+            className="weather-icon"
+          />
+          <span className="weather-temp-large">{temp}°C</span>
         </div>
-        
-        <div className="weather-description">
-          {weather.weather[0].description}
-        </div>
+        <div className="weather-description">{description}</div>
         
         <div className="weather-details">
           <div className="weather-detail-item">
             <i className="fas fa-temperature-high"></i>
-            <span>{t('weather.feelsLike', 'Feels like')}: {Math.round(weather.main.feels_like)}°C</span>
+            <span>{t('weather.feelsLike', 'Feels like')}</span>
+            <strong>{feelsLike}°C</strong>
           </div>
           <div className="weather-detail-item">
             <i className="fas fa-wind"></i>
-            <span>{t('weather.wind', 'Wind')}: {Math.round(weather.wind.speed * 3.6)} km/h</span>
+            <span>{t('weather.wind', 'Wind')}</span>
+            <strong>{windSpeed} km/h</strong>
           </div>
           <div className="weather-detail-item">
             <i className="fas fa-tint"></i>
-            <span>{t('weather.humidity', 'Humidity')}: {weather.main.humidity}%</span>
+            <span>{t('weather.humidity', 'Humidity')}</span>
+            <strong>{humidity}%</strong>
           </div>
         </div>
       </div>

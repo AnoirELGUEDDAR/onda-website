@@ -1,0 +1,223 @@
+/* Flight Search Form Styles */
+.flight-search-container {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.flight-search-container h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.flight-search-container p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.flight-search-form .search-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.form-field {
+  flex: 1;
+  min-width: 200px;
+  margin-bottom: 0.5rem;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.form-field .form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.button-field {
+  display: flex;
+  align-items: flex-end;
+}
+
+.search-button {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.search-button:hover {
+  background-color: #004494;
+  border-color: #004494;
+}
+
+/* Flight Results Container */
+.flight-results-container {
+  margin-top: 2rem;
+}
+
+.flights-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.flights-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #333;
+}
+
+.current-time {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Flight Results Table Styles */
+.flight-results-table {
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.flight-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  font-size: 0.95rem;
+}
+
+.flight-table thead {
+  background-color: #d35400; /* Orange header color */
+  color: white;
+}
+
+.flight-table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.flight-table tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.flight-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.flight-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.flight-table td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+}
+
+.flight-table .no-flights {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Status styles */
+.status-scheduled {
+  color: #0070f3;
+  font-weight: 500;
+}
+
+.status-delayed {
+  color: #fa8c16;
+  font-weight: 500;
+}
+
+.status-departed {
+  color: #52c41a;
+  font-weight: 500;
+}
+
+.status-arrived {
+  color: #00c2a8;
+  font-weight: 500;
+}
+
+.status-cancelled {
+  color: #f5222d;
+  font-weight: 500;
+}
+
+/* Airline cell styling */
+.airline-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 150px;
+}
+
+.airline-logo {
+  width: 100px;
+  height: 75px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+/* Loading container */
+.loading-container {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .flight-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .flights-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-fields {
+    flex-direction: column;
+  }
+  
+  .form-field {
+    width: 100%;
+  }
+  
+  .airline-cell {
+    min-width: 120px;
+  }
+  
+  .airline-logo {
+    width: 24px;
+    height: 18px;
+  }
+}

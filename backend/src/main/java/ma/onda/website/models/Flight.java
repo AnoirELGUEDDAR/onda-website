@@ -1,78 +1,73 @@
 package ma.onda.website.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "flights")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "flights")
 public class Flight {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @NotBlank
-    @Size(max = 10)
+    @Column(name = "flight_number", nullable = false)
     private String flightNumber;
     
-    @NotBlank
-    @Size(max = 100)
-    private String airline;
-    
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private FlightType type;
+    @ManyToOne
+    @JoinColumn(name = "airline_id", nullable = false)
+    private Airline airline;
     
     @ManyToOne
-    @JoinColumn(name = "origin_airport_id")
-    private Airport originAirport;
+    @JoinColumn(name = "departure_airport_id", nullable = false)
+    private Airport departureAirport;
     
     @ManyToOne
-    @JoinColumn(name = "destination_airport_id")
-    private Airport destinationAirport;
+    @JoinColumn(name = "arrival_airport_id", nullable = false)
+    private Airport arrivalAirport;
     
-    @NotNull
-    private LocalDateTime scheduledDepartureTime;
+    @Column(name = "departure_time", nullable = false)
+    private LocalDateTime departureTime;
     
-    @NotNull
-    private LocalDateTime scheduledArrivalTime;
-    
-    private LocalDateTime actualDepartureTime;
-    
-    private LocalDateTime actualArrivalTime;
-    
-    @Size(max = 10)
-    private String terminal;
-    
-    @Size(max = 10)
-    private String gate;
+    @Column(name = "arrival_time", nullable = false)
+    private LocalDateTime arrivalTime;
     
     @Enumerated(EnumType.STRING)
     private FlightStatus status = FlightStatus.SCHEDULED;
     
-    @Size(max = 255)
-    private String remarks;
-    
-    @Size(max = 255)
+    @Column(name = "aircraft_type")
     private String aircraftType;
     
-    private boolean codeshare = false;
+    private BigDecimal price;
     
-    public enum FlightType {
-        DOMESTIC, INTERNATIONAL
-    }
+    @Column(name = "seats_available")
+    private Integer seatsAvailable;
+    
+    private String terminal;
+    
+    private String gate;
+    
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     
     public enum FlightStatus {
-        SCHEDULED, ON_TIME, DELAYED, BOARDING, DEPARTED, LANDED, ARRIVED, CANCELLED, DIVERTED
+        SCHEDULED, DELAYED, DEPARTED, ARRIVED, CANCELLED
+    }
+    
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+    
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }
