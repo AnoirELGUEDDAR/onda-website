@@ -155,6 +155,118 @@
     "terms": "Terms of Service",
     "privacy": "Privacy Policy",
     "sitemap": "Sitemap"
+  },  "about": {
+    "title": "About ONDA",
+    "description": "The Moroccan Airports Authority or commonly known as ONDA (Arabic: المكتب الوطني للمطارات, French: Office national des aéroports) is the Moroccan airport operator and administrator. The company's headquarters are in Mohammed V International Airport in Casablanca.",
+    "vision": {
+      "title": "Our Vision",
+      "content": "To position Morocco as a leading aviation hub in Africa by providing world-class airport facilities and services."
+    },
+    "keyFigures": {
+      "title": "Key Figures",
+      "airports": "Airports Managed",
+      "passengers": "Passengers (2023)",
+      "employees": "Employees",
+      "destinations": "International Destinations",
+      "airlines": "Airlines"
+    },
+    "mission": {
+      "title": "Mission & Values",
+      "safety": "Ensure airport safety and security",
+      "services": "Provide quality passenger services",
+      "infrastructure": "Develop sustainable airport infrastructure",
+      "tourism": "Promote Morocco as a tourist destination",
+      "economy": "Support national economic development",
+      "innovation": "Foster technological innovation"
+    },
+    "history": {
+      "title": "History",
+      "content": "ONDA was established in July 1990 under parliamentary law 14–89. Prior to then, Morocco's airports were administered by the Moroccan Ministry of transport. One year later, ONDA inaugurated Al Massira Airport in Agadir. On 15 September 2003, Abdelhanine Benallou was nominated as the new general manager of ONDA.",
+      "milestones": {
+        "title": "Key Milestones",
+        "1990": "Establishment of ONDA under parliamentary law 14–89",
+        "1991": "Inauguration of Al Massira Airport in Agadir",
+        "2003": "Abdelhanine Benallou nominated as the new general manager of ONDA",
+        "2004": "Creation of masterplan to upgrade many facilities by 2010"
+      }
+    },
+    "accidents": {
+      "title": "Serious airport related accidents",
+      "content": "Although Morocco has its share in aircraft accidents, the number of serious incidents with fatalities directly related to an airport (approach, take-off or on ground accidents) is very low. The total number of accidents with fatalities in Morocco is 19, resulting in 792 deaths. The same numbers for events directly related to airports are 5 and 171, respectively. The majority of the airport related incidents happened long ago, with the last incident occurring in 1986."
+    },
+    "development": {
+      "title": "New developments and plans",
+      "intro": "Around 2004, ONDA created a masterplan to upgrade many facilities by 2010. The main projects include:",
+      "note": "Apart from these larger plans, some other smaller changes are planned around many airports around the country.",
+      "airports": {
+        "casablanca": {
+          "name": "Mohammed V International Airport - Casablanca",
+          "projects": {
+            "0": "Build a new terminal of 60,000 m² and a total yearly capacity of 10 million people (end 2006)",
+            "1": "Upgrade terminal 1: general overhaul and upgrade T1 to increase traffic safety (May 2007)",
+            "2": "Build new cargo terminal of 30,000 m² and 150,000 tonnes/year (2007)",
+            "3": "Build 10 extra aircraft stands",
+            "4": "New parking facility and transport link",
+            "5": "Reconfigure aprons"
+          }
+        },
+        "agadir": {
+          "name": "Al Massira Airport - Agadir",
+          "projects": {
+            "0": "Reshape the trade zone",
+            "1": "Air-condition of the air terminal",
+            "2": "Strengthen the versatile side of the movement area"
+          }
+        },
+        "marrakech": {
+          "name": "Menara Airport - Marrakech",
+          "projects": {
+            "0": "Reshape and extend Terminal 1 (2006)",
+            "1": "New terminal, aircraft stands and transport links (2008)",
+            "2": "Work on cargo terminal, taxiway parallel to runway, maintenance infra"
+          }
+        },
+        "dakhla": {
+          "name": "Dakhla Airport",
+          "projects": {
+            "0": "Building new terminal to separate military and commercial activities (2007)",
+            "1": "Other works, including control tower and national fence"
+          }
+        },
+        "essaouira": {
+          "name": "Essaouira Mogador",
+          "projects": {
+            "0": "New passenger terminal (2007)",
+            "1": "Extend runway, build parking apron, new taxi-way and two support buildings"
+          }
+        },
+        "tanger": {
+          "name": "Ibn Battouta - Tanger",
+          "projects": {
+            "0": "Reshape and extend existing terminal (2007 and phase 2: 2015)",
+            "1": "Extend plane-areas: general, runway, plane park, vehicle parking"
+          }
+        },
+        "rabat": {
+          "name": "Rabat-Salé",
+          "projects": {
+            "0": "Restructure air terminal (2007)",
+            "1": "New roads, new ONDA centre, new pedestrian path"
+          }
+        }
+      }
+    },
+    "management": {
+      "title": "Management & Governance",
+      "director": "General Director",
+      "directorName": "Adel El Fakir",
+      "board": "Board of Directors",
+      "boardDescription": "12 members representing various ministries and sectors",
+      "departments": "Departments",
+      "departmentsDescription": "Operations, Finance, Technical, Security, Commercial",
+      "quality": "Quality Management System",
+      "qualityDescription": "ISO 9001, ISO 14001, OHSAS 18001"
+    }
   },
   "languages": {
     "english": "English",

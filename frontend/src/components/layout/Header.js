@@ -40,16 +40,10 @@ const Header = () => {
               <li className="nav-item">
                 <NavLink className="nav-link" to="/airports">{t('nav.airports')}</NavLink>
               </li>
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" id="flightsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/flights">
                   {t('nav.flights')}
-                </a>
-                <ul className="dropdown-menu" aria-labelledby="flightsDropdown">
-                  <li><Link className="dropdown-item" to="/flights">{t('flights.search')}</Link></li>
-                  <li><hr className="dropdown-divider" /></li>
-                  <li><Link className="dropdown-item" to="/flights/departures/1">{t('flights.departures')}</Link></li>
-                  <li><Link className="dropdown-item" to="/flights/arrivals/1">{t('flights.arrivals')}</Link></li>
-                </ul>
+                </NavLink>
               </li>
               <li className="nav-item">
                 <NavLink className="nav-link" to="/services">{t('nav.services')}</NavLink>

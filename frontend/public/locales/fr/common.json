@@ -23,8 +23,7 @@
     "selectArrival": "Sélectionner l'aéroport d'arrivée"
   },
   "airports": {
-    "explore": "Explorez Nos Aéroports",
-    "major": "Principaux Aéroports du Maroc",
+    common"major": "Principaux Aéroports du Maroc",
     "Casablanca": "Casablanca",
     "viewDetails": "Voir les Détails",
     "seeMore": "Voir Plus d'Aéroports",
@@ -161,6 +160,119 @@
     "arabic": "العربية",
     "french": "Français",
     "spanish": "Español"
+  },
+    "about": {
+    "title": "À propos de l'ONDA",
+    "description": "L'Office National Des Aéroports ou communément appelé ONDA (arabe: المكتب الوطني للمطارات, français: Office national des aéroports) est l'opérateur et administrateur aéroportuaire marocain. Le siège de la société se trouve à l'aéroport international Mohammed V de Casablanca.",
+    "vision": {
+      "title": "Notre vision",
+      "content": "Positionner le Maroc comme un hub aéronautique leader en Afrique en fournissant des installations et des services aéroportuaires de classe mondiale."
+    },
+    "keyFigures": {
+      "title": "Chiffres clés",
+      "airports": "Aéroports gérés",
+      "passengers": "Passagers (2023)",
+      "employees": "Employés",
+      "destinations": "Destinations internationales",
+      "airlines": "Compagnies aériennes"
+    },
+    "mission": {
+      "title": "Mission & Valeurs",
+      "safety": "Assurer la sécurité et la sûreté aéroportuaires",
+      "services": "Fournir des services de qualité aux passagers",
+      "infrastructure": "Développer des infrastructures aéroportuaires durables",
+      "tourism": "Promouvoir le Maroc comme destination touristique",
+      "economy": "Soutenir le développement économique national",
+      "innovation": "Favoriser l'innovation technologique"
+    },
+    "history": {
+      "title": "Histoire",
+      "content": "L'ONDA a été créé en juillet 1990 en vertu de la loi parlementaire 14-89. Auparavant, les aéroports du Maroc étaient administrés par le ministère marocain des transports. Un an plus tard, l'ONDA a inauguré l'aéroport Al Massira à Agadir. Le 15 septembre 2003, Abdelhanine Benallou a été nommé nouveau directeur général de l'ONDA.",
+      "milestones": {
+        "title": "Étapes importantes",
+        "1990": "Création de l'ONDA en vertu de la loi parlementaire 14-89",
+        "1991": "Inauguration de l'aéroport Al Massira à Agadir",
+        "2003": "Nomination d'Abdelhanine Benallou comme nouveau directeur général de l'ONDA",
+        "2004": "Création d'un plan directeur pour moderniser de nombreuses installations d'ici 2010"
+      }
+    },
+    "accidents": {
+      "title": "Accidents graves liés aux aéroports",
+      "content": "Bien que le Maroc ait sa part d'accidents d'avion, le nombre d'incidents graves avec des décès directement liés à un aéroport (approche, décollage ou accidents au sol) est très faible. Le nombre total d'accidents avec décès au Maroc est de 19, entraînant 792 décès. Les mêmes chiffres pour les événements directement liés aux aéroports sont respectivement de 5 et 171. La majorité des incidents liés aux aéroports se sont produits il y a longtemps, le dernier incident s'étant produit en 1986."
+    },
+    "development": {
+      "title": "Nouveaux développements et plans",
+      "intro": "Vers 2004, l'ONDA a créé un plan directeur pour moderniser de nombreuses installations d'ici 2010. Les principaux projets comprennent :",
+      "note": "En dehors de ces plans plus importants, d'autres changements mineurs sont prévus dans de nombreux aéroports du pays.",
+      "airports": {
+        "casablanca": {
+          "name": "Aéroport International Mohammed V - Casablanca",
+          "projects": {
+            "0": "Construction d'un nouveau terminal de 60 000 m² et d'une capacité annuelle totale de 10 millions de personnes (fin 2006)",
+            "1": "Modernisation du terminal 1 : révision générale et mise à niveau de T1 pour augmenter la sécurité du trafic (mai 2007)",
+            "2": "Construction d'un nouveau terminal cargo de 30 000 m² et 150 000 tonnes/an (2007)",
+            "3": "Construction de 10 postes de stationnement d'avions supplémentaires",
+            "4": "Nouvelles installations de stationnement et liaison de transport",
+            "5": "Reconfiguration des aires de trafic"
+          }
+        },
+        "agadir": {
+          "name": "Aéroport Al Massira - Agadir",
+          "projects": {
+            "0": "Remodelage de la zone commerciale",
+            "1": "Climatisation du terminal aérien",
+            "2": "Renforcement du côté polyvalent de l'aire de mouvement"
+          }
+        },
+        "marrakech": {
+          "name": "Aéroport Ménara - Marrakech",
+          "projects": {
+            "0": "Remodelage et extension du Terminal 1 (2006)",
+            "1": "Nouveau terminal, postes de stationnement d'avions et liaisons de transport (2008)",
+            "2": "Travaux sur le terminal cargo, voie de circulation parallèle à la piste, infrastructure de maintenance"
+          }
+        },
+        "dakhla": {
+          "name": "Aéroport de Dakhla",
+          "projects": {
+            "0": "Construction d'un nouveau terminal pour séparer les activités militaires et commerciales (2007)",
+            "1": "Autres travaux, y compris la tour de contrôle et la clôture nationale"
+          }
+        },
+        "essaouira": {
+          "name": "Essaouira Mogador",
+          "projects": {
+            "0": "Nouveau terminal passagers (2007)",
+            "1": "Extension de la piste, construction d'une aire de stationnement, nouvelle voie de circulation et deux bâtiments de soutien"
+          }
+        },
+        "tanger": {
+          "name": "Ibn Battouta - Tanger",
+          "projects": {
+            "0": "Remodelage et extension du terminal existant (2007 et phase 2 : 2015)",
+            "1": "Extension des zones avions : général, piste, parc avions, parking véhicules"
+          }
+        },
+        "rabat": {
+          "name": "Rabat-Salé",
+          "projects": {
+            "0": "Restructuration du terminal aérien (2007)",
+            "1": "Nouvelles routes, nouveau centre ONDA, nouveau chemin piétonnier"
+          }
+        }
+      }
+    },
+    "management": {
+      "title": "Direction & Gouvernance",
+      "director": "Directeur Général",
+      "directorName": "Adel El Fakir",
+      "board": "Conseil d'Administration",
+      "boardDescription": "12 membres représentant divers ministères et secteurs",
+      "departments": "Départements",
+      "departmentsDescription": "Opérations, Finances, Technique, Sécurité, Commercial",
+      "quality": "Système de Management de la Qualité",
+      "qualityDescription": "ISO 9001, ISO 14001, OHSAS 18001"
+    }
   },
   "common": {
     "loading": "Chargement...",

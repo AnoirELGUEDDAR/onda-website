@@ -10,6 +10,7 @@ import Services from './components/pages/Services';
 import FlightPage from './components/flights/FlightPage'; // Singular, matching your file name
 import WeatherPage from './components/pages/WeatherPage';
 import NotFound from './components/pages/NotFound';
+import AboutPage from './components/pages/AboutPage';
 
 // Import CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -54,6 +55,7 @@ function App() {
             <Route path="/flights" element={<FlightPage />} /> {/* Using singular FlightPage */}
             <Route path="/weather" element={<WeatherPage />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
