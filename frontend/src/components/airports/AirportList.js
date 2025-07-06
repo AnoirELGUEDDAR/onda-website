@@ -152,48 +152,45 @@ const AirportList = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="airports-page">
-      <div className="container py-5">
-        <h1 className="mb-5">{t('airports.pageTitle', 'Morocco Airports')}</h1>
-        
-        <div className="row g-4">
-          {airports.map((airport) => (
-            <div className="col-lg-4 col-md-6" key={airport.code}>
-              <div className="airport-card h-100">
-                <img 
-                  src={airport.image} 
-                  alt={t(`airports.names.${airport.name}`)} 
-                  className="airport-image"
-                />
-                <div className="airport-content">
-                  <h2 className="airport-title">
-                    {t(`airports.names.${airport.name}`)}
-                  </h2>
-                  <div className="airport-code-city">
-                    {airport.code} - {t(`cities.${airport.city}`)}
-                  </div>
-                  <p className="airport-description">
-                    {t(`airports.descriptions.${airport.code}`, {
-                      city: t(`cities.${airport.city}`),
-                      type: t(`airports.types.${airport.type}`)
-                    })}
-                  </p>
-                  <div className="airport-actions">
-                    {/* Update link to match your route in App.js */}
-                    <Link to={`/airports/${airport.code}`} className="btn btn-primary">
-                      {t('airports.viewDetails')}
-                    </Link>
-                    <Link to={`/flights/${airport.code}`} className="btn btn-outline-primary">
-                      {t('airports.flightInfo')}
-                    </Link>
+      <div className="airports-page" style={{backgroundColor: 'white'}}>
+        <div className="container py-5">
+          <h1 className="mb-5">{t('airports.pageTitle', 'Morocco Airports')}</h1>
+
+          <div className="row g-4">
+            {airports.map((airport) => (
+                <div className="col-lg-4 col-md-6" key={airport.code}>
+                  <div className="airport-card h-100">
+                    <img
+                        src={airport.image}
+                        alt={t(`airports.names.${airport.name}`)}
+                        className="airport-image"
+                    />
+                    <div className="airport-content">
+                      <h2 className="airport-title">
+                        {t(`airports.names.${airport.name}`)}
+                      </h2>
+                      <div className="airport-code-city">
+                        {airport.code} - {t(`cities.${airport.city}`)}
+                      </div>
+                      <p className="airport-description">
+                        {t(`airports.descriptions.${airport.code}`, {
+                          city: t(`cities.${airport.city}`),
+                          type: t(`airports.types.${airport.type}`)
+                        })}
+                      </p>
+                      <div className="airport-actions">
+                        {/* Update link to match your route in App.js */}
+                        <Link to={`/airports/${airport.code}`} className="btn btn-primary">
+                          {t('airports.viewDetails')}
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 

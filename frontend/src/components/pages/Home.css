@@ -39,7 +39,6 @@
 }
 
 .map-section {
-  background-color: var(--onda-gray);
 }
 
 .map-section h2 {
@@ -57,4 +56,10 @@
   width: 50px;
   height: 3px;
   background: var(--onda-orange);
+}
+#WEATHERSection{
+  background-image: linear-gradient(to top, rgb(255, 255, 255), rgb(255, 255, 255));
+}
+.weather-content {
+  background-image: url("light-texture-bg.jpg");
 }

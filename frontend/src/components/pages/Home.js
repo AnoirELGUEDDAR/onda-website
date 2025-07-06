@@ -37,7 +37,7 @@ const Home = () => {
       </div>
 
       {/* Featured Airports Section */}
-      <section className="featured-airports py-5">
+      <section className="featured-airports py-5" style={{backgroundColor:'white'}}>
         <div className="container">
           <h2 className="text-center mb-5">{t('airports.major')}</h2>
           <div className="row">
@@ -73,8 +73,8 @@ const Home = () => {
       </section>
       
       {/* Weather Section */}
-      <section className="weather-section py-5 bg-light">
-        <div className="container">
+      <section className="weather-section py-5 bg-light" id="WEATHERSection">
+        <div className="container" id="WEATHERcontainer">
           <h2 className="text-center mb-4">{t('weather.title')}</h2>
           <div className="row">
             <div className="col-md-4 mb-4">
@@ -91,7 +91,7 @@ const Home = () => {
       </section>
       
       {/* Services Showcase */}
-      <section className="services-showcase py-5" style={{ backgroundImage: 'url("/images/backgrounds/light-texture-bg.jpg")' }}>
+      <section className="services-showcase py-5" style={{ backgroundColor:'white' }}>
         <div className="container">
           <h2 className="text-center mb-5">{t('home.services')}</h2>
           <div className="row">

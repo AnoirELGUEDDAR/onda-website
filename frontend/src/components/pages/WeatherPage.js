@@ -29,7 +29,7 @@ const WeatherPage = () => {
 
   return (
     <div className="weather-page">
-      <div className="weather-hero py-5 text-center" style={{ backgroundImage: 'url("/images/backgrounds/moroccan-pattern.png")' }}>
+      <div className="weather-hero py-5 text-center" style={{ backgroundImage: 'url("/images/backgrounds/moroccan-pattern.jpg")' }}>
         <div className="container">
           <h1 className="display-4">Airport Weather Information</h1>
           <p className="lead">Current conditions at all Moroccan airports</p>

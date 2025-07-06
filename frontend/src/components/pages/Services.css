@@ -51,11 +51,30 @@
 }
 
 .vip-services {
-  background-color: #f8f9fa;
-}
+  background-color: var(--onda-gray);
+  background-size: cover;
+  width:76%;
+  height:76%;
+  margin:auto;
+  border-radius: 15px;
 
+}
+.vip-services h2,.vip-services p{
+  color: black;
+}
 .vip-services img {
   max-height: 400px;
   object-fit: cover;
   width: 100%;
+}
+.list-group-item.bg-light {
+  background-color: transparent !important; /* Makes list items transparent */
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Subtle separator */
+}
+
+/* If you want to keep the card style but match the background */
+.vip-services .card,
+.vip-services,.card-body {
+  background-color: var(--onda-gray);
 }

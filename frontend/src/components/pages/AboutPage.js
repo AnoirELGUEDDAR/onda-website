@@ -24,14 +24,16 @@ const AboutPage = () => {
   }, []);
 
   return (
+
     <div className={`about-container ${i18n.language === 'ar' ? 'rtl' : 'ltr'}`}>
+    <img src="/images/ONDA.jpg" id="ABOUTONDA" />
       <main className="about-content">
         <section className="about-intro">
           <h2>{t('about.title')}</h2>
-          
+
           <div className="about-text">
             <p>{t('about.description')}</p>
-            
+
             <h3>{t('about.vision.title')}</h3>
             <p>{t('about.vision.content')}</p>
           </div>
@@ -74,13 +76,13 @@ const AboutPage = () => {
             <li>{t('about.mission.innovation')}</li>
           </ul>
         </section>
-        
+
         <section className="history-section">
           <h3>{t('about.history.title')}</h3>
           <p>{t('about.history.content')}</p>
-          
+
           <div className="timeline">
-            <h4>{t('about.history.milestones.title')}</h4>
+            <h4 style={{ color: 'black' }}>{t('about.history.milestones.title')}</h4>
             <div className="timeline-item">
               <div className="timeline-year">1990</div>
               <div className="timeline-content">{t('about.history.milestones.1990')}</div>
@@ -99,73 +101,73 @@ const AboutPage = () => {
             </div>
           </div>
         </section>
-        
+
         <section className="accidents-section">
           <h3>{t('about.accidents.title')}</h3>
           <p>{t('about.accidents.content')}</p>
         </section>
-        
+
         <section className="development-section">
           <h3>{t('about.development.title')}</h3>
           <p>{t('about.development.intro')}</p>
-          
+
           <div className="airport-developments">
             <div className="airport-project">
-              <h4>{t('about.development.airports.casablanca.name')}</h4>
+              <h4 style={{ color: 'black' }}>{t('about.development.airports.casablanca.name')}</h4>
               <ul>
                 {Array.from({ length: 6 }).map((_, index) => (
                   <li key={`casa-${index}`}>{t(`about.development.airports.casablanca.projects.${index}`)}</li>
                 ))}
               </ul>
             </div>
-            
+
             <div className="airport-project">
-              <h4>{t('about.development.airports.agadir.name')}</h4>
+              <h4 style={{ color: 'black' }}>{t('about.development.airports.agadir.name')}</h4>
               <ul>
                 {Array.from({ length: 3 }).map((_, index) => (
                   <li key={`agadir-${index}`}>{t(`about.development.airports.agadir.projects.${index}`)}</li>
                 ))}
               </ul>
             </div>
-            
+
             <div className="airport-project">
-              <h4>{t('about.development.airports.marrakech.name')}</h4>
+              <h4 style={{ color: 'black' }}>{t('about.development.airports.marrakech.name')}</h4>
               <ul>
                 {Array.from({ length: 3 }).map((_, index) => (
                   <li key={`marrakech-${index}`}>{t(`about.development.airports.marrakech.projects.${index}`)}</li>
                 ))}
               </ul>
             </div>
-            
+
             <div className="airport-project">
-              <h4>{t('about.development.airports.dakhla.name')}</h4>
+              <h4 style={{ color: 'black' }}>{t('about.development.airports.dakhla.name')}</h4>
               <ul>
                 {Array.from({ length: 2 }).map((_, index) => (
                   <li key={`dakhla-${index}`}>{t(`about.development.airports.dakhla.projects.${index}`)}</li>
                 ))}
               </ul>
             </div>
-            
+
             <div className="airport-project">
-              <h4>{t('about.development.airports.essaouira.name')}</h4>
+              <h4 style={{ color: 'black' }}>{t('about.development.airports.essaouira.name')}</h4>
               <ul>
                 {Array.from({ length: 2 }).map((_, index) => (
                   <li key={`essaouira-${index}`}>{t(`about.development.airports.essaouira.projects.${index}`)}</li>
                 ))}
               </ul>
             </div>
-            
+
             <div className="airport-project">
-              <h4>{t('about.development.airports.tanger.name')}</h4>
+              <h4 style={{ color: 'black' }}>{t('about.development.airports.tanger.name')}</h4>
               <ul>
                 {Array.from({ length: 2 }).map((_, index) => (
                   <li key={`tanger-${index}`}>{t(`about.development.airports.tanger.projects.${index}`)}</li>
                 ))}
               </ul>
             </div>
-            
+
             <div className="airport-project">
-              <h4>{t('about.development.airports.rabat.name')}</h4>
+              <h4 style={{ color: 'black' }}>{t('about.development.airports.rabat.name')}</h4>
               <ul>
                 {Array.from({ length: 2 }).map((_, index) => (
                   <li key={`rabat-${index}`}>{t(`about.development.airports.rabat.projects.${index}`)}</li>
@@ -173,27 +175,27 @@ const AboutPage = () => {
               </ul>
             </div>
           </div>
-          
+
           <p className="development-note">{t('about.development.note')}</p>
         </section>
-        
+
         <section className="management-section">
           <h3>{t('about.management.title')}</h3>
           <div className="management-grid">
             <div className="management-item">
-              <h4>{t('about.management.director')}</h4>
+              <h4 style={{ color: 'black' }}>{t('about.management.director')}</h4>
               <p>{t('about.management.directorName')}</p>
             </div>
             <div className="management-item">
-              <h4>{t('about.management.board')}</h4>
+              <h4 style={{ color: 'black' }}>{t('about.management.board')}</h4>
               <p>{t('about.management.boardDescription')}</p>
             </div>
             <div className="management-item">
-              <h4>{t('about.management.departments')}</h4>
+              <h4 style={{ color: 'black' }}>{t('about.management.departments')}</h4>
               <p>{t('about.management.departmentsDescription')}</p>
             </div>
             <div className="management-item">
-              <h4>{t('about.management.quality')}</h4>
+              <h4 style={{ color: 'black',fontSize:'16px'}}>{t('about.management.quality')}</h4>
               <p>{t('about.management.qualityDescription')}</p>
             </div>
           </div>

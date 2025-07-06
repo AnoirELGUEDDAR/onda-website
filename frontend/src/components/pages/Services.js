@@ -73,7 +73,7 @@ const Services = () => {
           src="/images/services/services-hero.jpg" 
           alt={t('services.heroAlt')} 
           className="img-fluid w-100" 
-          style={{ maxHeight: '400px', objectFit: 'cover' }} 
+          style={{ maxHeight: '400px', objectFit: 'cover' }}
         />
         <div className="hero-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center">
           <div className="container text-white">
@@ -153,7 +153,7 @@ const Services = () => {
           <h2 className="text-center mb-5">{t('services.contactUs.title')}</h2>
           <div className="row justify-content-center">
             <div className="col-lg-8">
-              <div className="card shadow">
+              <div className="card shadow" style={{backgroundColor:'var(--onda-gray)'}}>
                 <div className="card-body p-4">
                   <p className="text-center">{t('services.contactUs.description')}</p>
                   <div className="text-center mt-4">
