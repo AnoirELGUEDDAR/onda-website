@@ -81,3 +81,33 @@ html[dir="rtl"] body {
     margin-left: 0;
   }
 }
+html[dir="rtl"] .contact-content {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .contact-form,
+html[dir="rtl"] .contact-info {
+  text-align: right;
+}
+
+html[dir="rtl"] .contact-form input,
+html[dir="rtl"] .contact-form textarea {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Row of first/last name fields */
+html[dir="rtl"] .contact-row {
+  flex-direction: row-reverse;
+}
+
+/* Margin adjustments for info/form panels */
+html[dir="rtl"] .contact-info {
+  margin-right: 25px;
+  margin-left: 0;
+}
+html[dir="rtl"] .contact-form {
+  margin-right: 0;
+  margin-left: 0; /* Remove margin that pushes form from left */
+}
+

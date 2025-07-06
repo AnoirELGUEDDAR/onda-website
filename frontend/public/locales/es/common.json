@@ -1,4 +1,65 @@
 {
+  "flights": {
+    "searchTitle": "Buscar un vuelo",
+    "searchDescription": "Busca vuelos entre los aeropuertos de Marruecos",
+    "selectDeparture": "Selecciona el aeropuerto de salida",
+    "selectArrival": "Selecciona el aeropuerto de llegada",
+    "from": "Desde",
+    "to": "Hacia",
+    "date": "Fecha",
+    "searchButton": "Buscar vuelos",
+    "loadingAirports": "Cargando aeropuertos...",
+    "loadingFlights": "Buscando vuelos...",
+    "noFlights": "No se encontraron vuelos para este horario.",
+    "errorLoadingAirports": "No se pudieron cargar los aeropuertos.",
+    "errorSelectDeparture": "Por favor, seleccione el aeropuerto de salida",
+    "errorSelectArrival": "Por favor, seleccione el aeropuerto de llegada",
+    "errorSameAirport": "El aeropuerto de salida y llegada no pueden ser el mismo",
+    "availableFlights": "Vuelos disponibles",
+    "dateLabel": "Fecha: {{date}}",
+    "timeLabel": "Hora: {{time}}",
+    "status": "Estado",
+    "flightNumber": "N° vuelo",
+    "via": "Vía",
+    "destination": "Destino",
+    "origin": "Origen",
+    "airline": "Aerolínea",
+    "depart": "Salida",
+    "arrive": "Llegada",
+    "flightLabel": "Vuelo {{number}}",
+    "direct": "Directo",
+    "statusLabel": "Estado: {{status}}",
+    "terminalLabel": "Terminal: {{terminal}}",
+    "gateLabel": "Puerta: {{gate}}",
+    "details": "Detalles del vuelo",
+    "select": "Seleccionar vuelo"
+  },
+"contact": {
+  "title": "¡Contáctenos hoy!",
+  "formTitle": "Contacto",
+  "firstName": "Nombre",
+  "lastName": "Apellido",
+  "email": "Correo electrónico",
+  "message": "Mensaje",
+  "submit": "Enviar",
+  "placeholders": {
+    "firstName": "Ingrese su nombre",
+    "lastName": "Ingrese su apellido",
+    "email": "Ingrese su correo electrónico",
+    "message": "Escriba su mensaje..."
+  },
+  "privacy": "ONDA se compromete a proteger y respetar su privacidad. Solo usaremos su información para responder a su solicitud.",
+  "errors": {
+    "required": "Todos los campos son obligatorios.",
+    "send": "Hubo un error al enviar su mensaje."
+  },
+  "success": "¡Su mensaje ha sido enviado!",
+  "infoTitle": "Soporte de contacto",
+  "emailLabel": "Correo electrónico:",
+  "phoneLabel": "Número de contacto:",
+  "officeHours": "Estamos en la oficina de 9AM a 6PM.",
+  "headquartersTitle": "Sede Central"
+},
   "app": {
     "name": "ONDA",
     "fullName": "Oficina Nacional de Aeropuertos"
@@ -11,7 +72,7 @@
     "about": "Acerca de",
     "contact": "Contacto"
   },
-  "flights": {
+  "flight": {
     "search": "Búsqueda de Vuelos",
     "departures": "Salidas",
     "arrivals": "Llegadas",
@@ -105,6 +166,7 @@
     "tangier": "Tánger",
     "agadir": "Agadir",
     "fez": "Fez",
+    "fes": "Fez",
     "meknes": "Meknes",
     "oujda": "Oujda",
     "essaouira": "Essaouira",
@@ -161,7 +223,7 @@
     "french": "Français",
     "spanish": "Español"
   },
-    "about": {
+  "about": {
     "title": "Sobre ONDA",
     "description": "La Oficina Nacional de Aeropuertos o comúnmente conocida como ONDA (árabe: المكتب الوطني للمطارات, francés: Office national des aéroports) es el operador y administrador de aeropuertos marroquíes. La sede de la empresa está en el Aeropuerto Internacional Mohammed V de Casablanca.",
     "vision": {
@@ -282,5 +344,57 @@
   "error": {
     "pageNotFound": "Página No Encontrada",
     "pageNotFoundMessage": "Es posible que la página que está buscando haya sido eliminada, que haya cambiado de nombre o que no esté disponible temporalmente."
+  },
+  "airportServicesPage": {
+    "title": "Nuestros Servicios",
+    "subtitle": "Descubre los servicios de calidad ofrecidos en los aeropuertos marroquíes",
+    "airportServices": "Servicios de Aeropuerto",
+    "heroAlt": "Servicios aeroportuarios",
+    "checkIn": {
+      "title": "Facturación",
+      "description": "Facturación rápida y eficiente en mostradores o mediante nuestras terminales de autoservicio."
+    },
+    "baggage": {
+      "title": "Servicios de Equipaje",
+      "description": "Registro, seguimiento y recogida de equipaje con sistemas modernos."
+    },
+    "customs": {
+      "title": "Aduanas e Inmigración",
+      "description": "Procedimientos de aduana e inmigración simplificados para un viaje sin preocupaciones."
+    },
+    "shopping": {
+      "title": "Compras Duty-Free",
+      "description": "Amplia variedad de productos locales e internacionales a precios ventajosos."
+    },
+    "dining": {
+      "title": "Restauración",
+      "description": "Restaurantes y cafeterías que ofrecen cocina marroquí e internacional."
+    },
+    "wifi": {
+      "title": "Wi-Fi Gratis",
+      "description": "Wi-Fi gratuito disponible en todas nuestras terminales."
+    },
+    "currencyExchange": {
+      "title": "Cambio de Divisas",
+      "description": "Servicios de cambio de divisas con tarifas competitivas en todos nuestros aeropuertos."
+    },
+    "parking": {
+      "title": "Estacionamiento",
+      "description": "Opciones de estacionamiento seguras a corto y largo plazo cerca de las terminales."
+    },
+    "vip": {
+      "title": "Servicios VIP",
+      "subtitle": "Una experiencia de viaje excepcional",
+      "description": "Disfrute de una experiencia exclusiva con nuestros servicios VIP diseñados para ofrecer comodidad y conveniencia inigualables.",
+      "benefit1": "Salones privados lujosos con refrigerios",
+      "benefit2": "Asistencia personalizada para facturación y equipaje",
+      "benefit3": "Vías prioritarias para seguridad e inmigración",
+      "benefit4": "Transporte dedicado entre la terminal y el avión"
+    },
+    "contactUs": {
+      "title": "¿Necesita más información?",
+      "description": "Si tiene alguna pregunta sobre nuestros servicios o solicitudes especiales, no dude en ponerse en contacto con nuestro equipo de atención al cliente.",
+      "button": "Contáctenos"
+    }
   }
 }

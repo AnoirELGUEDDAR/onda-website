@@ -1,5 +1,6 @@
 ma/onda/website/models/Airline.class
 ma/onda/website/models/AirportService.class
+ma/onda/website/controllers/ContactController.class
 ma/onda/website/models/Airport.class
 ma/onda/website/security/SecurityConfig.class
 ma/onda/website/OndaWebsiteApplication.class
@@ -23,3 +24,4 @@ ma/onda/website/repositories/FlightRepository.class
 ma/onda/website/services/FlightService.class
 ma/onda/website/models/AirportService$ServiceCategory.class
 ma/onda/website/models/Role$ERole.class
+ma/onda/website/models/dto/ContactForm.class

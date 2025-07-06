@@ -14,7 +14,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Custom colors for ONDA brand */
 :root {
-  --onda-blue: #005cb9;      /* Primary blue */
+  --onda-blue: #002c57;      /* Primary blue */
   --onda-blue-dark: #004a94; /* Darker blue for hover states */
   --onda-blue-light: #e6f2ff; /* Light blue for backgrounds */
   --onda-orange: #e4b68f;    /* Primary orange */

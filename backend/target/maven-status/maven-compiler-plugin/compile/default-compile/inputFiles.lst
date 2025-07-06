@@ -6,11 +6,13 @@
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/models/Airport.java
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/repositories/AirlineRepository.java
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/models/dto/FlightDto.java
+/home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/controllers/ContactController.java
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/repositories/FlightRepository.java
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/services/AirportService.java
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/config/DataInitializer.java
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/config/ModelMapperConfig.java
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/config/SecurityConfig.java
+/home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/models/dto/ContactForm.java
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/models/dto/FlightSearchRequestDto.java
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/config/WebConfig.java
 /home/anoir/projects/onda-website/backend/src/main/java/ma/onda/website/controllers/AirportController.java

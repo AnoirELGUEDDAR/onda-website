@@ -37,11 +37,11 @@ const Footer = () => {
           <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
             <h5 className="text-uppercase mb-4">{t('nav.airports')}</h5>
             <ul className="list-unstyled">
-              <li className="mb-2"><Link to="/airports/casablanca" className="text-white text-decoration-none">Casablanca (CMN)</Link></li>
-              <li className="mb-2"><Link to="/airports/marrakech" className="text-white text-decoration-none">Marrakech (RAK)</Link></li>
-              <li className="mb-2"><Link to="/airports/agadir" className="text-white text-decoration-none">Agadir (AGA)</Link></li>
-              <li className="mb-2"><Link to="/airports/fes" className="text-white text-decoration-none">Fes (FEZ)</Link></li>
-              <li className="mb-2"><Link to="/airports/tangier" className="text-white text-decoration-none">Tangier (TNG)</Link></li>
+              <li className="mb-2"><Link to="/airports/CMN" className="text-white text-decoration-none">Casablanca (CMN)</Link></li>
+              <li className="mb-2"><Link to="/airports/RAK" className="text-white text-decoration-none">Marrakech (RAK)</Link></li>
+              <li className="mb-2"><Link to="/airports/AGA" className="text-white text-decoration-none">Agadir (AGA)</Link></li>
+              <li className="mb-2"><Link to="/airports/FEZ" className="text-white text-decoration-none">Fes (FEZ)</Link></li>
+              <li className="mb-2"><Link to="/airports/TNG" className="text-white text-decoration-none">Tangier (TNG)</Link></li>
             </ul>
           </div>
 
@@ -51,8 +51,7 @@ const Footer = () => {
             <p className="small mb-1"><i className="fas fa-phone me-2"></i> +212 5 22 53 90 40</p>
             <p className="small mb-3"><i className="fas fa-envelope me-2"></i> contact@onda.ma</p>
             
-            <div className="language-switcher mt-4">
-              <span className="small d-block mb-2">{t('footer.language')}:</span>
+            <div className="language-switcher mt-4" id='LS'>
               <LanguageSwitcher variant="buttons" />
             </div>
           </div>
@@ -67,7 +66,6 @@ const Footer = () => {
           <div className="col-md-5 text-md-end small">
             <Link to="/terms" className="text-white text-decoration-none me-3">{t('footer.terms')}</Link>
             <Link to="/privacy" className="text-white text-decoration-none me-3">{t('footer.privacy')}</Link>
-            <Link to="/sitemap" className="text-white text-decoration-none">{t('footer.sitemap')}</Link>
           </div>
         </div>
       </div>

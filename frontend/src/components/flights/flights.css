@@ -195,7 +195,7 @@
     overflow-x: auto;
     white-space: nowrap;
   }
-  
+
   .flights-header {
     flex-direction: column;
     align-items: flex-start;
@@ -207,17 +207,49 @@
   .search-fields {
     flex-direction: column;
   }
-  
+
   .form-field {
     width: 100%;
   }
-  
+
   .airline-cell {
     min-width: 120px;
   }
-  
+
   .airline-logo {
     width: 24px;
     height: 18px;
   }
 }
+html[dir="rtl"] .flight-search-container,
+html[dir="rtl"] .flight-results-container {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .flight-search-form .search-fields {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .form-field label {
+  text-align: right;
+}
+
+html[dir="rtl"] .flight-table th,
+html[dir="rtl"] .flight-table td {
+  text-align: right;
+}
+
+html[dir="rtl"] .flights-header {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+html[dir="rtl"] .airline-cell {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .current-time {
+  text-align: left;
+}
+

@@ -82,7 +82,7 @@ const AboutPage = () => {
           <p>{t('about.history.content')}</p>
 
           <div className="timeline">
-            <h4 style={{ color: 'black' }}>{t('about.history.milestones.title')}</h4>
+            <h4 style={{ color: 'black',fontSize:'16px'}}>{t('about.history.milestones.title')}</h4>
             <div className="timeline-item">
               <div className="timeline-year">1990</div>
               <div className="timeline-content">{t('about.history.milestones.1990')}</div>
@@ -113,7 +113,7 @@ const AboutPage = () => {
 
           <div className="airport-developments">
             <div className="airport-project">
-              <h4 style={{ color: 'black' }}>{t('about.development.airports.casablanca.name')}</h4>
+              <h4 style={{ color: 'black',fontSize:'16px'}}>{t('about.development.airports.casablanca.name')}</h4>
               <ul>
                 {Array.from({ length: 6 }).map((_, index) => (
                   <li key={`casa-${index}`}>{t(`about.development.airports.casablanca.projects.${index}`)}</li>
@@ -122,7 +122,7 @@ const AboutPage = () => {
             </div>
 
             <div className="airport-project">
-              <h4 style={{ color: 'black' }}>{t('about.development.airports.agadir.name')}</h4>
+              <h4 style={{ color: 'black',fontSize:'16px'}}>{t('about.development.airports.agadir.name')}</h4>
               <ul>
                 {Array.from({ length: 3 }).map((_, index) => (
                   <li key={`agadir-${index}`}>{t(`about.development.airports.agadir.projects.${index}`)}</li>
@@ -131,7 +131,7 @@ const AboutPage = () => {
             </div>
 
             <div className="airport-project">
-              <h4 style={{ color: 'black' }}>{t('about.development.airports.marrakech.name')}</h4>
+              <h4 style={{ color: 'black',fontSize:'16px'}}>{t('about.development.airports.marrakech.name')}</h4>
               <ul>
                 {Array.from({ length: 3 }).map((_, index) => (
                   <li key={`marrakech-${index}`}>{t(`about.development.airports.marrakech.projects.${index}`)}</li>
@@ -140,7 +140,7 @@ const AboutPage = () => {
             </div>
 
             <div className="airport-project">
-              <h4 style={{ color: 'black' }}>{t('about.development.airports.dakhla.name')}</h4>
+              <h4 style={{ color: 'black',fontSize:'16px'}}>{t('about.development.airports.dakhla.name')}</h4>
               <ul>
                 {Array.from({ length: 2 }).map((_, index) => (
                   <li key={`dakhla-${index}`}>{t(`about.development.airports.dakhla.projects.${index}`)}</li>
@@ -149,7 +149,7 @@ const AboutPage = () => {
             </div>
 
             <div className="airport-project">
-              <h4 style={{ color: 'black' }}>{t('about.development.airports.essaouira.name')}</h4>
+              <h4 style={{ color: 'black',fontSize:'16px'}}>{t('about.development.airports.essaouira.name')}</h4>
               <ul>
                 {Array.from({ length: 2 }).map((_, index) => (
                   <li key={`essaouira-${index}`}>{t(`about.development.airports.essaouira.projects.${index}`)}</li>
@@ -158,7 +158,7 @@ const AboutPage = () => {
             </div>
 
             <div className="airport-project">
-              <h4 style={{ color: 'black' }}>{t('about.development.airports.tanger.name')}</h4>
+              <h4 style={{ color: 'black',fontSize:'16px'}}>{t('about.development.airports.tanger.name')}</h4>
               <ul>
                 {Array.from({ length: 2 }).map((_, index) => (
                   <li key={`tanger-${index}`}>{t(`about.development.airports.tanger.projects.${index}`)}</li>
@@ -167,7 +167,7 @@ const AboutPage = () => {
             </div>
 
             <div className="airport-project">
-              <h4 style={{ color: 'black' }}>{t('about.development.airports.rabat.name')}</h4>
+              <h4 style={{ color: 'black',fontSize:'16px'}}>{t('about.development.airports.rabat.name')}</h4>
               <ul>
                 {Array.from({ length: 2 }).map((_, index) => (
                   <li key={`rabat-${index}`}>{t(`about.development.airports.rabat.projects.${index}`)}</li>
@@ -183,15 +183,15 @@ const AboutPage = () => {
           <h3>{t('about.management.title')}</h3>
           <div className="management-grid">
             <div className="management-item">
-              <h4 style={{ color: 'black' }}>{t('about.management.director')}</h4>
+              <h4 style={{ color: 'black',fontSize:'16px'}}>{t('about.management.director')}</h4>
               <p>{t('about.management.directorName')}</p>
             </div>
             <div className="management-item">
-              <h4 style={{ color: 'black' }}>{t('about.management.board')}</h4>
+              <h4 style={{ color: 'black',fontSize:'16px'}}>{t('about.management.board')}</h4>
               <p>{t('about.management.boardDescription')}</p>
             </div>
             <div className="management-item">
-              <h4 style={{ color: 'black' }}>{t('about.management.departments')}</h4>
+              <h4 style={{ color: 'black',fontSize:'16px'}}>{t('about.management.departments')}</h4>
               <p>{t('about.management.departmentsDescription')}</p>
             </div>
             <div className="management-item">

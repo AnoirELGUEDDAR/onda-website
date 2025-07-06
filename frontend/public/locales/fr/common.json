@@ -1,4 +1,81 @@
 {
+  "flights": {
+    "searchTitle": "Rechercher un vol",
+    "searchDescription": "Recherchez des vols entre les aéroports du Maroc",
+    "selectDeparture": "Sélectionner l'aéroport de départ",
+    "selectArrival": "Sélectionner l'aéroport d'arrivée",
+    "from": "De",
+    "to": "À",
+    "date": "Date",
+    "searchButton": "Rechercher des vols",
+    "loadingAirports": "Chargement des aéroports...",
+    "loadingFlights": "Recherche des vols...",
+    "noFlights": "Aucun vol trouvé pour cette heure.",
+    "errorLoadingAirports": "Impossible de charger les aéroports.",
+    "errorSelectDeparture": "Veuillez sélectionner l'aéroport de départ",
+    "errorSelectArrival": "Veuillez sélectionner l'aéroport d'arrivée",
+    "errorSameAirport": "Les aéroports de départ et d'arrivée doivent être différents",
+    "availableFlights": "Vols disponibles",
+    "dateLabel": "Date : {{date}}",
+    "timeLabel": "Heure : {{time}}",
+    "status": "Statut",
+    "flightNumber": "N° vol",
+    "via": "Via",
+    "destination": "Destination",
+    "origin": "Origine",
+    "airline": "Compagnie",
+    "depart": "Départ",
+    "arrive": "Arrivée",
+    "flightLabel": "Vol {{number}}",
+    "direct": "Direct",
+    "statusLabel": "Statut : {{status}}",
+    "terminalLabel": "Terminal : {{terminal}}",
+    "gateLabel": "Porte : {{gate}}",
+    "details": "Détails du vol",
+    "select": "Sélectionner le vol"
+  },
+  "flight": {
+    "title": "Recherche de vols",
+    "airportsLoaded": "{{count}} aéroports chargés",
+    "invalidAirportData": "L'API n'a pas retourné de données valides pour les aéroports",
+    "airportLoadError": "Erreur lors du chargement des aéroports :",
+    "searchError": "Erreur lors de la recherche de vols :",
+    "searchErrorMessage": "Impossible de trouver des vols. Veuillez réessayer plus tard."
+  },
+  "airlines": {
+    "AT": "Royal Air Maroc",
+    "3O": "Air Arabia Maroc",
+    "TB": "Turkish Airlines",
+    "AF": "Air France",
+    "EK": "Emirates",
+    "default": "Compagnie {{prefix}}"
+  },
+"contact": {
+  "title": "Contactez-nous dès aujourd'hui !",
+  "formTitle": "Contact",
+  "firstName": "Prénom",
+  "lastName": "Nom",
+  "email": "E-mail",
+  "message": "Message",
+  "submit": "Envoyer",
+  "placeholders": {
+    "firstName": "Entrez votre prénom",
+    "lastName": "Entrez votre nom",
+    "email": "Entrez votre e-mail",
+    "message": "Tapez votre message..."
+  },
+  "privacy": "ONDA s'engage à protéger et à respecter votre vie privée. Vos informations ne seront utilisées que pour répondre à votre demande.",
+  "errors": {
+    "required": "Tous les champs sont obligatoires.",
+    "send": "Une erreur s'est produite lors de l'envoi de votre message."
+  },
+  "success": "Votre message a été envoyé !",
+  "infoTitle": "Support Contact",
+  "emailLabel": "E-mail :",
+  "phoneLabel": "Numéro de contact :",
+  "officeHours": "Nos bureaux sont ouverts de 9h à 18h.",
+  "headquartersTitle": "Siège"
+},
   "app": {
     "name": "ONDA",
     "fullName": "Office National Des Aéroports"
@@ -11,19 +88,8 @@
     "about": "À Propos",
     "contact": "Contact"
   },
-  "flights": {
-    "search": "Recherche de Vol",
-    "departures": "Départs",
-    "arrivals": "Arrivées",
-    "from": "De",
-    "to": "À",
-    "date": "Date",
-    "searchButton": "Rechercher des Vols",
-    "selectDeparture": "Sélectionner l'aéroport de départ",
-    "selectArrival": "Sélectionner l'aéroport d'arrivée"
-  },
   "airports": {
-    common"major": "Principaux Aéroports du Maroc",
+    "major": "Principaux Aéroports du Maroc",
     "Casablanca": "Casablanca",
     "viewDetails": "Voir les Détails",
     "seeMore": "Voir Plus d'Aéroports",
@@ -105,6 +171,7 @@
     "tangier": "Tanger",
     "agadir": "Agadir",
     "fez": "Fès",
+    "fes": "Fès",
     "meknes": "Meknès",
     "oujda": "Oujda",
     "essaouira": "Essaouira",
@@ -161,7 +228,7 @@
     "french": "Français",
     "spanish": "Español"
   },
-    "about": {
+  "about": {
     "title": "À propos de l'ONDA",
     "description": "L'Office National Des Aéroports ou communément appelé ONDA (arabe: المكتب الوطني للمطارات, français: Office national des aéroports) est l'opérateur et administrateur aéroportuaire marocain. Le siège de la société se trouve à l'aéroport international Mohammed V de Casablanca.",
     "vision": {
@@ -282,5 +349,57 @@
   "error": {
     "pageNotFound": "Page Non Trouvée",
     "pageNotFoundMessage": "La page que vous recherchez a peut-être été supprimée, son nom a été modifié ou est temporairement indisponible."
+  },
+  "airportServicesPage": {
+    "title": "Nos Services",
+    "subtitle": "Découvrez les services de qualité offerts dans les aéroports marocains",
+    "airportServices": "Services Aéroportuaires",
+    "heroAlt": "Services aéroportuaires",
+    "checkIn": {
+      "title": "Enregistrement",
+      "description": "Enregistrement rapide et efficace aux comptoirs ou via nos bornes en libre-service."
+    },
+    "baggage": {
+      "title": "Services Bagages",
+      "description": "Enregistrement, suivi et récupération des bagages avec des systèmes modernes."
+    },
+    "customs": {
+      "title": "Douanes et Immigration",
+      "description": "Procédures douanières et d'immigration simplifiées pour un voyage sans souci."
+    },
+    "shopping": {
+      "title": "Shopping Hors Taxes",
+      "description": "Large gamme de produits locaux et internationaux à des prix avantageux."
+    },
+    "dining": {
+      "title": "Restauration",
+      "description": "Restaurants et cafés proposant des spécialités marocaines et internationales."
+    },
+    "wifi": {
+      "title": "Wi-Fi Gratuit",
+      "description": "Connexion Wi-Fi gratuite disponible dans tous nos terminaux."
+    },
+    "currencyExchange": {
+      "title": "Bureau de Change",
+      "description": "Services de change de devises aux taux compétitifs dans tous nos aéroports."
+    },
+    "parking": {
+      "title": "Parking",
+      "description": "Options de stationnement sécurisées à court et long terme près des terminaux."
+    },
+    "vip": {
+      "title": "Services VIP",
+      "subtitle": "Une expérience de voyage exceptionnelle",
+      "description": "Profitez d'une expérience exclusive avec nos services VIP conçus pour offrir un confort et une commodité inégalés à nos voyageurs les plus exigeants.",
+      "benefit1": "Salons privés luxueux avec rafraîchissements",
+      "benefit2": "Assistance personnalisée pour l'enregistrement et les bagages",
+      "benefit3": "Voies prioritaires pour le contrôle de sécurité et l'immigration",
+      "benefit4": "Transport dédié entre le terminal et l'avion"
+    },
+    "contactUs": {
+      "title": "Besoin d'informations supplémentaires ?",
+      "description": "Pour toute question concernant nos services ou pour des demandes spéciales, n'hésitez pas à contacter notre équipe de service client.",
+      "button": "Contactez-nous"
+    }
   }
 }

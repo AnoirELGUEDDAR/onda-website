@@ -67,3 +67,8 @@
   background-color: var(--onda-orange);
   color: var(--onda-white);
 }
+#languageDropdown{
+  color:white;
+  border:none;
+  background-color: #c8620e;
+}

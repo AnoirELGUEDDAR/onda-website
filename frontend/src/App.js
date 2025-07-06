@@ -11,7 +11,7 @@ import FlightPage from './components/flights/FlightPage'; // Singular, matching 
 import WeatherPage from './components/pages/WeatherPage';
 import NotFound from './components/pages/NotFound';
 import AboutPage from './components/pages/AboutPage';
-
+import Contact from './components/pages/Contact';
 // Import CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -56,6 +56,7 @@ function App() {
             <Route path="/weather" element={<WeatherPage />} />
             <Route path="/services" element={<Services />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/Contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
