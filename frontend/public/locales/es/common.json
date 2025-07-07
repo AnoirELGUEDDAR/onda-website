@@ -8,6 +8,7 @@
     "to": "Hacia",
     "date": "Fecha",
     "searchButton": "Buscar vuelos",
+"search": "Buscar vuelos",
     "loadingAirports": "Cargando aeropuertos...",
     "loadingFlights": "Buscando vuelos...",
     "noFlights": "No se encontraron vuelos para este horario.",
@@ -80,6 +81,7 @@
     "to": "Hacia",
     "date": "Fecha",
     "searchButton": "Buscar Vuelos",
+    "search": "Buscar Vuelos",
     "selectDeparture": "Seleccionar aeropuerto de salida",
     "selectArrival": "Seleccionar aeropuerto de llegada"
   },

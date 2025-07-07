@@ -8,6 +8,7 @@
     "to": "To",
     "date": "Date",
     "searchButton": "Search Flights",
+        "search": "Search Flights",
     "loadingAirports": "Loading airports...",
     "loadingFlights": "Searching for flights...",
     "noFlights": "No flights found for this time.",
