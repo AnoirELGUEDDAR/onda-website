@@ -47,7 +47,6 @@ const API_KEY = 'ae6f12542605cd805692f7cb3bc96ecb';
       <div className="weather-widget">
         <div className="weather-header">
           <h4 className="weather-city-name">{city}</h4>
-          <span className="weather-update-time">{t('weather.loading', 'Loading...')}</span>
         </div>
         <div className="weather-content">
           <div className="spinner-border text-primary" role="status">
@@ -63,7 +62,6 @@ const API_KEY = 'ae6f12542605cd805692f7cb3bc96ecb';
       <div className="weather-widget">
         <div className="weather-header">
           <h4 className="weather-city-name">{city}</h4>
-          <span className="weather-update-time">{t('weather.error', 'Error')}</span>
         </div>
         <div className="weather-content">
           <div className="alert alert-warning py-2 mb-0">
@@ -87,9 +85,6 @@ const API_KEY = 'ae6f12542605cd805692f7cb3bc96ecb';
     <div className="weather-widget">
       <div className="weather-header">
         <h4 className="weather-city-name">{city}</h4>
-        <span className="weather-update-time">
-          {updateTime.toLocaleTimeString()}
-        </span>
       </div>
       <div className="weather-content">
         <div className="weather-main">
