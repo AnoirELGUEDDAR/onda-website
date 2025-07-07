@@ -68,12 +68,11 @@
   width: 100%;
 }
 .list-group-item.bg-light {
-  background-color: transparent !important; /* Makes list items transparent */
+  background-color: transparent !important;
   border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Subtle separator */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-/* If you want to keep the card style but match the background */
 .vip-services .card,
 .vip-services,.card-body {
   background-color: var(--onda-gray);

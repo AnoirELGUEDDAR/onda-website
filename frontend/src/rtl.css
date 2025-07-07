@@ -1,6 +1,4 @@
-/* RTL support for Arabic */
 html[dir="rtl"] {
-  /* General text direction */
   text-align: right;
 }
 
@@ -96,18 +94,16 @@ html[dir="rtl"] .contact-form textarea {
   text-align: right;
 }
 
-/* Row of first/last name fields */
 html[dir="rtl"] .contact-row {
   flex-direction: row-reverse;
 }
 
-/* Margin adjustments for info/form panels */
 html[dir="rtl"] .contact-info {
   margin-right: 25px;
   margin-left: 0;
 }
 html[dir="rtl"] .contact-form {
   margin-right: 0;
-  margin-left: 0; /* Remove margin that pushes form from left */
+  margin-left: 0;
 }
 

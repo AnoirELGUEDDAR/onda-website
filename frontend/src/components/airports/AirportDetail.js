@@ -6,7 +6,6 @@ import { airports } from './AirportList';
 import './AirportDetail.css';
 
 const AirportDetail = () => {
-  // Updated to use id instead of code to match your route pattern
   const { id } = useParams();
   const { t } = useTranslation();
   const [airport, setAirport] = useState(null);
@@ -14,7 +13,6 @@ const AirportDetail = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    // Find the airport with matching code (from id param)
     const findAirport = () => {
       try {
         // Log for debugging

@@ -6,7 +6,7 @@ const WeatherForecast = ({ city }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Your working API key
+
   const apiKey = "ae6f12542605cd805692f7cb3bc96ecb";
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const WeatherForecast = ({ city }) => {
         setLoading(true);
         console.log(`Fetching forecast for ${city}...`);
         
-        // Direct API call to OpenWeatherMap
+
         const response = await fetch(
           `https://api.openweathermap.org/data/2.5/forecast?q=${city},ma&units=metric&appid=${apiKey}`
         );
@@ -27,7 +27,7 @@ const WeatherForecast = ({ city }) => {
         const data = await response.json();
         console.log('Forecast data received:', data);
         
-        // Process forecast data to get one forecast per day at noon
+
         const dailyForecasts = [];
         const processedDates = new Set();
         
@@ -35,7 +35,7 @@ const WeatherForecast = ({ city }) => {
           const forecastDate = new Date(data.list[i].dt * 1000);
           const dateString = forecastDate.toDateString();
           
-          // Only add if we don't already have this date and it's around noon (for daily high)
+
           if (!processedDates.has(dateString) && 
               (forecastDate.getHours() >= 11 && forecastDate.getHours() <= 14)) {
             processedDates.add(dateString);
@@ -61,7 +61,7 @@ const WeatherForecast = ({ city }) => {
     }
   }, [city, apiKey]);
 
-  // Helper function for weather icon
+
   const getWeatherIconUrl = (iconCode) => {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   };

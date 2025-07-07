@@ -10,8 +10,9 @@ const WeatherWidget = ({ city }) => {
   const [error, setError] = useState(null);
   const [updateTime, setUpdateTime] = useState(new Date());
 
-  // Replace with your own OpenWeatherMap API key
-  const API_KEY = process.env.REACT_APP_WEATHER_API_KEY || 'ae6f12542605cd805692f7cb3bc96ecb';
+
+const API_KEY = 'ae6f12542605cd805692f7cb3bc96ecb';
+
 
   useEffect(() => {
     if (!city) {
@@ -22,7 +23,7 @@ const WeatherWidget = ({ city }) => {
     setLoading(true);
     axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
       params: {
-        q: `${city},MA`,  // MA for Morocco
+        q: `${city},MA`,
         units: 'metric',
         appid: API_KEY
       }
@@ -80,7 +81,7 @@ const WeatherWidget = ({ city }) => {
   const description = weather.weather[0].description;
   const icon = weather.weather[0].icon;
   const humidity = weather.main.humidity;
-  const windSpeed = Math.round(weather.wind.speed * 3.6); // Convert m/s to km/h
+  const windSpeed = Math.round(weather.wind.speed * 3.6);
 
   return (
     <div className="weather-widget">

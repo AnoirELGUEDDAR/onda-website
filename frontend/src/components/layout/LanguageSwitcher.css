@@ -1,6 +1,4 @@
-/* Add these rules to your existing LanguageSwitcher.css */
 
-/* Add margin between all language buttons */
 .language-buttons .btn {
   margin-right: 8px;
   margin-bottom: 8px;
@@ -8,12 +6,10 @@
 height:30px;
 }
 
-/* Remove margin from the last button */
 .language-buttons .btn:last-child {
   margin-right: 0;
 }
 
-/* For RTL languages */
 html[dir="rtl"] .language-buttons .btn {
   margin-right: 0;
   margin-left: 8px;
@@ -23,7 +19,6 @@ html[dir="rtl"] .language-buttons .btn:last-child {
   margin-left: 0;
 }
 
-/* Specific styling for each language button */
 .language-buttons .btn[data-lang="en"] {
   background-color: #1d4f91;
   border-color: #1d4f91;
@@ -44,7 +39,6 @@ html[dir="rtl"] .language-buttons .btn:last-child {
   border-color: #aa151b;
 }
 
-/* Hover states */
 .language-buttons .btn:hover {
   opacity: 0.9;
   transform: translateY(-2px);

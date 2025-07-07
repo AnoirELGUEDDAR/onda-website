@@ -90,7 +90,6 @@
     word-break: break-word;
   }
 
-  /* The main button in the hero section */
   .hero-overlay .btn,
   .hero-overlay button {
     width: 90%;
@@ -104,14 +103,12 @@
     left: 0;
   }
 
-  /* Fix image and overlay stacking */
   .hero-section,
   .hero-overlay {
     position: relative !important;
     min-height: 300px !important;
   }
 
-  /* If you use absolute positioning, reset it for mobile */
   .hero-overlay .btn,
   .hero-overlay button {
     position: static !important;

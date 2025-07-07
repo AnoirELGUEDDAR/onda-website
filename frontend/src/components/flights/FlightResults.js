@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-// Airline data mapping (code to name/logo)
 const airlineDataByCode = {
   'AT': {
     name: 'Royal Air Maroc',
@@ -11,11 +10,10 @@ const airlineDataByCode = {
     name: 'Air Arabia Maroc',
     logo: '/images/airlines/air-arabia.png'
   },
-  // Add other airlines as needed...
+  //je vais ajouter les autres apres
 };
 
 function getAirlineInfo(flight) {
-  // Prefer code from flight number, fallback to known airline_name
   let code = '';
   const flightNumber = flight.flight_number || flight.flightNumber || '';
   if (flightNumber.length >= 2) {
@@ -48,7 +46,6 @@ const FlightResults = ({ flights, loading, error, searchParams }) => {
   }
   const flightArray = Array.isArray(flights) ? flights : [];
 
-  // Helper to display Origin/Destination as "City (CODE)"
   const airportDisplay = (city, code) => {
     if (!city && !code) return '';
     if (!city && code) return code;
@@ -82,7 +79,6 @@ const FlightResults = ({ flights, loading, error, searchParams }) => {
                 flightArray.map((flight, index) => {
                   // Find airline info (logo, name)
                   const airlineInfo = getAirlineInfo(flight);
-                  // Prefer city & code fields if available
                   const destination = airportDisplay(
                       flight.destination_city || flight.destinationCity || flight.arrivalAirportCity,
                       flight.destination_code || flight.destinationCode || flight.arrivalAirportCode
@@ -91,7 +87,6 @@ const FlightResults = ({ flights, loading, error, searchParams }) => {
                       flight.origin_city || flight.originCity || flight.departureAirportCity,
                       flight.origin_code || flight.originCode || flight.departureAirportCode
                   );
-                  // Handle times
                   const depTime = formatTime(flight.departure_time || flight.departureTime, i18n);
                   const arrTime = formatTime(flight.arrival_time || flight.arrivalTime, i18n);
 

@@ -7,7 +7,7 @@ import Home from './components/pages/Home';
 import AirportList from './components/airports/AirportList';
 import AirportDetail from './components/airports/AirportDetail';
 import Services from './components/pages/Services';
-import FlightPage from './components/flights/FlightPage'; // Singular, matching your file name
+import FlightPage from './components/flights/FlightPage';
 import WeatherPage from './components/pages/WeatherPage';
 import NotFound from './components/pages/NotFound';
 import AboutPage from './components/pages/AboutPage';
@@ -17,18 +17,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css';
 import './App.css';
-import './rtl.css';  // Import RTL support styles
+import './rtl.css';
 
 function App() {
   const { i18n } = useTranslation();
   
-  // Set initial direction based on language
   useEffect(() => {
     document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = i18n.language;
     document.body.classList.add(`lang-${i18n.language}`);
     
-    // Add Arabic font if needed
     if (i18n.language === 'ar') {
       const link = document.createElement('link');
       link.rel = 'stylesheet';

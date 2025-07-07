@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import './AirportList.css';
 
-// Complete list of all Moroccan airports
-// Added "export" keyword here to fix the error
 export const airports = [
   {
     code: 'CMN',

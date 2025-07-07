@@ -6,7 +6,6 @@ main {
   min-height: 70vh;
 }
 
-/* Blue and orange accent styling */
 .accent-blue {
   color: var(--onda-blue);
 }
@@ -23,7 +22,6 @@ main {
   background-color: var(--onda-orange-light);
 }
 
-/* Custom button variants */
 .btn-orange {
   background-color: var(--onda-orange);
   border-color: var(--onda-orange);
@@ -47,7 +45,6 @@ main {
   color: white;
 }
 
-/* Section styling */
 .section-blue {
   background-color: var(--onda-blue);
   color: white;
@@ -66,7 +63,6 @@ main {
   background-color: var(--onda-orange-light);
 }
 
-/* Border accents */
 .border-blue {
   border-color: var(--onda-blue) !important;
 }
