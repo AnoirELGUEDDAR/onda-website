@@ -129,3 +129,17 @@ text-decoration: none;}
   max-width: 900px;
   margin: 0 auto;
 }
+.contact-form {
+  background: #0056b3;
+  color: #fff;
+  padding: 48px 36px 36px 36px;     /* Increased padding */
+  border-radius: 16px;              /* Slightly bigger corners */
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18); /* Slightly deeper shadow */
+  min-width: 400px;                 /* Increased min-width */
+  max-width: 540px;                 /* Increased max-width */
+  flex: 1 1 400px;                  /* Adjusted flex-basis */
+  display: flex;
+  flex-direction: column;
+  gap: 24px;                        /* More space between groups */
+}
+
