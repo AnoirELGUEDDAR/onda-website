@@ -173,8 +173,8 @@
 }
 
 .airline-logo {
-  width: 100px;
-  height: 75px;
+  width: 200px;
+  height: 200px;
   object-fit: contain;
   flex-shrink: 0;
   border-radius: 2px;

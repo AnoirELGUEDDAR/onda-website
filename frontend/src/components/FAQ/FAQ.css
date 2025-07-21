@@ -1,0 +1,112 @@
+/* Base Styles */
+.faq-section {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* RTL/LTR Text Direction */
+.faq-section.rtl {
+  direction: rtl;
+  text-align: right;
+  font-family: 'Segoe UI', 'Arial Arabic', 'Droid Arabic Kufi', sans-serif;
+}
+
+.faq-section.ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Section Title */
+.section-title {
+  color: #002c57;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* FAQ List */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* FAQ Item */
+.faq-item {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 1rem 0;
+}
+
+/* Question Button */
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  color: #002c57;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  text-align: inherit;
+}
+
+/* RTL/LTR specific alignment */
+.faq-section.rtl .faq-question {
+  flex-direction: row;
+}
+
+.faq-section.ltr .faq-question {
+  flex-direction: row-reverse;
+}
+
+.question-text {
+  flex: 1;
+  padding: 0 1rem;
+}
+
+.toggle-icon {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #002c57;
+  transition: transform 0.3s ease;
+}
+
+.faq-item.open .toggle-icon {
+  transform: rotate(45deg);
+  color: #e66d00;
+}
+
+/* Answer */
+.faq-answer {
+  padding: 0.5rem 1rem;
+  color: #333;
+  line-height: 1.6;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .faq-section {
+    padding: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .faq-question {
+    font-size: 1rem;
+  }
+}

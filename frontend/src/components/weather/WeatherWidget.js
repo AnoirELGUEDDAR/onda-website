@@ -10,9 +10,7 @@ const WeatherWidget = ({ city }) => {
   const [error, setError] = useState(null);
   const [updateTime, setUpdateTime] = useState(new Date());
 
-
-const API_KEY = 'ae6f12542605cd805692f7cb3bc96ecb';
-
+  const API_KEY = 'ae6f12542605cd805692f7cb3bc96ecb';
 
   useEffect(() => {
     if (!city) {
@@ -20,24 +18,41 @@ const API_KEY = 'ae6f12542605cd805692f7cb3bc96ecb';
       return;
     }
 
+    let cancelled = false;
     setLoading(true);
-    axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
-      params: {
-        q: `${city},MA`,
-        units: 'metric',
-        appid: API_KEY
-      }
-    })
-    .then(response => {
-      setWeather(response.data);
-      setUpdateTime(new Date());
-      setLoading(false);
-    })
-    .catch(err => {
-      console.error('Weather fetch error:', err);
-      setError(t('weather.loadError', 'Could not load weather data'));
-      setLoading(false);
-    });
+    setError(null); // <-- Fix: reset error before fetch
+
+    // Retry logic
+    let retryCount = 0;
+    const fetchWeather = () => {
+      axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
+        params: {
+          q: `${city},MA`,
+          units: 'metric',
+          appid: API_KEY
+        }
+      })
+      .then(response => {
+        if (!cancelled) {
+          setWeather(response.data);
+          setUpdateTime(new Date());
+          setLoading(false);
+        }
+      })
+      .catch(err => {
+        if (retryCount < 1) { // Try one more time
+          retryCount++;
+          setTimeout(fetchWeather, 800);
+        } else if (!cancelled) {
+          console.error('Weather fetch error:', err);
+          setError(t('weather.loadError', 'Could not load weather data'));
+          setLoading(false);
+        }
+      });
+    };
+    fetchWeather();
+
+    return () => { cancelled = true; };
   }, [city, t, API_KEY]);
 
   if (!city) return null;

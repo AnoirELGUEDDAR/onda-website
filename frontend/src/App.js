@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react'; // <-- Added useState
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Header from './components/layout/Header';
@@ -19,28 +19,49 @@ import './index.css';
 import './App.css';
 import './rtl.css';
 
+function getModeByTime(){
+  const hour = new Date().getHours();
+  return (hour >= 7 && hour < 19) ? 'light' : 'dark';
+}
+
 function App() {
   const { i18n } = useTranslation();
-  
+  const [theme, setTheme] = useState(getModeByTime());
+
+  // Apply RTL, language and font logic (as you already had)
   useEffect(() => {
     document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = i18n.language;
     document.body.classList.add(`lang-${i18n.language}`);
-    
+
     if (i18n.language === 'ar') {
       const link = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = 'https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap';
       document.head.appendChild(link);
     }
-    
+
     return () => {
       document.body.className = document.body.className
         .replace(/\blang-\w+\b/g, '')
         .trim();
     };
   }, [i18n.language]);
-  
+
+  // Add dark/light mode class to <body>
+  useEffect(() => {
+    document.body.classList.remove('light-mode', 'dark-mode');
+    document.body.classList.add(`${theme}-mode`);
+  }, [theme]);
+
+  // Update theme if system time changes (e.g. after midnight)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTheme(getModeByTime());
+    }, 30 * 60 * 1000); // Check every 30 minutes
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Router>
       <div className="app-container d-flex flex-column min-vh-100">
@@ -50,7 +71,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/airports" element={<AirportList />} />
             <Route path="/airports/:id" element={<AirportDetail />} />
-            <Route path="/flights" element={<FlightPage />} /> {/* Using singular FlightPage */}
+            <Route path="/flights" element={<FlightPage />} />
             <Route path="/weather" element={<WeatherPage />} />
             <Route path="/services" element={<Services />} />
             <Route path="/about" element={<AboutPage />} />

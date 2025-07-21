@@ -10,6 +10,10 @@ const airlineDataByCode = {
     name: 'Air Arabia Maroc',
     logo: '/images/airlines/air-arabia.png'
   },
+    'BA': {
+    name: 'British-Airways',
+    logo: '/images/airlines/british-airways.png'
+  },
   //je vais ajouter les autres apres
 };
 
@@ -103,7 +107,7 @@ const FlightResults = ({ flights, loading, error, searchParams }) => {
                                   src={airlineInfo.logo}
                                   alt={airlineInfo.name}
                                   className="airline-logo"
-                                  style={{ width: 32, height: 32, objectFit: 'contain', marginRight: 8 }}
+                                  style={{ width: 100, height: 75, objectFit: 'contain', marginRight: 8 }}
                                   onError={e => e.target.style.display = 'none'}
                               />
                           )}
