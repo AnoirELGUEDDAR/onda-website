@@ -1,5 +1,6 @@
 package ma.onda.website.controllers;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -9,8 +10,9 @@ import java.util.*;
 @RequestMapping("/api/chat")
 public class ChatbotController {
 
-    // For production, store your API key in application.properties and inject with @Value
-    private static final String GROQ_API_KEY = "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";
+    // Inject the Groq API key from application.properties
+    @Value("${groq.api.key}")
+    private String groqApiKey;
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> chat(@RequestBody Map<String, String> request) {
@@ -22,7 +24,7 @@ public class ChatbotController {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("Authorization", "Bearer " + GROQ_API_KEY);
+            headers.set("Authorization", "Bearer " + groqApiKey);
 
             String apiUrl = "https://api.groq.com/openai/v1/chat/completions";
 
