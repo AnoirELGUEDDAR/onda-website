@@ -1,4 +1,17 @@
 {
+  "chatbot": {
+    "title": "Travel Assistant",
+    "welcome": "Hello! I'm your travel assistant. How can I help you today?",
+    "placeholder": "Ask about travel...",
+    "default_response": "I didn't understand that. Could you rephrase?",
+    "error": "Sorry, I'm having trouble connecting. Please try again later.",
+    "try_again": "You can try again or check your connection.",
+    "connection_issue": "Connection issue detected",
+    "open": "Open chat",
+    "close": "Close chat",
+    "send": "Send message",
+    "input_label": "Type your message"
+  },
   "faq.title": "Frequently Asked Questions",
   "faq.q1": "How can I find flight schedules?",
   "faq.a1": "You can check the 'Flights' section for detailed schedules and information.",

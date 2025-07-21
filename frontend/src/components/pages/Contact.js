@@ -127,7 +127,7 @@ const Contact = () => {
             <h2>{t("contact.infoTitle")}</h2>
             <p>
               - {t("contact.emailLabel")}<a href="mailto:contact@onda.ma"> contact@onda.ma</a><br />
-              - {t("contact.phoneLabel")} <a href="tel:+212522539040"> +212522539040</a>
+              - {t("contact.phoneLabel")} <a href="tel:+212522539040"> 0522539040</a>
             </p>
             <p>{t("contact.officeHours")}</p>
             <h2>{t("contact.headquartersTitle")}</h2>

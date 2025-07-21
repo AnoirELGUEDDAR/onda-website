@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'; // <-- Added useState
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Chatbot from './components/chatbot/Chatbot';
 import { useTranslation } from 'react-i18next';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -19,7 +20,7 @@ import './index.css';
 import './App.css';
 import './rtl.css';
 
-function getModeByTime(){
+function getModeByTime() {
   const hour = new Date().getHours();
   return (hour >= 7 && hour < 19) ? 'light' : 'dark';
 }
@@ -28,7 +29,7 @@ function App() {
   const { i18n } = useTranslation();
   const [theme, setTheme] = useState(getModeByTime());
 
-  // Apply RTL, language and font logic (as you already had)
+  // Apply RTL, language and font logic
   useEffect(() => {
     document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = i18n.language;
@@ -54,7 +55,7 @@ function App() {
     document.body.classList.add(`${theme}-mode`);
   }, [theme]);
 
-  // Update theme if system time changes (e.g. after midnight)
+  // Update theme if system time changes
   useEffect(() => {
     const interval = setInterval(() => {
       setTheme(getModeByTime());
@@ -80,6 +81,7 @@ function App() {
           </Routes>
         </main>
         <Footer />
+        <Chatbot /> {/* Chatbot visible on every page */}
       </div>
     </Router>
   );

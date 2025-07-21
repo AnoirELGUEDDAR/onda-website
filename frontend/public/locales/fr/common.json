@@ -1,4 +1,18 @@
 {
+"chatbot": {
+  "title": "Assistant de Voyage",
+  "welcome": "Bonjour ! Je suis votre assistant de voyage. Comment puis-je vous aider aujourd’hui ?",
+  "placeholder": "Posez une question sur les voyages...",
+  "default_response": "Je n'ai pas compris. Pouvez-vous reformuler ?",
+  "error": "Désolé, j'ai des problèmes de connexion. Veuillez réessayer plus tard.",
+  "try_again": "Vous pouvez réessayer ou vérifier votre connexion.",
+  "connection_issue": "Problème de connexion détecté",
+  "open": "Ouvrir le chat",
+  "close": "Fermer le chat",
+  "send": "Envoyer le message",
+  "input_label": "Tapez votre message"
+},
+
   "faq.title": "Questions fréquemment posées",
   "faq.q1": "Comment puis-je trouver les horaires des vols ?",
   "faq.a1": "Vous pouvez consulter la section 'Vols' pour les horaires et informations détaillées.",
