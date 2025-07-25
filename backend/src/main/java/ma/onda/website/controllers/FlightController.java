@@ -4,7 +4,6 @@ import ma.onda.website.models.dto.FlightDto;
 import ma.onda.website.models.dto.FlightSearchRequestDto;
 import ma.onda.website.services.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,19 +14,31 @@ import java.util.List;
 @RequestMapping("/api/flights")
 @CrossOrigin(origins = "*")
 public class FlightController {
-    
+
     private final FlightService flightService;
-    
+
     @Autowired
     public FlightController(FlightService flightService) {
         this.flightService = flightService;
     }
-    
+
+    // Endpoint to get all flights
+    @GetMapping
+    public ResponseEntity<List<FlightDto>> getAllFlights() {
+        try {
+            List<FlightDto> flights = flightService.getAllFlights();
+            return ResponseEntity.ok(flights);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    // Existing endpoints for search
     @GetMapping("/search")
     public ResponseEntity<List<FlightDto>> searchFlights(
         @RequestParam String departure,
         @RequestParam String arrival,
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+        @RequestParam LocalDate date
     ) {
         try {
             List<FlightDto> flights = flightService.searchFlights(departure, arrival, date);
@@ -36,7 +47,7 @@ public class FlightController {
             return ResponseEntity.badRequest().build();
         }
     }
-    
+
     @PostMapping("/search")
     public ResponseEntity<List<FlightDto>> searchFlightsPost(@RequestBody FlightSearchRequestDto request) {
         try {

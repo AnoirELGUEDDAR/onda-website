@@ -36,7 +36,6 @@ public class ChatbotController {
             messages.add(Map.of("role", "system", "content",
                 "You are an expert assistant who only answers questions about airports. " +
                 "If asked about anything else, politely reply that you can only answer questions related to airports."));
-            // Add user message
             messages.add(Map.of("role", "user", "content", request.get("message")));
             body.put("messages", messages);
 

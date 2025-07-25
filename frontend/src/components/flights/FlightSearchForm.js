@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
 const FlightSearchForm = ({ onSearch }) => {
   const { t } = useTranslation();
   const [airports, setAirports] = useState([]);
@@ -13,7 +13,9 @@ const FlightSearchForm = ({ onSearch }) => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get('http://localhost:8080/api/airports')
+
+
+axios.get(`${API_URL}/airports`)
         .then(response => {
           setAirports(Array.isArray(response.data) ? response.data : []);
           setLoading(false);

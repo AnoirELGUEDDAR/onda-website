@@ -14,7 +14,47 @@ const airlineDataByCode = {
     name: 'British-Airways',
     logo: '/images/airlines/british-airways.png'
   },
-  //je vais ajouter les autres apres
+    'TB': {
+    name: 'Tuifly',
+    logo: '/images/airlines/tuifly.png'
+  },
+      'AF': {
+    name: 'Air France',
+    logo: '/images/airlines/air-france.png'
+  },
+      'EY': {
+    name: 'Etihad Airways',
+    logo: '/images/airlines/etihad-airways.png'
+  },
+    'IB': {
+    name: 'Iberia',
+    logo: '/images/airlines/iberia.png'
+  },
+      'FR': {
+    name: 'Ryanair',
+    logo: '/images/airlines/ryanair.png'
+  },
+    'TK': {
+    name: 'Turkish Airlines',
+    logo: '/images/airlines/turkish-airlines.png'
+  },
+      'VY': {
+    name: 'Vueling',
+    logo: '/images/airlines/vueling.png'
+  },
+        'QR': {
+    name: 'Qatar Airways',
+    logo: '/images/airlines/qatar-airways.png'
+  },
+          'EK': {
+    name: 'Emirates',
+    logo: '/images/airlines/emirates.png'
+  },
+            'LH': {
+    name: 'Lufthansa',
+    logo: '/images/airlines/lufthansa.png'
+  },
+  
 };
 
 function getAirlineInfo(flight) {
@@ -107,7 +147,7 @@ const FlightResults = ({ flights, loading, error, searchParams }) => {
                                   src={airlineInfo.logo}
                                   alt={airlineInfo.name}
                                   className="airline-logo"
-                                  style={{ width: 100, height: 75, objectFit: 'contain', marginRight: 8 }}
+                                  style={{ width: 150, height: 150, objectFit: 'contain', marginRight: 8 }}
                                   onError={e => e.target.style.display = 'none'}
                               />
                           )}

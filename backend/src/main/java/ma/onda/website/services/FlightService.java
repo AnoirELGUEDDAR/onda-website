@@ -35,6 +35,13 @@ public class FlightService {
         this.modelMapper = modelMapper;
     }
     
+    public List<FlightDto> getAllFlights() {
+        List<Flight> flights = flightRepository.findAll();
+        return flights.stream()
+            .map(this::convertToDto)
+            .collect(Collectors.toList());
+    }
+
     public List<FlightDto> searchFlights(String departureCode, String arrivalCode, LocalDate date) {
         Airport departureAirport = airportRepository.findByCode(departureCode)
             .orElseThrow(() -> new EntityNotFoundException("Departure airport not found: " + departureCode));

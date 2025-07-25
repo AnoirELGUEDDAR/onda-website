@@ -12,7 +12,8 @@ const airportService = {
   },
 
   getAirportByCode: async (code) => {
-    const response = await api.get(`/airports/code/${code}`);
+    // Change here!
+    const response = await api.get(`/airports/${code}`);
     return response.data;
   }
 };

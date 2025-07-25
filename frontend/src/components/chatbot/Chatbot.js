@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Chatbot.css';
 import chatbotLogo from './chatbotlogo.png'; // <-- Adjust path if needed
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
 const Chatbot = () => {
     const { t, i18n } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +39,8 @@ const Chatbot = () => {
         setConnectionError(false);
 
         try {
-            const response = await fetch('http://localhost:8080/api/chat', {
+
+            const response = await fetch(`${API_URL}/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

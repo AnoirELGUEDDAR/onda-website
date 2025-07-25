@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import FlightSearchForm from './FlightSearchForm';
 import FlightResults from './FlightResults';
 import './flights.css';
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
 const FlightPage = () => {
   const { t, i18n } = useTranslation();
   const [flights, setFlights] = useState([]);
@@ -16,7 +16,7 @@ const FlightPage = () => {
 
   // Fetch airport data on component mount
   useEffect(() => {
-    axios.get('http://localhost:8080/api/airports')
+axios.get(`${API_URL}/airports`)
         .then(response => {
           if (Array.isArray(response.data)) {
             setAirports(response.data);
@@ -36,7 +36,7 @@ const FlightPage = () => {
     setError('');
     setSearchParams(params);
 
-    const url = `http://localhost:8080/api/flights/search?departure=${params.departure}&arrival=${params.arrival}&date=${params.date}`;
+const url = `${API_URL}/flights/search?departure=${params.departure}&arrival=${params.arrival}&date=${params.date}`;
 
     axios.get(url)
         .then(response => {
