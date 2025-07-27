@@ -1,5 +1,5 @@
 # Build the React app
-FROM node:20 AS build  # Updated to Node 20 for compatibility
+FROM node:20 AS build
 WORKDIR /app
 # Copy only what's needed from frontend/
 COPY frontend/package*.json .
