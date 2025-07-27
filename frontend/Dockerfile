@@ -1,10 +1,15 @@
 # Build the React app
 FROM node:20 AS build
 WORKDIR /app
-# Copy only what's needed from frontend/
-COPY frontend/package*.json .
+
+# Copy package files first (note the trailing / for directory)
+COPY frontend/package*.json ./  # Added trailing slash
+
 RUN npm install
+
+# Copy remaining frontend files
 COPY frontend/ .
+
 RUN npm run build
 
 # Serve with Nginx
