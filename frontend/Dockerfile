@@ -2,14 +2,13 @@
 FROM node:20 AS build
 WORKDIR /app
 
-# Copy package files first (note the trailing / for directory)
-COPY frontend/package*.json ./  # Added trailing slash
-
+# Copy package files individually (more reliable)
+COPY frontend/package.json .
+COPY frontend/package-lock.json .
 RUN npm install
 
-# Copy remaining frontend files
+# Copy remaining files
 COPY frontend/ .
-
 RUN npm run build
 
 # Serve with Nginx
