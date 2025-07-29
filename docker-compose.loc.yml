@@ -17,7 +17,7 @@ services:
       - ./db-init:/docker-entrypoint-initdb.d
 
   backend:
-    image: anoiraeg2003/spring-backend:latest
+    build: ./backend
     container_name: spring-backend
     depends_on:
       - db
@@ -30,7 +30,7 @@ services:
       DB_URL: jdbc:mysql://db:3306/onda_flights?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
 
   frontend:
-    image: anoiraeg2003/react-frontend:latest
+    build: ./frontend
     container_name: react-frontend
     environment:
       REACT_APP_API_URL: http://backend:8080/api

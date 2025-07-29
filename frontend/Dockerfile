@@ -1,5 +1,7 @@
 # Build the React app
 FROM node:20 AS build
+ARG REACT_APP_API_URL=http://backend:8080/api
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
 WORKDIR /app
 
 # Copy package files individually (more reliable)
