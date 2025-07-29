@@ -1,0 +1,445 @@
+{
+  "chatbot": {
+    "title": "Travel Assistant",
+    "welcome": "Hello! I'm your travel assistant. How can I help you today?",
+    "placeholder": "Ask about travel...",
+    "default_response": "I didn't understand that. Could you rephrase?",
+    "error": "Sorry, I'm having trouble connecting. Please try again later.",
+    "try_again": "You can try again or check your connection.",
+    "connection_issue": "Connection issue detected",
+    "open": "Open chat",
+    "close": "Close chat",
+    "send": "Send message",
+    "input_label": "Type your message"
+  },
+  "faq.title": "Frequently Asked Questions",
+  "faq.q1": "How can I find flight schedules?",
+  "faq.a1": "You can check the 'Flights' section for detailed schedules and information.",
+  "faq.q2": "How do I contact the airport?",
+  "faq.a2": "Go to the 'Contact' section for details and a contact form.",
+  "faq.q3": "What services are available at the airports?",
+  "faq.a3": "Services like check-in, shopping, dining, and more are listed in the 'Services' section.",
+  "faq.q4": "Is there Wi-Fi available?",
+  "faq.a4": "Yes, free Wi-Fi is available at all major airports.",
+  "faq.q5": "Where can I find lost and found?",
+  "faq.a5": "Visit the 'Lost and Found' desk or contact airport support.",
+  "faq.q6": "Can I exchange currency at the airport?",
+  "faq.a6": "Currency exchange services are available at most airports.",
+  "faq.q7": "How early should I arrive before my flight?",
+  "faq.a7": "It is recommended to arrive at least 2 hours before international flights and 1 hour before domestic flights.",
+  "faq.q8": "Are there facilities for disabled passengers?",
+  "faq.a8": "Yes, we offer special assistance and facilities for passengers with reduced mobility.",
+  "faq.q9": "How can I access airport parking?",
+  "faq.a9": "Parking information is available in the 'Parking' section. Signs at the airport will guide you to the parking areas.",
+  "faq.q10": "What should I do if I lose my luggage?",
+  "faq.a10": "Contact the airline's baggage service or visit the lost and found office at the airport.",
+  "faq.q11": "Can I bring pets on my flight?",
+  "faq.a11": "Most airlines allow pets, but check specific airline policies before traveling.",
+  "faq.q12": "Where can I get information about airport lounges?",
+  "faq.a12": "Information about lounges is available in the 'Services' section or at the airport information desk.",
+  "faq.q13": "Do airports have charging stations?",
+  "faq.a13": "Yes, most airports have charging stations for mobile devices in waiting areas.",
+  "faq.q14": "How do I report suspicious activity at the airport?",
+  "faq.a14": "Report any suspicious activity to airport security or staff immediately.",
+  "faq.q15": "Are there hotels near the airport?",
+  "faq.a15": "Yes, many airports have hotels nearby. Check the 'Services' section for recommendations.",
+  "flights": {
+    "searchTitle": "Find Your Flight",
+    "searchDescription": "Search for flights between Morocco's airports",
+    "selectDeparture": "Select departure airport",
+    "selectArrival": "Select arrival airport",
+    "from": "From",
+    "to": "To",
+    "date": "Date",
+    "searchButton": "Search Flights",
+        "search": "Search Flights",
+    "loadingAirports": "Loading airports...",
+    "loadingFlights": "Searching for flights...",
+    "noFlights": "No flights found for this time.",
+    "errorLoadingAirports": "Could not load airports.",
+    "errorSelectDeparture": "Please select departure airport",
+    "errorSelectArrival": "Please select arrival airport",
+    "errorSameAirport": "Departure and arrival airports cannot be the same",
+    "availableFlights": "Available Flights",
+    "dateLabel": "Date: {{date}}",
+    "timeLabel": "Time: {{time}}",
+    "status": "Status",
+    "flightNumber": "Flight No.",
+    "via": "Via",
+    "destination": "Destination",
+    "origin": "Origin",
+    "airline": "Airline",
+    "depart": "Depart",
+    "arrive": "Arrive",
+    "flightLabel": "Flight {{number}}",
+    "direct": "Direct",
+    "statusLabel": "Status: {{status}}",
+    "terminalLabel": "Terminal: {{terminal}}",
+    "gateLabel": "Gate: {{gate}}",
+    "details": "Flight Details",
+    "select": "Select Flight"
+  },
+  "flight": {
+    "title": "Flight Search",
+    "airportsLoaded": "{{count}} airports loaded.",
+    "invalidAirportData": "Invalid airport data received.",
+    "airportLoadError": "Failed to load airports.",
+    "searchError": "Flight search failed:",
+    "searchErrorMessage": "Unable to retrieve flight information.",
+    "noFlights": "No flights found."
+  },
+
+"contact": {
+  "title": "Contact Us Today!",
+  "formTitle": "Contact",
+  "firstName": "First name",
+  "lastName": "Last name",
+  "email": "Email",
+  "message": "Message",
+  "submit": "Submit",
+  "placeholders": {
+    "firstName": "Enter your first name",
+    "lastName": "Enter your last name",
+    "email": "Enter your email",
+    "message": "Type your message..."
+  },
+  "privacy": "ONDA is committed to protecting and respecting your privacy. We’ll only use your info to respond to your request.",
+  "errors": {
+    "required": "All fields are required.",
+    "send": "There was an error sending your message."
+  },
+  "success": "Your message has been sent!",
+  "infoTitle": "Contact Support",
+  "emailLabel": "Email:",
+  "phoneLabel": "Contact Number:",
+  "officeHours": "We’re in the office between 9AM and 6PM.",
+  "headquartersTitle": "Headquarters"
+},
+  "app": {
+    "name": "ONDA",
+    "fullName": "National Office of Airports"
+  },
+  "nav": {
+    "home": "Home",
+    "airports": "Airports",
+    "flights": "Flights",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "airports": {
+    "explore": "Explore Our Airports",
+    "major": "Major Airports in Morocco",
+    "Casablanca": "Casablanca",
+    "viewDetails": "View Details",
+    "seeMore": "See More Airports",
+    "about": "About",
+    "facilitiesTitle": "Facilities & Services",
+    "code": "Airport Code",
+    "location": "Location",
+    "type": "Type",
+    "noDetailedDescription": "Detailed information about this airport will be available soon.",
+    "quickInfo": "Quick Information",
+    "links": "Useful Links",
+    "flightSchedules": "Flight Schedules",
+    "transportation": "Transportation",
+    "services": "Airport Services",
+    "loadError": "Could not load airport details. Please try again later.",
+    "pageTitle": "Morocco Airports",
+    "flightInfo": "Flight Information",
+    "facilities": {
+      "terminals": "Passenger Terminals",
+      "shops": "Duty-Free Shops",
+      "restaurants": "Restaurants & Cafés",
+      "wifi": "Free Wi-Fi",
+      "parking": "Parking",
+      "currency": "Currency Exchange"
+    },
+    "names": {
+      "mohammed_v": "Mohammed V International Airport",
+      "menara": "Marrakech Menara Airport",
+      "al_massira": "Al Massira Airport",
+      "cherif_al_idrissi": "Cherif Al Idrissi Airport",
+      "beni_mellal": "Beni Mellal Airport",
+      "moulay_ali_cherif": "Moulay Ali Cherif Airport",
+      "essaouira_mogador": "Essaouira Mogador Airport",
+      "fes_sais": "Fes Sais International Airport",
+      "nador_international": "Nador International Airport",
+      "ouarzazate": "Ouarzazate Airport",
+      "oujda_angads": "Oujda Angads International Airport",
+      "rabat_sale": "Rabat-Salé Airport",
+      "tangier_ibn_battouta": "Tangier Ibn Battouta Airport",
+      "tetouan_sania_ramel": "Tetouan Sania Ramel Airport",
+      "dakhla": "Dakhla Airport",
+      "hassan_i": "Hassan I Airport",
+      "tan_tan_plage_blanche": "Tan Tan Plage Blanche Airport",
+      "guelmim": "Guelmim Airport",
+      "zagora": "Zagora Airport",
+      "bouarfa": "Bouarfa Airport"
+    },
+    "descriptions": {
+      "CMN": "Mohammed V International Airport is Morocco's main international gateway located near Casablanca, serving millions of passengers annually.",
+      "RAK": "Marrakech Menara Airport is a major international airport serving the popular tourist destination of Marrakech.",
+      "AGA": "Al Massira Airport serves Agadir, a major beach resort destination on Morocco's southern Atlantic coast.",
+      "AHU": "Cherif Al Idrissi Airport is a regional airport serving Al Hoceima and the surrounding area in northern Morocco.",
+      "BEM": "Beni Mellal Airport is a small regional airport serving the Beni Mellal-Khenifra region.",
+      "ERH": "Moulay Ali Cherif Airport serves the city of Errachidia and surrounding areas in eastern Morocco.",
+      "ESU": "Essaouira Mogador Airport connects the coastal city of Essaouira to other Moroccan destinations.",
+      "FEZ": "Fes Sais International Airport serves Morocco's cultural and spiritual capital, Fes.",
+      "NDR": "Nador International Airport serves the northeastern Rif region of Morocco.",
+      "OZZ": "Ouarzazate Airport serves as a gateway to the Sahara Desert and Morocco's southeastern regions.",
+      "OUD": "Oujda Angads International Airport serves the eastern Moroccan city of Oujda and nearby areas.",
+      "RBA": "Rabat-Salé Airport serves Morocco's capital city Rabat and the twin city of Salé.",
+      "TNG": "Tangier Ibn Battouta Airport connects northern Morocco to destinations across Europe and the Middle East.",
+      "TTU": "Tetouan Sania Ramel Airport serves the northern Moroccan city of Tetouan.",
+      "VIL": "Dakhla Airport serves the coastal city of Dakhla in southern Morocco.",
+      "EUN": "Hassan I Airport serves Laayoune, the largest city in the Western Sahara territory.",
+      "TTA": "Tan Tan Plage Blanche Airport serves the southwestern coastal town of Tan Tan.",
+      "GLN": "Guelmim Airport serves the southern Moroccan city known as the gateway to the desert.",
+      "OZG": "Zagora Airport provides access to the southeastern desert regions of Morocco.",
+      "UAR": "Bouarfa Airport is a small regional airport serving the eastern Moroccan town of Bouarfa."
+    },
+    "types": {
+      "international": "International Airport",
+      "regional": "Regional Airport"
+    }
+  },
+  "cities": {
+    "casablanca": "Casablanca",
+    "marrakech": "Marrakech",
+    "rabat": "Rabat",
+    "tangier": "Tangier",
+    "agadir": "Agadir",
+    "fez": "Fez",
+    "fes": "Fez",
+    "meknes": "Meknes",
+    "oujda": "Oujda",
+    "essaouira": "Essaouira",
+    "tetouan": "Tetouan",
+    "al_hoceima": "Al Hoceima",
+    "beni_mellal": "Beni Mellal",
+    "errachidia": "Errachidia",
+    "nador": "Nador",
+    "ouarzazate": "Ouarzazate",
+    "dakhla": "Dakhla",
+    "laayoune": "Laayoune",
+    "tan_tan": "Tan Tan",
+    "guelmim": "Guelmim",
+    "zagora": "Zagora",
+    "bouarfa": "Bouarfa"
+  },
+  "weather": {
+    "titleWithCity": "Weather in {{city}}",
+    "title": "Weather",
+    "loading": "Loading weather...",
+    "updated": "Updated",
+    "tryRefresh": "Try refreshing the page",
+    "feelsLike": "Feels like",
+    "wind": "Wind",
+    "humidity": "Humidity"
+  },
+  "home": {
+    "welcome": "Welcome to Morocco's Airports",
+    "tagline": "Discover the gateways to the kingdom's treasures",
+    "services": "Our Airport Services",
+    "checkIn": "Efficient Check-in",
+    "checkInDesc": "Fast and modern check-in services at all our airports.",
+    "shopping": "Duty-Free Shopping",
+    "shoppingDesc": "Discover authentic Moroccan products and international brands.",
+    "dining": "Dining Options",
+    "diningDesc": "Experience Moroccan and international cuisine at our terminals.",
+    "network": "Our Airport Network",
+    "networkDesc": "ONDA manages 25 airports across the Kingdom of Morocco, serving millions of passengers annually.",
+    "networkText": "From the bustling hub of Casablanca to scenic airports in Tangier and Dakhla, we connect Morocco to the world."
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "address": "Nouaceur, Casablanca, Morocco",
+    "language": "Select Language",
+    "rights": "All Rights Reserved",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "sitemap": "Sitemap"
+  },
+  "about": {
+    "title": "About ONDA",
+    "description": "The Moroccan Airports Authority or commonly known as ONDA (Arabic: المكتب الوطني للمطارات, French: Office national des aéroports) is the Moroccan airport operator and administrator. The company's headquarters are in Mohammed V International Airport in Casablanca.",
+    "vision": {
+      "title": "Our Vision",
+      "content": "To position Morocco as a leading aviation hub in Africa by providing world-class airport facilities and services."
+    },
+    "keyFigures": {
+      "title": "Key Figures",
+      "airports": "Airports Managed",
+      "passengers": "Passengers (2023)",
+      "employees": "Employees",
+      "destinations": "International Destinations",
+      "airlines": "Airlines"
+    },
+    "mission": {
+      "title": "Mission & Values",
+      "safety": "Ensure airport safety and security",
+      "services": "Provide quality passenger services",
+      "infrastructure": "Develop sustainable airport infrastructure",
+      "tourism": "Promote Morocco as a tourist destination",
+      "economy": "Support national economic development",
+      "innovation": "Foster technological innovation"
+    },
+    "history": {
+      "title": "History",
+      "content": "ONDA was established in July 1990 under parliamentary law 14–89. Prior to then, Morocco's airports were administered by the Moroccan Ministry of transport. One year later, ONDA inaugurated Al Massira Airport in Agadir. On 15 September 2003, Abdelhanine Benallou was nominated as the new general manager of ONDA.",
+      "milestones": {
+        "title": "Key Milestones",
+        "1990": "Establishment of ONDA under parliamentary law 14–89",
+        "1991": "Inauguration of Al Massira Airport in Agadir",
+        "2003": "Abdelhanine Benallou nominated as the new general manager of ONDA",
+        "2004": "Creation of masterplan to upgrade many facilities by 2010"
+      }
+    },
+    "accidents": {
+      "title": "Serious airport related accidents",
+      "content": "Although Morocco has its share in aircraft accidents, the number of serious incidents with fatalities directly related to an airport (approach, take-off or on ground accidents) is very low. The total number of accidents with fatalities in Morocco is 19, resulting in 792 deaths. The same numbers for events directly related to airports are 5 and 171, respectively. The majority of the airport related incidents happened long ago, with the last incident occurring in 1986."
+    },
+    "development": {
+      "title": "New developments and plans",
+      "intro": "Around 2004, ONDA created a masterplan to upgrade many facilities by 2010. The main projects include:",
+      "note": "Apart from these larger plans, some other smaller changes are planned around many airports around the country.",
+      "airports": {
+        "casablanca": {
+          "name": "Mohammed V International Airport - Casablanca",
+          "projects": {
+            "0": "Build a new terminal of 60,000 m² and a total yearly capacity of 10 million people (end 2006)",
+            "1": "Upgrade terminal 1: general overhaul and upgrade T1 to increase traffic safety (May 2007)",
+            "2": "Build new cargo terminal of 30,000 m² and 150,000 tonnes/year (2007)",
+            "3": "Build 10 extra aircraft stands",
+            "4": "New parking facility and transport link",
+            "5": "Reconfigure aprons"
+          }
+        },
+        "agadir": {
+          "name": "Al Massira Airport - Agadir",
+          "projects": {
+            "0": "Reshape the trade zone",
+            "1": "Air-condition of the air terminal",
+            "2": "Strengthen the versatile side of the movement area"
+          }
+        },
+        "marrakech": {
+          "name": "Menara Airport - Marrakech",
+          "projects": {
+            "0": "Reshape and extend Terminal 1 (2006)",
+            "1": "New terminal, aircraft stands and transport links (2008)",
+            "2": "Work on cargo terminal, taxiway parallel to runway, maintenance infra"
+          }
+        },
+        "dakhla": {
+          "name": "Dakhla Airport",
+          "projects": {
+            "0": "Building new terminal to separate military and commercial activities (2007)",
+            "1": "Other works, including control tower and national fence"
+          }
+        },
+        "essaouira": {
+          "name": "Essaouira Mogador",
+          "projects": {
+            "0": "New passenger terminal (2007)",
+            "1": "Extend runway, build parking apron, new taxi-way and two support buildings"
+          }
+        },
+        "tanger": {
+          "name": "Ibn Battouta - Tanger",
+          "projects": {
+            "0": "Reshape and extend existing terminal (2007 and phase 2: 2015)",
+            "1": "Extend plane-areas: general, runway, plane park, vehicle parking"
+          }
+        },
+        "rabat": {
+          "name": "Rabat-Salé",
+          "projects": {
+            "0": "Restructure air terminal (2007)",
+            "1": "New roads, new ONDA centre, new pedestrian path"
+          }
+        }
+      }
+    },
+    "management": {
+      "title": "Management & Governance",
+      "director": "General Director",
+      "directorName": "Adel El Fakir",
+      "board": "Board of Directors",
+      "boardDescription": "12 members representing various ministries and sectors",
+      "departments": "Departments",
+      "departmentsDescription": "Operations, Finance, Technical, Security, Commercial",
+      "quality": "Quality Management System",
+      "qualityDescription": "ISO 9001, ISO 14001, OHSAS 18001"
+    }
+  },
+  "languages": {
+    "english": "English",
+    "arabic": "العربية",
+    "french": "Français",
+    "spanish": "Español"
+  },
+  "common": {
+    "loading": "Loading...",
+    "backToList": "Back to Airports",
+    "backToHome": "Back to Homepage"
+  },
+  "error": {
+    "pageNotFound": "Page Not Found",
+    "pageNotFoundMessage": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable."
+  },
+  "airportServicesPage": {
+    "title": "Our Services",
+    "subtitle": "Discover the quality services offered in Moroccan airports",
+    "airportServices": "Airport Services",
+    "heroAlt": "Airport services",
+    "checkIn": {
+      "title": "Check-in",
+      "description": "Fast and efficient check-in at counters or via our self-service kiosks."
+    },
+    "baggage": {
+      "title": "Baggage Services",
+      "description": "Baggage check-in, tracking, and retrieval with modern systems."
+    },
+    "customs": {
+      "title": "Customs & Immigration",
+      "description": "Simplified customs and immigration procedures for a hassle-free journey."
+    },
+    "shopping": {
+      "title": "Duty-Free Shopping",
+      "description": "A wide range of local and international products at great prices."
+    },
+    "dining": {
+      "title": "Dining",
+      "description": "Restaurants and cafés offering Moroccan and international cuisine."
+    },
+    "wifi": {
+      "title": "Free Wi-Fi",
+      "description": "Free Wi-Fi is available in all our terminals."
+    },
+    "currencyExchange": {
+      "title": "Currency Exchange",
+      "description": "Competitive currency exchange services available at all airports."
+    },
+    "parking": {
+      "title": "Parking",
+      "description": "Secure short- and long-term parking options near terminals."
+    },
+    "vip": {
+      "title": "VIP Services",
+      "subtitle": "An exceptional travel experience",
+      "description": "Enjoy an exclusive experience with our VIP services designed to offer unmatched comfort and convenience.",
+      "benefit1": "Luxurious private lounges with refreshments",
+      "benefit2": "Personalized assistance for check-in and baggage",
+      "benefit3": "Priority lanes for security and immigration",
+      "benefit4": "Dedicated transport between the terminal and the aircraft"
+    },
+    "contactUs": {
+      "title": "Need more information?",
+      "description": "If you have any questions about our services or special requests, feel free to contact our customer service team.",
+      "button": "Contact us"
+    }
+  }
+}

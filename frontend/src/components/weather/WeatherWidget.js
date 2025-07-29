@@ -8,7 +8,7 @@ const WeatherWidget = ({ city }) => {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [updateTime, setUpdateTime] = useState(new Date());
+  const [, setUpdateTime] = useState(new Date()); // Only keep setter if needed for future use
 
   const API_KEY = 'ae6f12542605cd805692f7cb3bc96ecb';
 
@@ -20,7 +20,7 @@ const WeatherWidget = ({ city }) => {
 
     let cancelled = false;
     setLoading(true);
-    setError(null); // <-- Fix: reset error before fetch
+    setError(null);
 
     // Retry logic
     let retryCount = 0;

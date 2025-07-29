@@ -1,0 +1,451 @@
+{
+"chatbot": {
+  "title": "Assistant de Voyage",
+  "welcome": "Bonjour ! Je suis votre assistant de voyage. Comment puis-je vous aider aujourd’hui ?",
+  "placeholder": "Posez une question sur les voyages...",
+  "default_response": "Je n'ai pas compris. Pouvez-vous reformuler ?",
+  "error": "Désolé, j'ai des problèmes de connexion. Veuillez réessayer plus tard.",
+  "try_again": "Vous pouvez réessayer ou vérifier votre connexion.",
+  "connection_issue": "Problème de connexion détecté",
+  "open": "Ouvrir le chat",
+  "close": "Fermer le chat",
+  "send": "Envoyer le message",
+  "input_label": "Tapez votre message"
+},
+
+  "faq.title": "Questions fréquemment posées",
+  "faq.q1": "Comment puis-je trouver les horaires des vols ?",
+  "faq.a1": "Vous pouvez consulter la section 'Vols' pour les horaires et informations détaillées.",
+  "faq.q2": "Comment contacter l'aéroport ?",
+  "faq.a2": "Rendez-vous dans la section 'Contact' pour les coordonnées et le formulaire de contact.",
+  "faq.q3": "Quels services sont disponibles dans les aéroports ?",
+  "faq.a3": "Les services comme l'enregistrement, le shopping, la restauration et plus sont listés dans la section 'Services'.",
+  "faq.q4": "Y a-t-il du Wi-Fi disponible ?",
+  "faq.a4": "Oui, le Wi-Fi gratuit est disponible dans tous les principaux aéroports.",
+  "faq.q5": "Où se trouve le service des objets trouvés ?",
+  "faq.a5": "Rendez-vous au bureau des objets trouvés ou contactez le support de l'aéroport.",
+  "faq.q6": "Puis-je échanger de la monnaie à l'aéroport ?",
+  "faq.a6": "Des services de change sont disponibles dans la plupart des aéroports.",
+  "faq.q7": "Combien de temps avant le vol dois-je arriver ?",
+  "faq.a7": "Il est recommandé d'arriver au moins 2 heures avant les vols internationaux et 1 heure avant les vols nationaux.",
+  "faq.q8": "Y a-t-il des installations pour les personnes à mobilité réduite ?",
+  "faq.a8": "Oui, nous proposons une assistance spéciale et des installations pour les personnes à mobilité réduite.",
+  "faq.q9": "Comment accéder au parking de l'aéroport ?",
+  "faq.a9": "Les informations sur le stationnement sont disponibles dans la section 'Parking'. Suivez la signalisation à l'aéroport.",
+  "faq.q10": "Que faire si je perds mes bagages ?",
+  "faq.a10": "Contactez le service bagages de la compagnie aérienne ou rendez-vous au bureau des objets trouvés de l'aéroport.",
+  "faq.q11": "Puis-je voyager avec des animaux ?",
+  "faq.a11": "La plupart des compagnies aériennes acceptent les animaux, mais vérifiez la politique de votre compagnie avant de voyager.",
+  "faq.q12": "Où trouver des informations sur les salons d’aéroport ?",
+  "faq.a12": "Les informations sur les salons sont disponibles dans la section 'Services' ou au comptoir d'information de l'aéroport.",
+  "faq.q13": "Les aéroports disposent-ils de bornes de recharge ?",
+  "faq.a13": "Oui, la plupart des aéroports proposent des bornes de recharge pour appareils mobiles dans les zones d’attente.",
+  "faq.q14": "Comment signaler une activité suspecte à l'aéroport ?",
+  "faq.a14": "Signalez toute activité suspecte au personnel ou à la sécurité de l'aéroport immédiatement.",
+  "faq.q15": "Y a-t-il des hôtels près de l'aéroport ?",
+  "faq.a15": "Oui, de nombreux aéroports disposent d’hôtels à proximité. Consultez la section 'Services' pour des recommandations.",
+  "flights": {
+    "searchTitle": "Rechercher un vol",
+    "searchDescription": "Recherchez des vols entre les aéroports du Maroc",
+    "selectDeparture": "Sélectionner l'aéroport de départ",
+    "selectArrival": "Sélectionner l'aéroport d'arrivée",
+    "from": "De",
+    "to": "À",
+    "date": "Date",
+    "searchButton": "Rechercher des vols",
+    "search": "Rechercher des vols",
+    "loadingAirports": "Chargement des aéroports...",
+    "loadingFlights": "Recherche des vols...",
+    "noFlights": "Aucun vol trouvé pour cette heure.",
+    "errorLoadingAirports": "Impossible de charger les aéroports.",
+    "errorSelectDeparture": "Veuillez sélectionner l'aéroport de départ",
+    "errorSelectArrival": "Veuillez sélectionner l'aéroport d'arrivée",
+    "errorSameAirport": "Les aéroports de départ et d'arrivée doivent être différents",
+    "availableFlights": "Vols disponibles",
+    "dateLabel": "Date : {{date}}",
+    "timeLabel": "Heure : {{time}}",
+    "status": "Statut",
+    "flightNumber": "N° vol",
+    "via": "Via",
+    "destination": "Destination",
+    "origin": "Origine",
+    "airline": "Compagnie",
+    "depart": "Départ",
+    "arrive": "Arrivée",
+    "flightLabel": "Vol {{number}}",
+    "direct": "Direct",
+    "statusLabel": "Statut : {{status}}",
+    "terminalLabel": "Terminal : {{terminal}}",
+    "gateLabel": "Porte : {{gate}}",
+    "details": "Détails du vol",
+    "select": "Sélectionner le vol"
+  },
+  "flight": {
+    "title": "Recherche de vols",
+    "airportsLoaded": "{{count}} aéroports chargés",
+    "invalidAirportData": "L'API n'a pas retourné de données valides pour les aéroports",
+    "airportLoadError": "Erreur lors du chargement des aéroports :",
+    "searchError": "Erreur lors de la recherche de vols :",
+    "searchErrorMessage": "Impossible de trouver des vols. Veuillez réessayer plus tard."
+  },
+  "airlines": {
+    "AT": "Royal Air Maroc",
+    "3O": "Air Arabia Maroc",
+    "TB": "Turkish Airlines",
+    "AF": "Air France",
+    "EK": "Emirates",
+    "default": "Compagnie {{prefix}}"
+  },
+"contact": {
+  "title": "Contactez-nous dès aujourd'hui !",
+  "formTitle": "Contact",
+  "firstName": "Prénom",
+  "lastName": "Nom",
+  "email": "E-mail",
+  "message": "Message",
+  "submit": "Envoyer",
+  "placeholders": {
+    "firstName": "Entrez votre prénom",
+    "lastName": "Entrez votre nom",
+    "email": "Entrez votre e-mail",
+    "message": "Tapez votre message..."
+  },
+  "privacy": "ONDA s'engage à protéger et à respecter votre vie privée. Vos informations ne seront utilisées que pour répondre à votre demande.",
+  "errors": {
+    "required": "Tous les champs sont obligatoires.",
+    "send": "Une erreur s'est produite lors de l'envoi de votre message."
+  },
+  "success": "Votre message a été envoyé !",
+  "infoTitle": "Support Contact",
+  "emailLabel": "E-mail :",
+  "phoneLabel": "Numéro de contact :",
+  "officeHours": "Nos bureaux sont ouverts de 9h à 18h.",
+  "headquartersTitle": "Siège"
+},
+  "app": {
+    "name": "ONDA",
+    "fullName": "Office National Des Aéroports"
+  },
+  "nav": {
+    "home": "Accueil",
+    "airports": "Aéroports",
+    "flights": "Vols",
+    "services": "Services",
+    "about": "À Propos",
+    "contact": "Contact"
+  },
+  "airports": {
+    "major": "Principaux Aéroports du Maroc",
+    "Casablanca": "Casablanca",
+    "viewDetails": "Voir les Détails",
+    "seeMore": "Voir Plus d'Aéroports",
+    "about": "À Propos",
+    "facilitiesTitle": "Installations et Services",
+    "code": "Code Aéroport",
+    "location": "Emplacement",
+    "type": "Type",
+    "noDetailedDescription": "Des informations détaillées sur cet aéroport seront disponibles prochainement.",
+    "quickInfo": "Informations Rapides",
+    "links": "Liens Utiles",
+    "flightSchedules": "Horaires des Vols",
+    "transportation": "Transport",
+    "services": "Services Aéroportuaires",
+    "loadError": "Impossible de charger les détails de l'aéroport. Veuillez réessayer plus tard.",
+    "pageTitle": "Aéroports du Maroc",
+    "flightInfo": "Informations sur les Vols",
+    "facilities": {
+      "terminals": "Terminaux Passagers",
+      "shops": "Boutiques Duty-Free",
+      "restaurants": "Restaurants et Cafés",
+      "wifi": "Wi-Fi Gratuit",
+      "parking": "Parking",
+      "currency": "Bureau de Change"
+    },
+    "names": {
+      "mohammed_v": "Aéroport International Mohammed V",
+      "menara": "Aéroport de Marrakech-Ménara",
+      "al_massira": "Aéroport d'Al Massira",
+      "cherif_al_idrissi": "Aéroport Cherif Al Idrissi",
+      "beni_mellal": "Aéroport de Béni Mellal",
+      "moulay_ali_cherif": "Aéroport Moulay Ali Chérif",
+      "essaouira_mogador": "Aéroport d'Essaouira-Mogador",
+      "fes_sais": "Aéroport International de Fès-Saïs",
+      "nador_international": "Aéroport International de Nador",
+      "ouarzazate": "Aéroport d'Ouarzazate",
+      "oujda_angads": "Aéroport International d'Oujda-Angads",
+      "rabat_sale": "Aéroport de Rabat-Salé",
+      "tangier_ibn_battouta": "Aéroport Ibn Battouta de Tanger",
+      "tetouan_sania_ramel": "Aéroport Tétouan Sania Ramel",
+      "dakhla": "Aéroport de Dakhla",
+      "hassan_i": "Aéroport Hassan Ier",
+      "tan_tan_plage_blanche": "Aéroport de Tan Tan Plage Blanche",
+      "guelmim": "Aéroport de Guelmim",
+      "zagora": "Aéroport de Zagora",
+      "bouarfa": "Aéroport de Bouarfa"
+    },
+    "descriptions": {
+      "CMN": "L'Aéroport International Mohammed V est la principale porte d'entrée internationale du Maroc située près de Casablanca, accueillant des millions de passagers chaque année.",
+      "RAK": "L'Aéroport de Marrakech-Ménara est un important aéroport international desservant la destination touristique populaire de Marrakech.",
+      "AGA": "L'Aéroport d'Al Massira dessert Agadir, une importante station balnéaire sur la côte atlantique sud du Maroc.",
+      "AHU": "L'Aéroport Cherif Al Idrissi est un aéroport régional desservant Al Hoceima et ses environs dans le nord du Maroc.",
+      "BEM": "L'Aéroport de Béni Mellal est un petit aéroport régional desservant la région de Béni Mellal-Khénifra.",
+      "ERH": "L'Aéroport Moulay Ali Chérif dessert la ville d'Errachidia et ses environs dans l'est du Maroc.",
+      "ESU": "L'Aéroport d'Essaouira-Mogador relie la ville côtière d'Essaouira à d'autres destinations marocaines.",
+      "FEZ": "L'Aéroport International de Fès-Saïs dessert la capitale culturelle et spirituelle du Maroc, Fès.",
+      "NDR": "L'Aéroport International de Nador dessert la région nord-est du Rif au Maroc.",
+      "OZZ": "L'Aéroport d'Ouarzazate sert de porte d'entrée vers le désert du Sahara et les régions sud-est du Maroc.",
+      "OUD": "L'Aéroport International d'Oujda-Angads dessert la ville d'Oujda dans l'est du Maroc et ses environs.",
+      "RBA": "L'Aéroport de Rabat-Salé dessert la capitale du Maroc, Rabat, et la ville jumelle de Salé.",
+      "TNG": "L'Aéroport Ibn Battouta de Tanger relie le nord du Maroc à des destinations à travers l'Europe et le Moyen-Orient.",
+      "TTU": "L'Aéroport Tétouan Sania Ramel dessert la ville de Tétouan dans le nord du Maroc.",
+      "VIL": "L'Aéroport de Dakhla dessert la ville côtière de Dakhla dans le sud du Maroc.",
+      "EUN": "L'Aéroport Hassan Ier dessert Laâyoune, la plus grande ville du territoire du Sahara occidental.",
+      "TTA": "L'Aéroport de Tan Tan Plage Blanche dessert la ville côtière sud-ouest de Tan Tan.",
+      "GLN": "L'Aéroport de Guelmim dessert la ville du sud marocain connue comme la porte du désert.",
+      "OZG": "L'Aéroport de Zagora donne accès aux régions désertiques du sud-est du Maroc.",
+      "UAR": "L'Aéroport de Bouarfa est un petit aéroport régional desservant la ville de Bouarfa dans l'est du Maroc."
+    },
+    "types": {
+      "international": "Aéroport International",
+      "regional": "Aéroport Régional"
+    }
+  },
+  "cities": {
+    "casablanca": "Casablanca",
+    "marrakech": "Marrakech",
+    "rabat": "Rabat",
+    "tangier": "Tanger",
+    "agadir": "Agadir",
+    "fez": "Fès",
+    "fes": "Fès",
+    "meknes": "Meknès",
+    "oujda": "Oujda",
+    "essaouira": "Essaouira",
+    "tetouan": "Tétouan",
+    "al_hoceima": "Al Hoceima",
+    "beni_mellal": "Béni Mellal",
+    "errachidia": "Errachidia",
+    "nador": "Nador",
+    "ouarzazate": "Ouarzazate",
+    "dakhla": "Dakhla",
+    "laayoune": "Laâyoune",
+    "tan_tan": "Tan Tan",
+    "guelmim": "Guelmim",
+    "zagora": "Zagora",
+    "bouarfa": "Bouarfa"
+  },
+  "weather": {
+    "titleWithCity": "Météo à {{city}}",
+    "title": "Météo",
+    "loading": "Chargement de la météo...",
+    "updated": "Mis à jour",
+    "tryRefresh": "Essayez de rafraîchir la page",
+    "feelsLike": "Ressenti",
+    "wind": "Vent",
+    "humidity": "Humidité"
+  },
+  "home": {
+    "welcome": "Bienvenue aux Aéroports du Maroc",
+    "tagline": "Découvrez les portes d'entrée vers les trésors du royaume",
+    "services": "Nos Services Aéroportuaires",
+    "checkIn": "Enregistrement Efficace",
+    "checkInDesc": "Services d'enregistrement rapides et modernes dans tous nos aéroports.",
+    "shopping": "Shopping Hors Taxes",
+    "shoppingDesc": "Découvrez des produits marocains authentiques et des marques internationales.",
+    "dining": "Options de Restauration",
+    "diningDesc": "Découvrez la cuisine marocaine et internationale dans nos terminaux.",
+    "network": "Notre Réseau d'Aéroports",
+    "networkDesc": "L'ONDA gère 25 aéroports à travers le Royaume du Maroc, servant des millions de passagers chaque année.",
+    "networkText": "Du hub animé de Casablanca aux aéroports pittoresques de Tanger et Dakhla, nous relions le Maroc au monde."
+  },
+  "footer": {
+    "quickLinks": "Liens Rapides",
+    "contact": "Contact",
+    "address": "Nouaceur, Casablanca, Maroc",
+    "language": "Choisir la Langue",
+    "rights": "Tous Droits Réservés",
+    "terms": "Conditions d'Utilisation",
+    "privacy": "Politique de Confidentialité",
+    "sitemap": "Plan du Site"
+  },
+  "languages": {
+    "english": "English",
+    "arabic": "العربية",
+    "french": "Français",
+    "spanish": "Español"
+  },
+  "about": {
+    "title": "À propos de l'ONDA",
+    "description": "L'Office National Des Aéroports ou communément appelé ONDA (arabe: المكتب الوطني للمطارات, français: Office national des aéroports) est l'opérateur et administrateur aéroportuaire marocain. Le siège de la société se trouve à l'aéroport international Mohammed V de Casablanca.",
+    "vision": {
+      "title": "Notre vision",
+      "content": "Positionner le Maroc comme un hub aéronautique leader en Afrique en fournissant des installations et des services aéroportuaires de classe mondiale."
+    },
+    "keyFigures": {
+      "title": "Chiffres clés",
+      "airports": "Aéroports gérés",
+      "passengers": "Passagers (2023)",
+      "employees": "Employés",
+      "destinations": "Destinations internationales",
+      "airlines": "Compagnies aériennes"
+    },
+    "mission": {
+      "title": "Mission & Valeurs",
+      "safety": "Assurer la sécurité et la sûreté aéroportuaires",
+      "services": "Fournir des services de qualité aux passagers",
+      "infrastructure": "Développer des infrastructures aéroportuaires durables",
+      "tourism": "Promouvoir le Maroc comme destination touristique",
+      "economy": "Soutenir le développement économique national",
+      "innovation": "Favoriser l'innovation technologique"
+    },
+    "history": {
+      "title": "Histoire",
+      "content": "L'ONDA a été créé en juillet 1990 en vertu de la loi parlementaire 14-89. Auparavant, les aéroports du Maroc étaient administrés par le ministère marocain des transports. Un an plus tard, l'ONDA a inauguré l'aéroport Al Massira à Agadir. Le 15 septembre 2003, Abdelhanine Benallou a été nommé nouveau directeur général de l'ONDA.",
+      "milestones": {
+        "title": "Étapes importantes",
+        "1990": "Création de l'ONDA en vertu de la loi parlementaire 14-89",
+        "1991": "Inauguration de l'aéroport Al Massira à Agadir",
+        "2003": "Nomination d'Abdelhanine Benallou comme nouveau directeur général de l'ONDA",
+        "2004": "Création d'un plan directeur pour moderniser de nombreuses installations d'ici 2010"
+      }
+    },
+    "accidents": {
+      "title": "Accidents graves liés aux aéroports",
+      "content": "Bien que le Maroc ait sa part d'accidents d'avion, le nombre d'incidents graves avec des décès directement liés à un aéroport (approche, décollage ou accidents au sol) est très faible. Le nombre total d'accidents avec décès au Maroc est de 19, entraînant 792 décès. Les mêmes chiffres pour les événements directement liés aux aéroports sont respectivement de 5 et 171. La majorité des incidents liés aux aéroports se sont produits il y a longtemps, le dernier incident s'étant produit en 1986."
+    },
+    "development": {
+      "title": "Nouveaux développements et plans",
+      "intro": "Vers 2004, l'ONDA a créé un plan directeur pour moderniser de nombreuses installations d'ici 2010. Les principaux projets comprennent :",
+      "note": "En dehors de ces plans plus importants, d'autres changements mineurs sont prévus dans de nombreux aéroports du pays.",
+      "airports": {
+        "casablanca": {
+          "name": "Aéroport International Mohammed V - Casablanca",
+          "projects": {
+            "0": "Construction d'un nouveau terminal de 60 000 m² et d'une capacité annuelle totale de 10 millions de personnes (fin 2006)",
+            "1": "Modernisation du terminal 1 : révision générale et mise à niveau de T1 pour augmenter la sécurité du trafic (mai 2007)",
+            "2": "Construction d'un nouveau terminal cargo de 30 000 m² et 150 000 tonnes/an (2007)",
+            "3": "Construction de 10 postes de stationnement d'avions supplémentaires",
+            "4": "Nouvelles installations de stationnement et liaison de transport",
+            "5": "Reconfiguration des aires de trafic"
+          }
+        },
+        "agadir": {
+          "name": "Aéroport Al Massira - Agadir",
+          "projects": {
+            "0": "Remodelage de la zone commerciale",
+            "1": "Climatisation du terminal aérien",
+            "2": "Renforcement du côté polyvalent de l'aire de mouvement"
+          }
+        },
+        "marrakech": {
+          "name": "Aéroport Ménara - Marrakech",
+          "projects": {
+            "0": "Remodelage et extension du Terminal 1 (2006)",
+            "1": "Nouveau terminal, postes de stationnement d'avions et liaisons de transport (2008)",
+            "2": "Travaux sur le terminal cargo, voie de circulation parallèle à la piste, infrastructure de maintenance"
+          }
+        },
+        "dakhla": {
+          "name": "Aéroport de Dakhla",
+          "projects": {
+            "0": "Construction d'un nouveau terminal pour séparer les activités militaires et commerciales (2007)",
+            "1": "Autres travaux, y compris la tour de contrôle et la clôture nationale"
+          }
+        },
+        "essaouira": {
+          "name": "Essaouira Mogador",
+          "projects": {
+            "0": "Nouveau terminal passagers (2007)",
+            "1": "Extension de la piste, construction d'une aire de stationnement, nouvelle voie de circulation et deux bâtiments de soutien"
+          }
+        },
+        "tanger": {
+          "name": "Ibn Battouta - Tanger",
+          "projects": {
+            "0": "Remodelage et extension du terminal existant (2007 et phase 2 : 2015)",
+            "1": "Extension des zones avions : général, piste, parc avions, parking véhicules"
+          }
+        },
+        "rabat": {
+          "name": "Rabat-Salé",
+          "projects": {
+            "0": "Restructuration du terminal aérien (2007)",
+            "1": "Nouvelles routes, nouveau centre ONDA, nouveau chemin piétonnier"
+          }
+        }
+      }
+    },
+    "management": {
+      "title": "Direction & Gouvernance",
+      "director": "Directeur Général",
+      "directorName": "Adel El Fakir",
+      "board": "Conseil d'Administration",
+      "boardDescription": "12 membres représentant divers ministères et secteurs",
+      "departments": "Départements",
+      "departmentsDescription": "Opérations, Finances, Technique, Sécurité, Commercial",
+      "quality": "Système de Management de la Qualité",
+      "qualityDescription": "ISO 9001, ISO 14001, OHSAS 18001"
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "backToList": "Retour aux Aéroports",
+    "backToHome": "Retour à l'Accueil"
+  },
+  "error": {
+    "pageNotFound": "Page Non Trouvée",
+    "pageNotFoundMessage": "La page que vous recherchez a peut-être été supprimée, son nom a été modifié ou est temporairement indisponible."
+  },
+  "airportServicesPage": {
+    "title": "Nos Services",
+    "subtitle": "Découvrez les services de qualité offerts dans les aéroports marocains",
+    "airportServices": "Services Aéroportuaires",
+    "heroAlt": "Services aéroportuaires",
+    "checkIn": {
+      "title": "Enregistrement",
+      "description": "Enregistrement rapide et efficace aux comptoirs ou via nos bornes en libre-service."
+    },
+    "baggage": {
+      "title": "Services Bagages",
+      "description": "Enregistrement, suivi et récupération des bagages avec des systèmes modernes."
+    },
+    "customs": {
+      "title": "Douanes et Immigration",
+      "description": "Procédures douanières et d'immigration simplifiées pour un voyage sans souci."
+    },
+    "shopping": {
+      "title": "Shopping Hors Taxes",
+      "description": "Large gamme de produits locaux et internationaux à des prix avantageux."
+    },
+    "dining": {
+      "title": "Restauration",
+      "description": "Restaurants et cafés proposant des spécialités marocaines et internationales."
+    },
+    "wifi": {
+      "title": "Wi-Fi Gratuit",
+      "description": "Connexion Wi-Fi gratuite disponible dans tous nos terminaux."
+    },
+    "currencyExchange": {
+      "title": "Bureau de Change",
+      "description": "Services de change de devises aux taux compétitifs dans tous nos aéroports."
+    },
+    "parking": {
+      "title": "Parking",
+      "description": "Options de stationnement sécurisées à court et long terme près des terminaux."
+    },
+    "vip": {
+      "title": "Services VIP",
+      "subtitle": "Une expérience de voyage exceptionnelle",
+      "description": "Profitez d'une expérience exclusive avec nos services VIP conçus pour offrir un confort et une commodité inégalés à nos voyageurs les plus exigeants.",
+      "benefit1": "Salons privés luxueux avec rafraîchissements",
+      "benefit2": "Assistance personnalisée pour l'enregistrement et les bagages",
+      "benefit3": "Voies prioritaires pour le contrôle de sécurité et l'immigration",
+      "benefit4": "Transport dédié entre le terminal et l'avion"
+    },
+    "contactUs": {
+      "title": "Besoin d'informations supplémentaires ?",
+      "description": "Pour toute question concernant nos services ou pour des demandes spéciales, n'hésitez pas à contacter notre équipe de service client.",
+      "button": "Contactez-nous"
+    }
+  }
+}
