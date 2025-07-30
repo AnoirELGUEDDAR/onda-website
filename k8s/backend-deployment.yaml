@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: anoiraeg2003/spring-backend:latest
+        ports:
+        - containerPort: 8080
+        env:
+        # Add your backend environment variables here
+        # - name: SPRING_DATASOURCE_URL
+        #   value: "jdbc:mysql://..."
