@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import FlightSearchForm from './FlightSearchForm';
 import FlightResults from './FlightResults';
 import './flights.css';
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
+const API_URL ='http://spring-backend:8080/api';
 const FlightPage = () => {
   const { t, i18n } = useTranslation();
   const [flights, setFlights] = useState([]);
