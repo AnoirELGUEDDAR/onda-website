@@ -1,6 +1,6 @@
 # Build the React app
 FROM node:20 AS build
-ARG REACT_APP_API_URL=http://backend:8080/api
+ARG REACT_APP_API_URL=http://spring-backend:8080/api
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
 WORKDIR /app
 
