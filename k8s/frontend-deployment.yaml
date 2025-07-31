@@ -30,7 +30,7 @@ spec:
         - name: frontend
           image: anoiraeg2003/react-frontend:latest
           ports:
-            - containerPort: 80
+            - containerPort: 3000
           env:
             - name: REACT_APP_API_URL
               value: http://backend:8080/api
