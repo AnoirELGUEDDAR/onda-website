@@ -1,61 +1,79 @@
-.hero-overlay {
+.hero-overlay,.hero-overlay-services {
   background: linear-gradient(to right, rgba(19, 134, 250, 0.8), rgba(13, 46, 78, 0.6));
+  animation: fadeIn 1s ease-in-out;
+}
+:root {
+  --onda-blue: #002b57;
+  --onda-orange: #f57c00;
+}
+
+.featured-airports {
+  background-color: white;
+  padding: 3rem 0;
+}
+
+.featured-airports h2 {
+  color: var(--onda-blue);
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 2rem;
 }
 
 .airport-card {
-  transition: transform 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  background: #f9f9f9;
 }
 
 .airport-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-  border-color: var(--onda-orange);
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.airport-card .card-img-top {
+  height: 220px;
+  object-fit: cover;
 }
 
 .airport-card .card-title {
-  color: var(--onda-blue);
-}
-
-.services-showcase {
-  background-size: cover;
-  background-position: center;
-}
-
-.services-showcase .card-title {
-  color: var(--onda-blue);
+  font-size: 1.2rem;
   font-weight: 600;
-}
-
-.services-showcase .card {
-  border-bottom: 3px solid transparent;
-  transition: all 0.3s ease;
-}
-
-.services-showcase .card:hover {
-  border-bottom-color: var(--onda-orange);
-}
-
-.map-section {
-}
-
-.map-section h2 {
   color: var(--onda-blue);
-  position: relative;
-  padding-bottom: 15px;
-  margin-bottom: 20px;
 }
 
-.map-section h2:after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 50px;
-  height: 3px;
-  background: var(--onda-orange);
+.featured-airports .row {
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+@media (min-width: 992px) {
+  .featured-airports .col-md-3 {
+    flex: 0 0 22%;
+    max-width: 22%;
+  }
+}
+
+@media (max-width: 991px) {
+  .featured-airports .col-md-3 {
+    flex: 0 0 45%;
+    max-width: 45%;
+  }
+}
+
+@media (max-width: 600px) {
+  .featured-airports .col-md-3 {
+    flex: 0 0 90%;
+    max-width: 90%;
+  }
+}
+
+
+/* Section spacing */
+.home section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 #WEATHERSection{
   background-image: linear-gradient(to top, rgb(255, 255, 255), rgb(255, 255, 255));
@@ -63,55 +81,221 @@
 .weather-content {
   background-image: url("light-texture-bg.jpg");
 }
-@media (max-width: 600px) {
-  .hero-overlay {
-    padding: 40px 10px 30px 10px;
-    min-height: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+/* Base button style */
+.btn-primary {
+  background-color: var(--onda-blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.4rem;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-  .hero-overlay .hero-title,
-  .hero-overlay h1,
-  .hero-overlay .main-title {
-    font-size: 1.5rem !important;
-    text-align: center;
-    margin-bottom: 16px;
-    word-break: break-word;
-  }
+.btn-primary:hover {
+  background-color: #0051a8; /* slightly darker */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+}
 
-  .hero-overlay .hero-subtitle,
-  .hero-overlay p {
-    font-size: 1rem;
-    text-align: center;
-    margin-bottom: 14px;
-    word-break: break-word;
-  }
+.btn-outline-primary {
+  color: var(--onda-blue);
+  border: 2px solid var(--onda-blue);
+  background-color: transparent;
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
 
-  .hero-overlay .btn,
-  .hero-overlay button {
-    width: 90%;
-    max-width: 320px;
-    font-size: 1.1rem;
-    padding: 12px 0;
-    margin: 0 auto;
-    display: block;
-    position: relative;
-    top: 0;
-    left: 0;
-  }
+.btn-outline-primary:hover {
+  background-color: var(--onda-blue);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
+}
 
-  .hero-section,
-  .hero-overlay {
-    position: relative !important;
-    min-height: 300px !important;
-  }
+/* Adjust spacing when stacked */
+.btn {
+  margin-top: 0.5rem;
+}
 
-  .hero-overlay .btn,
-  .hero-overlay button {
-    position: static !important;
-    margin-top: 10px;
+/* Specific tweaks for hero buttons */
+.hero-overlay .btn-primary {
+  font-size: 1.1rem;
+  padding: 0.75rem 2rem;
+  border-radius: 10px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Weather Section */
+.weather-section {
+  background: #f8f9fa;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--onda-blue);
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  width: 60px;
+  height: 3px;
+  background-color: var(--onda-blue);
+  display: block;
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+}
+
+/* Weather Cards Grid */
+.weather-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* Weather Card */
+.weather-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeUp 0.8s ease forwards;
+  opacity: 0;
+}
+
+.weather-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+/* Fade up animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Animation and hover effects */
+.hover-effect {
+  transition: all 0.3s ease;
+  transform: translateY(0);
+}
+
+.hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+.img-container {
+  transition: all 0.5s ease;
+}
+
+.hover-effect:hover .img-container img {
+  transform: scale(1.05);
+}
+
+.object-fit-cover {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+/* Spacing adjustments */
+.services-showcase {
+  padding: 4rem 0;
+}
+
+.card {
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+/* Animation fadeUp */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade-up class for animation */
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards;
+}
+
+/* Service card style */
+.service-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  margin: 0 10px 30px; /* space between cards */
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.service-card .card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.service-card .card-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--onda-blue);
+}
+
+.service-card .card-text {
+  font-size: 0.95rem;
+  color: #555;
+}
+.service-card .card-body {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }

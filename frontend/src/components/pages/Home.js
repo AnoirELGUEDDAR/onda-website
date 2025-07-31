@@ -40,17 +40,16 @@ const Home = () => {
 
         {/* Featured Airports Section */}
         <section className="featured-airports py-5" style={{backgroundColor:'white'}}>
-          <div className="container">
-            <h2 className="text-center mb-5">{t('airports.major')}</h2>
+          <div className="container-fluid px-4">            <h2 className="text-center mb-5">{t('airports.major')}</h2>
             <div className="row">
               {featuredAirports.map(airport => (
-                  <div className="col-md-3 mb-4" key={airport.city}>
+                  <div className="col-6 col-md-3 mb-4" key={airport.city}>
                     <div className="card h-100 airport-card">
                       <img
                           src={`/images/airports/${airport.city}-airport.jpg`}
                           className="card-img-top"
                           alt={t(`cities.${airport.city}`)}
-                          style={{ height: '180px', objectFit: 'cover' }}
+                          style={{ width:'100%',height: '100%', objectFit: 'cover' }}
                       />
                       <div className="card-body">
                         {/* Use translation for city name */}
@@ -67,7 +66,7 @@ const Home = () => {
 
             {/* See More Button */}
             <div className="text-center mt-4">
-              <Link to="/airports" className="btn btn-primary">
+              <Link to="/airports" className="btn btn-primary" id="see_more_btn">
                 {t('airports.seeMore', 'See More Airports')}
               </Link>
             </div>
@@ -75,55 +74,58 @@ const Home = () => {
         </section>
 
         {/* Weather Section */}
-        <section className="weather-section py-5 bg-light" id="WEATHERSection">
-          <div className="container" id="WEATHERcontainer">
-            <h2 className="text-center mb-4">{t('weather.title')}</h2>
-            <div className="row">
-              <div className="col-md-4 mb-4">
-                <WeatherWidget city={t('cities.casablanca')} />
-              </div>
-              <div className="col-md-4 mb-4">
-                <WeatherWidget city={t('cities.marrakech')} />
-              </div>
-              <div className="col-md-4 mb-4">
-                <WeatherWidget city={t('cities.tangier')} />
-              </div>
+        <section className="weather-section py-5" id="WEATHERSection">
+          <div className="container-fluid px-4" id="WEATHERcontainer">
+            <h2 className="text-center mb-5">{t('weather.title')}</h2>
+            <div className="row g-4">
+              {[t('cities.casablanca'), t('cities.marrakech'), t('cities.rabat'), t('cities.tangier')].map((city, i) => (
+                  <div
+                      key={city}
+                      className="col-12 col-sm-6 col-lg-3 fade-up"
+                      style={{ animationDelay: `${i * 0.2}s` }}
+                  >
+                    <WeatherWidget city={city} />
+                  </div>
+              ))}
             </div>
           </div>
         </section>
 
+
+
         {/* Services Showcase */}
-        <section className="services-showcase py-5" style={{ backgroundColor:'white' }}>
-          <div className="container">
+        <section className="services-showcase py-5" style={{ backgroundColor: 'white' }}>
+          <div className="container-fluid px-5 mt-5">
             <h2 className="text-center mb-5">{t('home.services')}</h2>
             <div className="row">
-              <div className="col-md-4 mb-4">
-                <div className="card h-100">
-                  <img src="/images/facilities/check-in-counters.jpg" className="card-img-top" alt={t('home.checkIn')} />
-                  <div className="card-body">
-                    <h5 className="card-title">{t('home.checkIn')}</h5>
-                    <p className="card-text">{t('home.checkInDesc')}</p>
+              {[{
+                img: '/images/facilities/check-in-counters.jpg',
+                title: t('home.checkIn'),
+                desc: t('home.checkInDesc')
+              }, {
+                img: '/images/facilities/duty-free-shopping.jpg',
+                title: t('home.shopping'),
+                desc: t('home.shoppingDesc')
+              }, {
+                img: '/images/facilities/airport-restaurant.jpg',
+                title: t('home.dining'),
+                desc: t('home.diningDesc')
+              },
+              ].map((service, index) => (
+                  <div
+                      key={index}
+                      className="col-lg-4 col-md-6 d-flex fade-up"
+                      style={{ animationDelay: `${index * 0.2}s` }}
+                  >
+                    <div className="card service-card w-100 ">
+                      <img src={service.img} className="card-img-top" alt={service.title} style={{height: '300px', objectFit: 'cover'}}/>
+                      <div className="card-body">
+                        <h5 className="card-title">{service.title}</h5>
+                        <p className="card-text">{service.desc}</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="col-md-4 mb-4">
-                <div className="card h-100">
-                  <img src="/images/facilities/duty-free-shopping.jpg" className="card-img-top" alt={t('home.shopping')} />
-                  <div className="card-body">
-                    <h5 className="card-title">{t('home.shopping')}</h5>
-                    <p className="card-text">{t('home.shoppingDesc')}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-4 mb-4">
-                <div className="card h-100">
-                  <img src="/images/facilities/airport-restaurant.jpg" className="card-img-top" alt={t('home.dining')} />
-                  <div className="card-body">
-                    <h5 className="card-title">{t('home.dining')}</h5>
-                    <p className="card-text">{t('home.diningDesc')}</p>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>

@@ -1,0 +1,53 @@
+.flight-loader-center {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  pointer-events: none;
+}
+
+.svg-flightLoader {
+  width: 230px;
+  height: 230px;
+  display: block;
+  animation: flight-loader-spin 1.4s linear infinite;
+  will-change: transform;
+}
+
+.flight-loader__plane {
+  fill: #FFA500;
+  filter: drop-shadow(0 3px 6px #0002);
+}
+
+.flight-loader__path {
+  stroke: #0099cc;
+  stroke-width: 4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 10 10 10 10 10 10 10 432;
+  stroke-dashoffset: 77;
+  animation: flight-loader-path 1.4s ease-in-out infinite;
+}
+
+@keyframes flight-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes flight-loader-path {
+  0% {
+    stroke-dasharray: 0, 580, 0, 0, 0, 0, 0, 0, 0;
+  }
+  50% {
+    stroke-dasharray: 0, 450, 10, 30, 10, 30, 10, 30, 10;
+  }
+  100% {
+    stroke-dasharray: 0, 580, 0, 0, 0, 0, 0, 0, 0;
+  }
+}

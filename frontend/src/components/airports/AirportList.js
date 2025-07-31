@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import FlightLoader from '../../FlightLoader'; // Adjust path if needed
 import './AirportList.css';
 
 export const airports = [
@@ -148,12 +149,20 @@ export const airports = [
 
 const AirportList = () => {
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading for 1 second
+    const timeout = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  if (loading) return <FlightLoader />;
 
   return (
       <div className="airports-page" style={{backgroundColor: 'white'}}>
         <div className="container py-5">
           <h1 className="mb-5">{t('airports.pageTitle', 'Morocco Airports')}</h1>
-
           <div className="row g-4">
             {airports.map((airport) => (
                 <div className="col-lg-4 col-md-6" key={airport.code}>
@@ -177,7 +186,6 @@ const AirportList = () => {
                         })}
                       </p>
                       <div className="airport-actions">
-                        {/* Update link to match your route in App.js */}
                         <Link to={`/airports/${airport.code}`} className="btn btn-primary">
                           {t('airports.viewDetails')}
                         </Link>

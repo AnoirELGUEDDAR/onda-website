@@ -67,14 +67,14 @@ const AirportServicesPage = () => {
   return (
       <div className="services-page">
         {/* Hero Section */}
-        <div className="hero-section position-relative">
+        <div className="hero-section-services position-relative">
           <img
               src="/images/services/services-hero.jpg"
               alt={t('airportServicesPage.heroAlt')}
               className="img-fluid w-100"
               style={{ maxHeight: '400px', objectFit: 'cover' }}
           />
-          <div className="hero-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center">
+          <div className="hero-overlay-services position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center">
             <div className="container text-white">
               <h1 className="display-4 fw-bold">{t('airportServicesPage.title')}</h1>
               <p className="lead">{t('airportServicesPage.subtitle')}</p>
@@ -86,10 +86,10 @@ const AirportServicesPage = () => {
         <section className="services-section py-5">
           <div className="container">
             <h2 className="text-center mb-5">{t('airportServicesPage.airportServices')}</h2>
-            <div className="row">
+            <div className="row g-4">
               {airportServices.map(service => (
-                  <div className="col-md-6 col-lg-3 mb-4" key={service.id}>
-                    <div className="card h-100 service-card">
+                  <div className="col-lg-4 col-md-6 mb-4 d-flex" key={service.id}>
+                    <div className="card h-100 service-card flex-fill">
                       <div className="card-img-container">
                         <img
                             src={service.image}

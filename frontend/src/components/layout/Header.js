@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -6,18 +6,52 @@ import './Header.css';
 
 const Header = () => {
   const { t } = useTranslation();
+  const logoRef = useRef();
+
+  // Function to trigger rotation
+  const triggerLogoRotation = () => {
+    if (logoRef.current) {
+      logoRef.current.classList.remove('rotate360');
+      // Force reflow to restart animation if clicked rapidly
+      // eslint-disable-next-line
+      void logoRef.current.offsetWidth;
+      logoRef.current.classList.add('rotate360');
+    }
+  };
+
+  // Rotate every minute
+  useEffect(() => {
+    const interval = setInterval(triggerLogoRotation, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
       <header className="header-wrapper">
         <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-          <div className="container d-flex justify-content-between align-items-center">
-            {/* Logo */}
-            <Link className="navbar-brand d-flex align-items-center" to="/">
-              <img src="/images/onda-logo.png" alt={t('app.fullName')} height="100" className="me-2" />
-              <span className="d-none d-md-inline">{t('app.fullName')}</span>
+          <div className="container-fluid px-4">
+            {/* Logo on the left */}
+            <Link
+                className="navbar-brand d-flex align-items-center"
+                to="/"
+                onClick={e => {
+                  triggerLogoRotation();
+                  // normal navigation continues
+                }}
+                style={{ cursor: "pointer" }}
+            >
+              <img
+                  ref={logoRef}
+                  src="/images/ondanew.png"
+                  alt={t('app.fullName')}
+                  height="125"
+                  width="200"
+                  className="me-2 logo-img"
+                  draggable={false}
+              />
+              <span className="navbar-title d-none d-md-inline">{t('app.fullName')}</span>
             </Link>
 
-            {/* Mobile Toggle */}
+            {/* Mobile toggle button */}
             <button
                 className="navbar-toggler"
                 type="button"
@@ -25,35 +59,48 @@ const Header = () => {
                 data-bs-target="#navbarMain"
                 aria-controls="navbarMain"
                 aria-expanded="false"
-                aria-label="Toggle navigation"
+                aria-label={t('menu.toggle')}
             >
               <span className="navbar-toggler-icon"></span>
             </button>
 
-            {/* Navigation and Language Switcher */}
-            <div className="collapse navbar-collapse justify-content-end align-items-center" id="navbarMain">
-              <ul className="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
+            {/* Nav and Language switcher */}
+            <div className="collapse navbar-collapse justify-content-end" id="navbarMain">
+              <ul className="navbar-nav align-items-center mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <NavLink className="nav-link" exact="true" to="/">{t('nav.home')}</NavLink>
+                  <NavLink className="nav-link" exact="true" to="/">
+                    {t('nav.home')}
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/airports">{t('nav.airports')}</NavLink>
+                  <NavLink className="nav-link" to="/airports">
+                    {t('nav.airports')}
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/flights">{t('nav.flights')}</NavLink>
+                  <NavLink className="nav-link" to="/flights">
+                    {t('nav.flights')}
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/services">{t('nav.services')}</NavLink>
+                  <NavLink className="nav-link" to="/services">
+                    {t('nav.services')}
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/about">{t('nav.about')}</NavLink>
+                  <NavLink className="nav-link" to="/about">
+                    {t('nav.about')}
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/contact">{t('nav.contact')}</NavLink>
+                  <NavLink className="nav-link" to="/contact">
+                    {t('nav.contact')}
+                  </NavLink>
                 </li>
               </ul>
-              {/* Language Switcher */}
-              <div className="language-switcher ms-3">
+
+              {/* Language Switcher to the far right */}
+              <div className="ms-3 d-flex align-items-center">
                 <LanguageSwitcher />
               </div>
             </div>

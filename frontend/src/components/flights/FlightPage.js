@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import FlightLoader from '../../FlightLoader'; // Adjust path if needed
 import { useTranslation } from 'react-i18next';
 import FlightSearchForm from './FlightSearchForm';
 import FlightResults from './FlightResults';
 import './flights.css';
-const API_URL ='http://spring-backend:8080/api';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
+
 const FlightPage = () => {
   const { t, i18n } = useTranslation();
   const [flights, setFlights] = useState([]);
@@ -16,18 +19,23 @@ const FlightPage = () => {
 
   // Fetch airport data on component mount
   useEffect(() => {
-axios.get(`${API_URL}/airports`)
-        .then(response => {
-          if (Array.isArray(response.data)) {
-            setAirports(response.data);
-            console.log(t('flight.airportsLoaded', { count: response.data.length }));
-          } else {
-            console.warn(t('flight.invalidAirportData'));
-          }
-        })
-        .catch(error => {
-          console.error(t('flight.airportLoadError'), error);
-        });
+    setLoading(true);
+    axios.get(`${API_URL}/airports`)
+      .then(response => {
+        if (Array.isArray(response.data)) {
+          setAirports(response.data);
+          setLoading(false);
+          console.log(t('flight.airportsLoaded', { count: response.data.length }));
+        } else {
+          setLoading(false);
+          console.warn(t('flight.invalidAirportData'));
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.error(t('flight.airportLoadError'), error);
+      });
+    // eslint-disable-next-line
   }, [t]);
 
   const handleSearch = (params) => {
@@ -36,72 +44,73 @@ axios.get(`${API_URL}/airports`)
     setError('');
     setSearchParams(params);
 
-const url = `${API_URL}/flights/search?departure=${params.departure}&arrival=${params.arrival}&date=${params.date}`;
+    const url = `${API_URL}/flights/search?departure=${params.departure}&arrival=${params.arrival}&date=${params.date}`;
 
     axios.get(url)
-        .then(response => {
-          let processedData = Array.isArray(response.data) ? response.data : [];
+      .then(response => {
+        let processedData = Array.isArray(response.data) ? response.data : [];
 
-          processedData = processedData.map(flight => {
-            const departureAirport = airports.find(a =>
-                a.code === flight.departure_airport_id ||
-                a.id === flight.departure_airport_id ||
-                a.code === params.departure
-            );
+        processedData = processedData.map(flight => {
+          const departureAirport = airports.find(a =>
+            a.code === flight.departure_airport_id ||
+            a.id === flight.departure_airport_id ||
+            a.code === params.departure
+          );
 
-            const arrivalAirport = airports.find(a =>
-                a.code === flight.arrival_airport_id ||
-                a.id === flight.arrival_airport_id ||
-                a.code === params.arrival
-            );
+          const arrivalAirport = airports.find(a =>
+            a.code === flight.arrival_airport_id ||
+            a.id === flight.arrival_airport_id ||
+            a.code === params.arrival
+          );
 
-            const flightNumber = flight.flight_number || flight.flightNumber;
-            let airlineName = flight.airline_name || flight.airlineName;
+          const flightNumber = flight.flight_number || flight.flightNumber;
+          let airlineName = flight.airline_name || flight.airlineName;
 
-            // Fallback: try to get airline name from prefix translation
-            if (!airlineName && flightNumber) {
-              const prefix = flightNumber.substring(0, 2);
-              airlineName = t(`airlines.${prefix}`, {
-                defaultValue: t('airlines.default', { prefix }),
-              });
-            }
+          // Fallback: try to get airline name from prefix translation
+          if (!airlineName && flightNumber) {
+            const prefix = flightNumber.substring(0, 2);
+            airlineName = t(`airlines.${prefix}`, {
+              defaultValue: t('airlines.default', { prefix }),
+            });
+          }
 
-            return {
-              ...flight,
-              origin_code: departureAirport?.code || flight.origin_code || params.departure,
-              origin_city: departureAirport?.city || flight.origin_city,
-              destination_code: arrivalAirport?.code || flight.destination_code || params.arrival,
-              destination_city: arrivalAirport?.city || flight.destination_city,
-              airline_name: airlineName,
-            };
-          });
-
-          setFlights(processedData);
-          setLoading(false);
-        })
-        .catch(error => {
-          console.error(t('flight.searchError'), error);
-          setError(t('flight.searchErrorMessage'));
-          setFlights([]);
-          setLoading(false);
+          return {
+            ...flight,
+            origin_code: departureAirport?.code || flight.origin_code || params.departure,
+            origin_city: departureAirport?.city || flight.origin_city,
+            destination_code: arrivalAirport?.code || flight.destination_code || params.arrival,
+            destination_city: arrivalAirport?.city || flight.destination_city,
+            airline_name: airlineName,
+          };
         });
+
+        setFlights(processedData);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error(t('flight.searchError'), error);
+        setError(t('flight.searchErrorMessage'));
+        setFlights([]);
+        setLoading(false);
+      });
   };
 
+  // Show loader when loading is true
+  if (loading) return <FlightLoader />;
+
   return (
-      <div className={`container py-4 ${i18n.language === 'ar' ? 'rtl' : ''}`}>
-        <h2 className="mb-4">{t('flight.title')}</h2>
-
-        <FlightSearchForm onSearch={handleSearch} airports={airports} />
-
-        {searched && (
-            <FlightResults
-                flights={flights}
-                loading={loading}
-                error={error}
-                searchParams={searchParams}
-            />
-        )}
-      </div>
+    <div className={`container py-4 ${i18n.language === 'ar' ? 'rtl' : ''}`}>
+      <h2 className="mb-4">{t('flight.title')}</h2>
+      <FlightSearchForm onSearch={handleSearch} airports={airports} />
+      {searched && (
+        <FlightResults
+          flights={flights}
+          loading={loading}
+          error={error}
+          searchParams={searchParams}
+        />
+      )}
+    </div>
   );
 };
 

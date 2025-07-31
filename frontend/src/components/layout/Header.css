@@ -1,75 +1,138 @@
 .header-wrapper {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
   background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  animation: slideDown 0.6s ease-out;
 }
 
-.navbar {
-  padding: 12px 0;
+.navbar-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #003366; /* Dark blue for authority and consistency with logo */
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 0;
+  animation: fadeInLeft 0.8s ease forwards;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.05);
 }
 
-.navbar-brand {
-  font-weight: 600;
-  font-size: 1.25rem;
-  color: #333;
+.logo-img {
+  transition: transform 0.7s cubic-bezier(.32,1.56,.51,.95);
+  will-change: transform;
+}
+.logo-img.rotate360 {
+  animation: rotate360 1.2s cubic-bezier(.32,1.56,.51,.95);
+}
+@keyframes rotate360 {
+  0% {
+    transform: rotate(0deg);
+  }
+  85% {
+    transform: rotate(375deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .nav-link {
-  font-weight: 500;
-  padding: 8px 16px !important;
   color: #333 !important;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.9rem;
   position: relative;
+  padding: 1rem 0.75rem !important;
+  letter-spacing: 1px;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .nav-link:hover {
   color: #0066cc !important;
+  transform: translateY(-1px);
 }
 
 .nav-link.active {
   color: #0066cc !important;
-  font-weight: 600;
+  transform: scale(1.05);
 }
 
-.nav-link.active::after {
+.nav-link::after {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 16px;
-  right: 16px;
+  left: 0.5rem;
+  right: 0.5rem;
   height: 2px;
-  background: #0066cc;
+  background-color: #0066cc;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: all 0.3s ease-in-out;
 }
 
-.language-switcher {
-  display: flex;
-  align-items: center;
+.nav-link:hover::after,
+.nav-link.active::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
+.collapse.navbar-collapse {
+  transition: height 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.navbar-collapse.collapsing {
+  opacity: 0;
+}
+
+/* ---------- Mobile Styles ---------- */
 @media (max-width: 991.98px) {
   .navbar-collapse {
-    padding-top: 16px;
+    margin-top: 1rem;
     border-top: 1px solid #eee;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding-top: 1rem;
   }
 
-  .nav-link {
-    padding: 8px 0 !important;
-    text-align: center;
+  .nav-item {
+    margin: 0.25rem 0;
   }
 
-  .nav-link.active::after {
-    display: none;
-  }
-
-  .language-switcher {
-    margin-top: 12px;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-
+  .navbar-title {
+    font-size: 1rem;
   }
 }
 
+/* ---------- Keyframes ---------- */
+@keyframes slideDown {
+  from {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+.logo-img {
+  transition: transform 0.85s cubic-bezier(.22,1.15,.52,.95);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.logo-img.rotate360 {
+  animation: rotate360 1s cubic-bezier(.22,1.15,.52,.95);
+}
+@keyframes rotate360 {
+  0% { transform: rotateZ(0deg);}
+  100% { transform: rotateZ(360deg);}
+}
