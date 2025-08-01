@@ -1,0 +1,6 @@
+.blurred-app-content {
+  filter: blur(8px) brightness(0.7);
+  transition: filter 0.3s;
+  pointer-events: none;
+  user-select: none;
+}
