@@ -203,7 +203,7 @@ public class ContactController {
   <div class="header-bg">
     <div class="logo-container">
       <div class="logo-placeholder">
-        <img src="cid:logo.png" alt="Logo">
+        <img src="cid:logo.png" alt="Logo" id="monlogo" height="200" width="150">
       </div>
     </div>
     <h1 class="header-title">NOUVEAU MESSAGE DE CONTACT</h1>

@@ -12,7 +12,7 @@ const Footer = () => {
       <footer className="footer text-white py-5" style={{ backgroundImage: 'url("/images/backgrounds/footer-bg.jpg")' }}>      <div className="container">
         <div className="row">
           <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
-            <img src="/images/ondanew.png" alt={t('app.name')} height="150" className="mb-3" />
+            <img src="/images/ondanewfooter.png" alt={t('app.name')} height="150" className="mb-3" />
             <p className="small">{t('app.fullName')} - Morocco's Airport Authority, managing 25 airports across the kingdom.</p>
             <div className="mt-3">
               <a href="https://www.facebook.com/OFFICENATIONALDESAEROPORTS/" className="text-white me-3"><i className="fab fa-facebook-f"></i></a>

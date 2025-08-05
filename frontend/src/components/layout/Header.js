@@ -7,6 +7,7 @@ import './Header.css';
 const Header = () => {
   const { t } = useTranslation();
   const logoRef = useRef();
+  const navbarCollapseRef = useRef(null); // Ref for the collapsible navbar
 
   // Function to trigger rotation
   const triggerLogoRotation = () => {
@@ -16,6 +17,18 @@ const Header = () => {
       // eslint-disable-next-line
       void logoRef.current.offsetWidth;
       logoRef.current.classList.add('rotate360');
+    }
+  };
+
+  // Function to handle nav link clicks
+  const handleNavLinkClick = () => {
+    // Check if the navbar is collapsed (i.e., we are on a smaller screen)
+    if (navbarCollapseRef.current && navbarCollapseRef.current.classList.contains('show')) {
+      // Programmatically hide the navbar
+      const bsCollapse = new window.bootstrap.Collapse(navbarCollapseRef.current, {
+        toggle: false
+      });
+      bsCollapse.hide();
     }
   };
 
@@ -35,7 +48,7 @@ const Header = () => {
                 to="/"
                 onClick={e => {
                   triggerLogoRotation();
-                  // normal navigation continues
+                  handleNavLinkClick(); // Close navbar
                 }}
                 style={{ cursor: "pointer" }}
             >
@@ -65,35 +78,35 @@ const Header = () => {
             </button>
 
             {/* Nav and Language switcher */}
-            <div className="collapse navbar-collapse justify-content-end" id="navbarMain">
+            <div ref={navbarCollapseRef} className="collapse navbar-collapse justify-content-end" id="navbarMain">
               <ul className="navbar-nav align-items-center mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <NavLink className="nav-link" exact="true" to="/">
+                  <NavLink className="nav-link" exact="true" to="/" onClick={handleNavLinkClick}>
                     {t('nav.home')}
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/airports">
+                  <NavLink className="nav-link" to="/airports" onClick={handleNavLinkClick}>
                     {t('nav.airports')}
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/flights">
+                  <NavLink className="nav-link" to="/flights" onClick={handleNavLinkClick}>
                     {t('nav.flights')}
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/services">
+                  <NavLink className="nav-link" to="/services" onClick={handleNavLinkClick}>
                     {t('nav.services')}
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/about">
+                  <NavLink className="nav-link" to="/about" onClick={handleNavLinkClick}>
                     {t('nav.about')}
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/contact">
+                  <NavLink className="nav-link" to="/contact" onClick={handleNavLinkClick}>
                     {t('nav.contact')}
                   </NavLink>
                 </li>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import FlightLoader from '../../FlightLoader'; // Adjust path if needed
 import { useTranslation } from 'react-i18next';
 import FlightSearchForm from './FlightSearchForm';
 import FlightResults from './FlightResults';
@@ -17,22 +16,17 @@ const FlightPage = () => {
   const [airports, setAirports] = useState([]);
   const [searchParams, setSearchParams] = useState(null);
 
-  // Fetch airport data on component mount
   useEffect(() => {
-    setLoading(true);
     axios.get(`${API_URL}/airports`)
       .then(response => {
         if (Array.isArray(response.data)) {
           setAirports(response.data);
-          setLoading(false);
           console.log(t('flight.airportsLoaded', { count: response.data.length }));
         } else {
-          setLoading(false);
           console.warn(t('flight.invalidAirportData'));
         }
       })
       .catch(error => {
-        setLoading(false);
         console.error(t('flight.airportLoadError'), error);
       });
     // eslint-disable-next-line
@@ -66,7 +60,6 @@ const FlightPage = () => {
           const flightNumber = flight.flight_number || flight.flightNumber;
           let airlineName = flight.airline_name || flight.airlineName;
 
-          // Fallback: try to get airline name from prefix translation
           if (!airlineName && flightNumber) {
             const prefix = flightNumber.substring(0, 2);
             airlineName = t(`airlines.${prefix}`, {
@@ -95,9 +88,6 @@ const FlightPage = () => {
       });
   };
 
-  // Show loader when loading is true
-  if (loading) return <FlightLoader />;
-
   return (
     <div className={`container py-4 ${i18n.language === 'ar' ? 'rtl' : ''}`}>
       <h2 className="mb-4">{t('flight.title')}</h2>
@@ -115,3 +105,4 @@ const FlightPage = () => {
 };
 
 export default FlightPage;
+
