@@ -50,6 +50,10 @@ spec:
               mountPath: /var/lib/mysql
             - name: initdb
               mountPath: /docker-entrypoint-initdb.d
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
       volumes:
         - name: mysql-storage
           persistentVolumeClaim:
@@ -86,7 +90,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: anoiraeg2003/spring-backend:latest
+          image: {{ backend_image }}
           ports:
             - containerPort: 8080
           env:
@@ -96,6 +100,13 @@ spec:
               value: ondauser
             - name: SPRING_DATASOURCE_PASSWORD
               value: Anoirelgueddar@2003
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
 ---
 apiVersion: v1
 kind: Service
@@ -125,12 +136,19 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: anoiraeg2003/react-frontend:latest
+          image: {{ frontend_image }}
           ports:
             - containerPort: 80
           env:
             - name: REACT_APP_API_URL
               value: http://backend:8080/api
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
 ---
 apiVersion: v1
 kind: Service
