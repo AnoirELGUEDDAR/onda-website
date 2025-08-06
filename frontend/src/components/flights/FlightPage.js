@@ -16,21 +16,25 @@ const FlightPage = () => {
   const [airports, setAirports] = useState([]);
   const [searchParams, setSearchParams] = useState(null);
 
-  useEffect(() => {
-    axios.get(`${API_URL}/airports`)
-      .then(response => {
-        if (Array.isArray(response.data)) {
-          setAirports(response.data);
-          console.log(t('flight.airportsLoaded', { count: response.data.length }));
-        } else {
-          console.warn(t('flight.invalidAirportData'));
-        }
-      })
-      .catch(error => {
-        console.error(t('flight.airportLoadError'), error);
-      });
-    // eslint-disable-next-line
-  }, [t]);
+useEffect(() => {
+  axios.get(`${API_URL}/airports`)
+    .then(response => {
+      if (Array.isArray(response.data)) {
+        // Sort airports alphabetically by city
+        const sortedAirports = response.data.sort((a, b) => 
+          a.city.localeCompare(b.city)
+        );
+        setAirports(sortedAirports);
+        console.log(t('flight.airportsLoaded', { count: sortedAirports.length }));
+      } else {
+        console.warn(t('flight.invalidAirportData'));
+      }
+    })
+    .catch(error => {
+      console.error(t('flight.airportLoadError'), error);
+    });
+  // eslint-disable-next-line
+}, [t]);
 
   const handleSearch = (params) => {
     setLoading(true);

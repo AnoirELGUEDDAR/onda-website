@@ -46,6 +46,7 @@ spec:
         BACKEND_IMAGE = "${DOCKER_HUB_USER}/spring-backend:latest"
         FRONTEND_IMAGE = "${DOCKER_HUB_USER}/react-frontend:latest"
         DOCKER_HOST = "tcp://localhost:2375"
+        DOCKER_BUILDKIT = "1"
     }
 
     stages {
@@ -112,16 +113,52 @@ spec:
             }
         }
 
-        stage('Docker Build & Push') {
-            steps {
-                container('docker') {
-                    sh 'until docker ps > /dev/null 2>&1; do sleep 1; done'
+        stage('Docker Build') {
+            parallel {
+                stage('Build Backend Image') {
+                    steps {
+                        container('docker') {
+                            sh 'until docker ps > /dev/null 2>&1; do sleep 1; done'
+                            sh """
+                            docker build --progress=plain \\
+                                -t ${env.BACKEND_IMAGE} \\
+                                -f Dockerfile backend
+                            """
+                        }
+                    }
+                }
+                stage('Build Frontend Image') {
+                    steps {
+                        container('docker') {
+                            sh 'until docker ps > /dev/null 2>&1; do sleep 1; done'
+                            sh """
+                            docker build --progress=plain \\
+                                -t ${env.FRONTEND_IMAGE} \\
+                                -f Dockerfile frontend
+                            """
+                        }
+                    }
+                }
+            }
+        }
 
-                    sh "docker build -t ${env.BACKEND_IMAGE} -f backend/Dockerfile ."
-                    sh "docker build -t ${env.FRONTEND_IMAGE} -f frontend/Dockerfile ."
-                    sh "docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD"
-                    sh "docker push $BACKEND_IMAGE"
-                    sh "docker push $FRONTEND_IMAGE"
+        stage('Docker Push') {
+            parallel {
+                stage('Push Backend Image') {
+                    steps {
+                        container('docker') {
+                            sh 'docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD'
+                            sh 'docker push $BACKEND_IMAGE'
+                        }
+                    }
+                }
+                stage('Push Frontend Image') {
+                    steps {
+                        container('docker') {
+                            sh 'docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD'
+                            sh 'docker push $FRONTEND_IMAGE'
+                        }
+                    }
                 }
             }
         }
@@ -130,7 +167,6 @@ spec:
             steps {
                 container('ansible') {
                     sh 'pip install kubernetes'
-
                     sh '''
                     set -ex
 
@@ -148,14 +184,11 @@ EOL
                     # Copy and modify the deployment YAML - REMOVE the ConfigMap section
                     cp k8s/full-deployment.yaml ansible/k8s-templates/deployment-no-configmap.yaml.j2
                     
-                    # Remove the ConfigMap section from the deployment
                     sed -i '/^---$/,/^---$/{ /kind: ConfigMap/,/^---$/d; }' ansible/k8s-templates/deployment-no-configmap.yaml.j2
                     
-                    # Replace image tags
                     sed -i 's#image: anoiraeg2003/spring-backend:latest#image: {{ backend_image }}#g' ansible/k8s-templates/deployment-no-configmap.yaml.j2
                     sed -i 's#image: anoiraeg2003/react-frontend:latest#image: {{ frontend_image }}#g' ansible/k8s-templates/deployment-no-configmap.yaml.j2
 
-                    # Create simple Ansible playbook
                     cat > ansible/deploy-kubernetes.yml << 'EOL'
 ---
 - name: Deploy application to Kubernetes
@@ -197,7 +230,6 @@ EOL
         namespace: onda-app
 EOL
 
-                    # Run the playbook
                     cd ansible
                     ansible-playbook -i inventory/hosts deploy-kubernetes.yml -v
                     '''
@@ -215,3 +247,4 @@ EOL
         }
     }
 }
+
