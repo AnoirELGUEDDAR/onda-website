@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: maven-cache-pvc
-  namespace: jenkins
+  name: npm-cache-pvc
+  namespace: jenkins  # Replace with your actual namespace
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi  # Ajustez selon vos besoins
+      storage: 2Gi

@@ -5,7 +5,9 @@ import FlightSearchForm from './FlightSearchForm';
 import FlightResults from './FlightResults';
 import './flights.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
+// Updated API URL handling for Kubernetes deployment
+const API_URL = process.env.REACT_APP_API_URL || 
+  (window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : '/api');
 
 const FlightPage = () => {
   const { t, i18n } = useTranslation();
@@ -16,25 +18,25 @@ const FlightPage = () => {
   const [airports, setAirports] = useState([]);
   const [searchParams, setSearchParams] = useState(null);
 
-useEffect(() => {
-  axios.get(`${API_URL}/airports`)
-    .then(response => {
-      if (Array.isArray(response.data)) {
-        // Sort airports alphabetically by city
-        const sortedAirports = response.data.sort((a, b) => 
-          a.city.localeCompare(b.city)
-        );
-        setAirports(sortedAirports);
-        console.log(t('flight.airportsLoaded', { count: sortedAirports.length }));
-      } else {
-        console.warn(t('flight.invalidAirportData'));
-      }
-    })
-    .catch(error => {
-      console.error(t('flight.airportLoadError'), error);
-    });
-  // eslint-disable-next-line
-}, [t]);
+  useEffect(() => {
+    axios.get(`${API_URL}/airports`)
+      .then(response => {
+        if (Array.isArray(response.data)) {
+          // Sort airports alphabetically by city
+          const sortedAirports = response.data.sort((a, b) => 
+            a.city.localeCompare(b.city)
+          );
+          setAirports(sortedAirports);
+          console.log(t('flight.airportsLoaded', { count: sortedAirports.length }));
+        } else {
+          console.warn(t('flight.invalidAirportData'));
+        }
+      })
+      .catch(error => {
+        console.error(t('flight.airportLoadError'), error);
+      });
+    // eslint-disable-next-line
+  }, [t]);
 
   const handleSearch = (params) => {
     setLoading(true);
@@ -109,4 +111,3 @@ useEffect(() => {
 };
 
 export default FlightPage;
-
