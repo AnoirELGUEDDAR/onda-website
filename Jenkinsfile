@@ -18,6 +18,9 @@ spec:
       image: node:16
       command: ["cat"]
       tty: true
+      volumeMounts:
+        - name: npm-cache
+          mountPath: /root/.npm
     - name: docker
       image: docker:20.10.16-dind
       securityContext:
@@ -25,6 +28,8 @@ spec:
       env:
         - name: DOCKER_TLS_CERTDIR
           value: ""
+        - name: DOCKER_BUILDKIT
+          value: "1"
       volumeMounts:
         - name: dind-storage
           mountPath: /var/lib/docker
@@ -34,7 +39,11 @@ spec:
       tty: true
   volumes:
     - name: maven-cache
-      emptyDir: {}
+      persistentVolumeClaim:
+        claimName: maven-cache-pvc
+    - name: npm-cache
+      persistentVolumeClaim:
+        claimName: npm-cache-pvc
     - name: dind-storage
       emptyDir: {}
 """
@@ -43,9 +52,13 @@ spec:
 
     environment {
         DOCKER_HUB_USER = 'anoiraeg2003'
-        BACKEND_IMAGE = "${DOCKER_HUB_USER}/spring-backend:latest"
-        FRONTEND_IMAGE = "${DOCKER_HUB_USER}/react-frontend:latest"
+        BACKEND_IMAGE = "${DOCKER_HUB_USER}/spring-backend:${BUILD_NUMBER}"
+        FRONTEND_IMAGE = "${DOCKER_HUB_USER}/react-frontend:${BUILD_NUMBER}"
         DOCKER_HOST = "tcp://localhost:2375"
+        DOCKER_BUILDKIT = "1"
+        MAVEN_OPTS = "-Dmaven.repo.local=/root/.m2 -Xmx1024m"
+        CURRENT_DATE = "2025-08-06 15:23:26"
+        CURRENT_USER = "AnoirELGUEDDAR"
     }
 
     stages {
@@ -65,46 +78,69 @@ spec:
             }
         }
 
-        stage('Build') {
-            parallel {
-                stage('Build Backend') {
-                    steps {
-                        container('maven') {
-                            dir('backend') {
-                                sh 'mvn clean package -DskipTests'
-                            }
-                        }
+        stage('Determine Changes') {
+            steps {
+                script {
+                    try {
+                        def changes = sh(script: "git diff --name-only HEAD~1 HEAD || git diff --name-only origin/main...HEAD || echo 'all'", returnStdout: true).trim()
+                        env.BACKEND_CHANGED = changes.contains('backend/') || changes == 'all' ? 'true' : 'false'
+                        env.FRONTEND_CHANGED = changes.contains('frontend/') || changes == 'all' ? 'true' : 'false'
+                    } catch (Exception e) {
+                        echo "Could not determine changes, assuming everything has changed"
+                        env.BACKEND_CHANGED = 'true'
+                        env.FRONTEND_CHANGED = 'true'
                     }
-                }
-                stage('Build Frontend') {
-                    steps {
-                        container('node') {
-                            dir('frontend') {
-                                sh 'npm ci'
-                                sh 'npm run build'
-                            }
-                        }
-                    }
+                    echo "Backend changed: ${env.BACKEND_CHANGED}"
+                    echo "Frontend changed: ${env.FRONTEND_CHANGED}"
                 }
             }
         }
 
-        stage('Test') {
+        stage('Build and Test') {
             parallel {
-                stage('Test Backend') {
-                    steps {
-                        container('maven') {
-                            dir('backend') {
-                                sh 'mvn test'
+                stage('Backend') {
+                    when { expression { return env.BACKEND_CHANGED == 'true' } }
+                    stages {
+                        stage('Build Backend') {
+                            steps {
+                                container('maven') {
+                                    dir('backend') {
+                                        sh 'mvn -T 4 clean package -DskipTests'
+                                    }
+                                }
+                            }
+                        }
+                        stage('Test Backend') {
+                            steps {
+                                container('maven') {
+                                    dir('backend') {
+                                        sh 'mvn -T 4 test'
+                                    }
+                                }
                             }
                         }
                     }
                 }
-                stage('Test Frontend') {
-                    steps {
-                        container('node') {
-                            dir('frontend') {
-                                sh 'npm test -- --watchAll=false --passWithNoTests || true'
+                stage('Frontend') {
+                    when { expression { return env.FRONTEND_CHANGED == 'true' } }
+                    stages {
+                        stage('Build Frontend') {
+                            steps {
+                                container('node') {
+                                    dir('frontend') {
+                                        sh 'npm ci --prefer-offline --no-audit'
+                                        sh 'npm run build'
+                                    }
+                                }
+                            }
+                        }
+                        stage('Test Frontend') {
+                            steps {
+                                container('node') {
+                                    dir('frontend') {
+                                        sh 'npm test -- --watchAll=false --passWithNoTests || true'
+                                    }
+                                }
                             }
                         }
                     }
@@ -113,94 +149,309 @@ spec:
         }
 
         stage('Docker Build & Push') {
-            steps {
-                container('docker') {
-                    sh 'until docker ps > /dev/null 2>&1; do sleep 1; done'
-
-                    sh "docker build -t ${env.BACKEND_IMAGE} -f backend/Dockerfile ."
-                    sh "docker build -t ${env.FRONTEND_IMAGE} -f frontend/Dockerfile ."
-                    sh "docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD"
-                    sh "docker push $BACKEND_IMAGE"
-                    sh "docker push $FRONTEND_IMAGE"
+            parallel {
+                stage('Backend Docker') {
+                    when { expression { return env.BACKEND_CHANGED == 'true' } }
+                    steps {
+                        container('docker') {
+                            sh 'until docker ps > /dev/null 2>&1; do sleep 1; done'
+                            sh "docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ${DOCKER_HUB_USER}/spring-backend:latest -t ${env.BACKEND_IMAGE} -t ${DOCKER_HUB_USER}/spring-backend:latest -f backend/Dockerfile backend"
+                            withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD')]) {
+                                sh "echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin"
+                                sh "docker push ${env.BACKEND_IMAGE}"
+                                sh "docker push ${DOCKER_HUB_USER}/spring-backend:latest"
+                            }
+                        }
+                    }
+                }
+                stage('Frontend Docker') {
+                    when { expression { return env.FRONTEND_CHANGED == 'true' } }
+                    steps {
+                        container('docker') {
+                            sh 'until docker ps > /dev/null 2>&1; do sleep 1; done'
+                            sh "docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ${DOCKER_HUB_USER}/react-frontend:latest -t ${env.FRONTEND_IMAGE} -t ${DOCKER_HUB_USER}/react-frontend:latest -f frontend/Dockerfile frontend"
+                            withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD')]) {
+                                sh "echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USER --password-stdin"
+                                sh "docker push ${env.FRONTEND_IMAGE}"
+                                sh "docker push ${DOCKER_HUB_USER}/react-frontend:latest"
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        stage('Deploy with Ansible') {
+        stage('Deploy to Kubernetes') {
             steps {
                 container('ansible') {
-                    sh 'pip install kubernetes'
-
-                    sh '''
-                    set -ex
-
-                    # Create ansible directories
-                    mkdir -p ansible/inventory
-                    mkdir -p ansible/k8s-templates
-                    mkdir -p ansible/k8s
-
-                    # Create inventory
-                    cat > ansible/inventory/hosts << 'EOL'
-[kubernetes]
-kubernetes-master ansible_host=kubernetes-api ansible_connection=local
+                    sh """
+                    set -e
+                    
+                    # Install kubectl
+                    apk add --no-cache curl
+                    curl -LO "https://dl.k8s.io/release/stable.txt"
+                    curl -LO "https://dl.k8s.io/release/\$(cat stable.txt)/bin/linux/amd64/kubectl"
+                    chmod +x kubectl
+                    mv kubectl /usr/local/bin/
+                    
+                    # Create namespace if not exists
+                    kubectl create namespace onda-app --dry-run=client -o yaml | kubectl apply -f -
+                    
+                    # Create individual YAML files for each component
+                    
+                    # 1. PVC for MySQL
+                    cat > mysql-pvc.yaml << EOL
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: onda-app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
 EOL
-
-                    # Copy and modify the deployment YAML - REMOVE the ConfigMap section
-                    cp k8s/full-deployment.yaml ansible/k8s-templates/deployment-no-configmap.yaml.j2
                     
-                    # Remove the ConfigMap section from the deployment
-                    sed -i '/^---$/,/^---$/{ /kind: ConfigMap/,/^---$/d; }' ansible/k8s-templates/deployment-no-configmap.yaml.j2
+                    # 2. ConfigMap for MySQL
+                    cat > mysql-configmap.yaml << EOL
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-init-sql
+  namespace: onda-app
+data:
+  onda_flights.sql: |
+    -- Create database schema
+    CREATE DATABASE IF NOT EXISTS onda_flights;
+    USE onda_flights;
+EOL
                     
-                    # Replace image tags
-                    sed -i 's#image: anoiraeg2003/spring-backend:latest#image: {{ backend_image }}#g' ansible/k8s-templates/deployment-no-configmap.yaml.j2
-                    sed -i 's#image: anoiraeg2003/react-frontend:latest#image: {{ frontend_image }}#g' ansible/k8s-templates/deployment-no-configmap.yaml.j2
-
-                    # Create simple Ansible playbook
-                    cat > ansible/deploy-kubernetes.yml << 'EOL'
----
-- name: Deploy application to Kubernetes
-  hosts: kubernetes
-  gather_facts: no
-  vars:
-    backend_image: "${BACKEND_IMAGE}"
-    frontend_image: "${FRONTEND_IMAGE}"
-  tasks:
-    - name: Ensure namespace exists
-      kubernetes.core.k8s:
-        api_version: v1
-        kind: Namespace
-        name: onda-app
-        state: present
-
-    - name: Create SQL ConfigMap directly from file
-      kubernetes.core.k8s:
-        state: present
-        namespace: onda-app
-        definition:
-          apiVersion: v1
-          kind: ConfigMap
-          metadata:
+                    # 3. MySQL Deployment
+                    cat > mysql-deployment.yaml << EOL
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: onda-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: onda_flights
+            - name: MYSQL_USER
+              value: ondauser
+            - name: MYSQL_PASSWORD
+              value: Anoirelgueddar@2003
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+            - name: initdb
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+        - name: initdb
+          configMap:
             name: mysql-init-sql
-            namespace: onda-app
-          data:
-            onda_flights.sql: "{{ lookup('file', '../db-init/onda_flights.sql') }}"
-
-    - name: Apply other Kubernetes manifests
-      template:
-        src: k8s-templates/deployment-no-configmap.yaml.j2
-        dest: k8s/deployment.yaml
-
-    - name: Deploy resources
-      kubernetes.core.k8s:
-        state: present
-        src: k8s/deployment.yaml
-        namespace: onda-app
+EOL
+                    
+                    # 4. MySQL Service (mysql)
+                    cat > mysql-service.yaml << EOL
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: onda-app
+spec:
+  selector:
+    app: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
 EOL
 
-                    # Run the playbook
-                    cd ansible
-                    ansible-playbook -i inventory/hosts deploy-kubernetes.yml -v
-                    '''
+                    # 4.1 Additional MySQL Service (db) - alias for the mysql service
+                    cat > db-service.yaml << EOL
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: onda-app
+spec:
+  selector:
+    app: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+EOL
+                    
+                    # 5. Backend Deployment
+                    cat > backend-deployment.yaml << EOL
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: onda-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: anoiraeg2003/spring-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://db:3306/onda_flights?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+            - name: SPRING_DATASOURCE_USERNAME
+              value: ondauser
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: Anoirelgueddar@2003
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+EOL
+                    
+                    # 6. Backend Service
+                    cat > backend-service.yaml << EOL
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: onda-app
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+EOL
+                    
+                    # 7. Frontend Deployment
+                    cat > frontend-deployment.yaml << EOL
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-frontend
+  namespace: onda-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: react-frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: react-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: anoiraeg2003/react-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: REACT_APP_API_URL
+              value: http://backend:8080/api
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+EOL
+                    
+                    # 8. Frontend Service
+                    cat > frontend-service.yaml << EOL
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-frontend
+  namespace: onda-app
+spec:
+  selector:
+    app: react-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
+EOL
+                    
+                    # Delete existing deployments first to avoid conflicts
+                    kubectl delete deployment backend -n onda-app --ignore-not-found=true
+                    kubectl delete deployment react-frontend -n onda-app --ignore-not-found=true
+                    
+                    # Wait for pods to terminate
+                    sleep 5
+                    
+                    # Apply all the YAML files in the correct order
+                    kubectl apply -f mysql-pvc.yaml
+                    kubectl apply -f mysql-configmap.yaml
+                    kubectl apply -f mysql-deployment.yaml
+                    kubectl apply -f mysql-service.yaml
+                    kubectl apply -f db-service.yaml
+                    kubectl apply -f backend-deployment.yaml
+                    kubectl apply -f backend-service.yaml
+                    kubectl apply -f frontend-deployment.yaml
+                    kubectl apply -f frontend-service.yaml
+                    
+                    # Start deployment monitoring without blocking the pipeline
+                    echo "Starting deployment monitoring..."
+                    
+                    # Give services a moment to start creating pods
+                    sleep 10
+                    
+                    # Check pod status without blocking the pipeline
+                    echo "==== ALL SERVICES IN NAMESPACE ===="
+                    kubectl get svc -n onda-app || true
+                    
+                    echo "==== ALL PODS STATUS ===="
+                    kubectl get pods -n onda-app || true
+                    
+                    echo "==== ACCESS THE APPLICATION ===="
+                    FRONTEND_PORT=\$(kubectl get svc react-frontend -n onda-app -o jsonpath='{.spec.ports[0].nodePort}')
+                    echo "Frontend should be accessible at: http://YOUR_CLUSTER_IP:\${FRONTEND_PORT}"
+                    echo "Deployment is complete."
+                    """
                 }
             }
         }
@@ -208,10 +459,13 @@ EOL
 
     post {
         success {
-            echo '✅ Déploiement réussi !'
+            echo "✅ Déploiement réussi ! Build by ${CURRENT_USER} on ${CURRENT_DATE}"
         }
         failure {
-            echo '❌ Le pipeline a échoué'
+            echo "❌ Le pipeline a échoué"
+        }
+        always {
+            sh 'docker system prune -af || true'
         }
     }
 }
