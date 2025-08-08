@@ -15,7 +15,7 @@ metadata:
   name: mysql-init-sql
 data:
   onda_flights.sql: |
-    {{SQL_FILE_CONTENT}}
+    -- Paste your onda_flights.sql content here!
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -31,9 +31,10 @@ spec:
       labels:
         app: mysql
     spec:
+      restartPolicy: Always
       containers:
         - name: mysql
-          image: mysql:8
+          image: mysql:8.0
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: root
@@ -50,6 +51,13 @@ spec:
               mountPath: /var/lib/mysql
             - name: initdb
               mountPath: /docker-entrypoint-initdb.d
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
       volumes:
         - name: mysql-storage
           persistentVolumeClaim:
@@ -84,6 +92,7 @@ spec:
       labels:
         app: backend
     spec:
+      restartPolicy: Always
       containers:
         - name: backend
           image: anoiraeg2003/spring-backend:latest
@@ -96,6 +105,15 @@ spec:
               value: ondauser
             - name: SPRING_DATASOURCE_PASSWORD
               value: Anoirelgueddar@2003
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Xmx1536m"
+          resources:
+            requests:
+              memory: "1024Mi"
+              cpu: "100m"
+            limits:
+              memory: "2048Mi"
+              cpu: "1000m"
 ---
 apiVersion: v1
 kind: Service
@@ -123,6 +141,7 @@ spec:
       labels:
         app: react-frontend
     spec:
+      restartPolicy: Always
       containers:
         - name: frontend
           image: anoiraeg2003/react-frontend:latest
@@ -131,6 +150,13 @@ spec:
           env:
             - name: REACT_APP_API_URL
               value: http://backend:8080/api
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "50m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
