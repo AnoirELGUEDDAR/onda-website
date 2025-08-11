@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Chatbot.css';
-import chatbotLogo from './chatbotlogo.png'; // <-- Adjust path if needed
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
+import chatbotLogo from './chatbotlogo.png';
+
 const Chatbot = () => {
     const { t, i18n } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
-    const [messages, setMessages] = useState([]); // Start with empty array
+    const [messages, setMessages] = useState([]); 
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [connectionError, setConnectionError] = useState(false);
@@ -14,7 +14,7 @@ const Chatbot = () => {
     // Initialize welcome message after translations are ready
     useEffect(() => {
         setMessages([{ text: t('chatbot.welcome'), sender: 'bot' }]);
-    }, [t]); // Re-run when translation function changes
+    }, [t]);
 
     // Auto-scroll to bottom when messages change
     useEffect(() => {
@@ -39,8 +39,7 @@ const Chatbot = () => {
         setConnectionError(false);
 
         try {
-
-            const response = await fetch(`${API_URL}/chat`, {
+            const response = await fetch(`/api/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

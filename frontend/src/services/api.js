@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
+// Better API URL handling for Kubernetes
+const API_URL = '/api';
 
 // Create axios instance with default config
 const api = axios.create({
@@ -41,16 +42,10 @@ export const flightService = {
     });
   },
   
-  // Alternative: search flights using POST request with request body
-  searchFlightsPost: (searchData) => {
-    return api.post('/flights/search', searchData);
-  },
-  
   // Get flight details by ID
   getFlightById: (id) => {
     return api.get(`/flights/${id}`);
   }
 };
 
-// Export the axios instance as default for other API calls
 export default api;

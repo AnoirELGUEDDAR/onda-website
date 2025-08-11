@@ -2,12 +2,16 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
-# Copy package files and install dependencies with cache
+# Copy package files first for better caching
 COPY package.json package-lock.json ./
-RUN npm ci --prefer-offline --no-audit
 
-# Copy source and build
+# Install dependencies (with fallback to npm install if ci fails)
+RUN npm install --prefer-offline --no-audit
+
+# Copy all other files
 COPY . .
+
+# Build the app
 RUN npm run build
 
 # Serve with Nginx
@@ -16,7 +20,7 @@ COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 
-# Use non-root user for security
+# Security hardening
 RUN chown -R nginx:nginx /usr/share/nginx/html && \
     chmod -R 755 /usr/share/nginx/html && \
     chown -R nginx:nginx /var/cache/nginx && \

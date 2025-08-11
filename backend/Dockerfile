@@ -14,15 +14,18 @@ RUN mvn clean package -DskipTests -T 4
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Install netcat for wait script
-RUN apk add --no-cache netcat-openbsd
+# Install bash and netcat for wait script
+RUN apk add --no-cache bash netcat-openbsd
 
 # Copy built JAR and wait script
 COPY --from=build /app/target/*.jar app.jar
 COPY waitforit.sh .
 RUN chmod +x waitforit.sh
 
+# Make sure the script uses /bin/bash explicitly
+RUN sed -i '1s|^#!.*$|#!/bin/bash|' waitforit.sh
+
 EXPOSE 8080
 
 # Use exec form for better signal handling
-ENTRYPOINT ["./waitforit.sh", "db", "--", "java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
+ENTRYPOINT ["./waitforit.sh", "mysql", "--", "java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]

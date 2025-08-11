@@ -4,10 +4,7 @@ import { useTranslation } from 'react-i18next';
 import FlightSearchForm from './FlightSearchForm';
 import FlightResults from './FlightResults';
 import './flights.css';
-
-// Updated API URL handling for Kubernetes deployment
-const API_URL = process.env.REACT_APP_API_URL || 
-  (window.location.hostname === 'localhost' ? 'http://localhost:8080/api' : '/api');
+import { airportService } from '../../services/api';
 
 const FlightPage = () => {
   const { t, i18n } = useTranslation();
@@ -19,7 +16,7 @@ const FlightPage = () => {
   const [searchParams, setSearchParams] = useState(null);
 
   useEffect(() => {
-    axios.get(`${API_URL}/airports`)
+    airportService.getAllAirports()
       .then(response => {
         if (Array.isArray(response.data)) {
           // Sort airports alphabetically by city
@@ -44,9 +41,13 @@ const FlightPage = () => {
     setError('');
     setSearchParams(params);
 
-    const url = `${API_URL}/flights/search?departure=${params.departure}&arrival=${params.arrival}&date=${params.date}`;
-
-    axios.get(url)
+    axios.get(`/api/flights/search`, {
+      params: {
+        departure: params.departure,
+        arrival: params.arrival,
+        date: params.date
+      }
+    })
       .then(response => {
         let processedData = Array.isArray(response.data) ? response.data : [];
 
