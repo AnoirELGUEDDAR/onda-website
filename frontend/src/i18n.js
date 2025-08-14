@@ -3,6 +3,38 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
 
+// ---- Optional: simple client helper that calls your server route ----
+async function translateViaServer({ q, target, source = 'en' }) {
+  try {
+    const res = await fetch('/api/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ q, target, source })
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    // Expecting { translatedText: "..." }
+    return data?.translatedText || null;
+  } catch (e) {
+    // Silently ignore to avoid breaking UI on network errors
+    return null;
+  }
+}
+
+// Cache helpers
+function getCache(lng, ns, key) {
+  try {
+    return localStorage.getItem(`i18nCache::${lng}::${ns}::${key}`);
+  } catch {
+    return null;
+  }
+}
+function setCache(lng, ns, key, value) {
+  try {
+    localStorage.setItem(`i18nCache::${lng}::${ns}::${key}`, value);
+  } catch {}
+}
+
 i18n
   .use(Backend)
   .use(LanguageDetector)
@@ -10,11 +42,8 @@ i18n
   .init({
     fallbackLng: 'en',
     debug: process.env.NODE_ENV === 'development',
-    
-    interpolation: {
-      escapeValue: false,
-    },
-    
+    interpolation: { escapeValue: false },
+
     detection: {
       order: ['querystring', 'cookie', 'localStorage', 'navigator'],
       lookupQuerystring: 'lng',
@@ -22,16 +51,54 @@ i18n
       lookupLocalStorage: 'i18nextLng',
       caches: ['localStorage', 'cookie'],
     },
-    
+
     backend: {
+      // serves /public/locales/{lng}/{ns}.json
       loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
-    
-    ns: 'common',
+
+    ns: ['common'],
     defaultNS: 'common',
-    
-    react: {
-      useSuspense: false,
+
+    react: { useSuspense: false },
+
+    // Let i18next notify us when a key is missing
+    saveMissing: true,
+
+    /**
+     * NOTE: missingKeyHandler is sync and is mainly for reporting/saving missing keys.
+     * We’ll use it to kick off an async translation fetch in the background.
+     * The first render will show fallback/key; when translation arrives,
+     * we add it to the resource store and gently re-render the UI.
+     */
+    missingKeyHandler: (lng, ns, key, fallbackValue) => {
+      // avoid running on undefined language
+      if (!lng) return;
+
+      // 1) Try cache
+      const cached = getCache(lng, ns, key);
+      if (cached) {
+        i18n.addResource(lng, ns, key, cached);
+        // Trigger a gentle refresh so components see the new value
+        i18n.emit('added', lng, ns, key);
+        return;
+      }
+
+      // 2) Fire-and-forget async translation from your server
+      const sourceText = fallbackValue || key;
+      translateViaServer({ q: sourceText, target: Array.isArray(lng) ? lng[0] : lng, source: 'en' })
+        .then((translated) => {
+          if (!translated) return;
+          setCache(lng, ns, key, translated);
+          i18n.addResource(lng, ns, key, translated);
+
+          // React-i18next re-renders on resourceStore events;
+          // 'added' is enough, but we can also nudge with a "languageChanged"
+          i18n.emit('added', lng, ns, key);
+          // If your UI doesn’t update in some edge cases, uncomment:
+          // i18n.emit('languageChanged', Array.isArray(lng) ? lng[0] : lng);
+        })
+        .catch(() => {});
     },
   });
 

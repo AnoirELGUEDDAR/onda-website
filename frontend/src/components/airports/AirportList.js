@@ -5,19 +5,19 @@ import FlightLoader from '../../FlightLoader'; // Adjust path if needed
 import './AirportList.css';
 
 export const airports = [
+    {
+    code: 'RAK',
+    city: 'marrakech',
+    name: 'menara',
+    type: 'international',
+    image: '/images/airports/marrakech-airport.jpg',
+  },
   {
     code: 'CMN',
     city: 'casablanca',
     name: 'mohammed_v',
     type: 'international',
     image: '/images/airports/casablanca-airport.jpg',
-  },
-  {
-    code: 'RAK',
-    city: 'marrakech',
-    name: 'menara',
-    type: 'international',
-    image: '/images/airports/marrakech-airport.jpg',
   },
   {
     code: 'AGA',

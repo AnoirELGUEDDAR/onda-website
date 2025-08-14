@@ -78,9 +78,6 @@
 #WEATHERSection{
   background-image: linear-gradient(to top, rgb(255, 255, 255), rgb(255, 255, 255));
 }
-.weather-content {
-  background-image: url("light-texture-bg.jpg");
-}
 /* Base button style */
 .btn-primary {
   background-color: var(--onda-blue);
@@ -298,4 +295,7 @@
 .service-card .card-body {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+.weather-content {
+  background-image: url("light-texture-bg.jpg");
 }

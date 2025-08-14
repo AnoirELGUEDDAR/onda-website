@@ -6,6 +6,7 @@ import '../FAQ/FAQ.css';
 import WeatherWidget from '../weather/WeatherWidget';
 import './Home.css';
 
+
 const Home = () => {
   const { t } = useTranslation();
 
@@ -94,41 +95,49 @@ const Home = () => {
 
 
         {/* Services Showcase */}
-        <section className="services-showcase py-5" style={{ backgroundColor: 'white' }}>
-          <div className="container-fluid px-5 mt-5">
-            <h2 className="text-center mb-5">{t('home.services')}</h2>
-            <div className="row">
-              {[{
-                img: '/images/facilities/check-in-counters.jpg',
-                title: t('home.checkIn'),
-                desc: t('home.checkInDesc')
-              }, {
-                img: '/images/facilities/duty-free-shopping.jpg',
-                title: t('home.shopping'),
-                desc: t('home.shoppingDesc')
-              }, {
-                img: '/images/facilities/airport-restaurant.jpg',
-                title: t('home.dining'),
-                desc: t('home.diningDesc')
-              },
-              ].map((service, index) => (
-                  <div
-                      key={index}
-                      className="col-lg-4 col-md-6 d-flex fade-up"
-                      style={{ animationDelay: `${index * 0.2}s` }}
-                  >
-                    <div className="card service-card w-100 ">
-                      <img src={service.img} className="card-img-top" alt={service.title} style={{height: '300px', objectFit: 'cover'}}/>
-                      <div className="card-body">
-                        <h5 className="card-title">{service.title}</h5>
-                        <p className="card-text">{service.desc}</p>
-                      </div>
-                    </div>
-                  </div>
-              ))}
+<section className="services-showcase py-5" style={{ backgroundColor: 'white' }}>
+  <div className="container-fluid px-5 mt-5">
+    <h2 className="text-center mb-5">{t('home.services')}</h2>
+    <div className="row">
+      {[{
+        img: '/images/facilities/check-in-counters.jpg',
+        title: t('home.checkIn'),
+        desc: t('home.checkInDesc')
+      }, {
+        img: '/images/facilities/duty-free-shopping.jpg',
+        title: t('home.shopping'),
+        desc: t('home.shoppingDesc')
+      }, {
+        img: '/images/facilities/airport-restaurant.jpg',
+        title: t('home.dining'),
+        desc: t('home.diningDesc')
+      },
+      ].map((service, index) => (
+        <div
+          key={index}
+          className="col-lg-4 col-md-6 d-flex fade-up"
+          style={{ animationDelay: `${index * 0.2}s` }}
+        >
+          <Link to="/services" className="text-decoration-none text-dark w-100">
+            <div className="card service-card w-100 h-100">
+              <img
+                src={service.img}
+                className="card-img-top"
+                alt={service.title}
+                style={{ height: '300px', objectFit: 'cover' }}
+              />
+              <div className="card-body">
+                <h5 className="card-title">{service.title}</h5>
+                <p className="card-text">{service.desc}</p>
+              </div>
             </div>
-          </div>
-        </section>
+          </Link>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
 
         {/* Map Section */}
         <section className="map-section py-5">

@@ -409,3 +409,13 @@ h4{
   color:black;
   font-size: 16px;
 }
+#ABOUTONDA {
+  opacity: 0;
+  animation: fadeInVideo 1s ease forwards;
+}
+
+@keyframes fadeInVideo {
+  to {
+    opacity: 1;
+  }
+}

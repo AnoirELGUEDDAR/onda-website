@@ -1,14 +1,16 @@
 import React from "react";
+import ReactCountryFlag from "react-country-flag";
 
 const LANGUAGES = [
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'ar', label: 'العربية', flag: '🇲🇦' },
-  { code: 'es', label: 'Español', flag: '🇪🇸' }
+  { code: 'en', label: 'English', flag: 'gb' },
+  { code: 'fr', label: 'Français', flag: 'fr' },
+  { code: 'ar', label: 'العربية', flag: 'ma' },
+  { code: 'es', label: 'Español', flag: 'es' }
 ];
 
 export default function LanguageModal({ show, onSelect }) {
   if (!show) return null;
+
   return (
     <div
       className="modal fade show"
@@ -28,7 +30,9 @@ export default function LanguageModal({ show, onSelect }) {
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content text-center">
           <div className="modal-header">
-            <h5 className="modal-title w-100" style={{ fontWeight: 700 }}>Choose your language</h5>
+            <h5 className="modal-title w-100" style={{ fontWeight: 700 }}>
+              Choose your language
+            </h5>
           </div>
           <div className="modal-body d-flex flex-wrap justify-content-center">
             {LANGUAGES.map(lang => (
@@ -38,7 +42,16 @@ export default function LanguageModal({ show, onSelect }) {
                 style={{ minWidth: 120, fontSize: 20 }}
                 onClick={() => onSelect(lang.code)}
               >
-                <span role="img" aria-label={lang.label}>{lang.flag}</span> {lang.label}
+                <ReactCountryFlag
+                  countryCode={lang.flag}
+                  svg
+                  style={{
+                    width: '1.5em',
+                    height: '1.5em',
+                    marginRight: '8px'
+                  }}
+                />
+                {lang.label}
               </button>
             ))}
           </div>

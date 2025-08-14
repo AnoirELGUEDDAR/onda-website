@@ -140,10 +140,116 @@
     "viewDetails": "Voir les Détails",
     "seeMore": "Voir Plus d'Aéroports",
     "about": "À Propos",
-    "facilitiesTitle": "Installations et Services",
+    "facilitiesTitleI": "Installations et Services",
     "code": "Code Aéroport",
     "location": "Emplacement",
+	    "wifi": {
+      "title": "Wi-Fi gratuit",
+      "body": "L’aéroport propose du Wi-Fi gratuit dans tous les terminaux, y compris les halls publics, restaurants et cafés.\nAccès depuis smartphone ou tablette via une adresse e-mail valide.\n\nLe débit varie selon l’emplacement dans l’aéroport. Suffisant pour WhatsApp et les réseaux sociaux, mais rarement adapté aux appels en Wi-Fi."
+    },
+    "dutyfree": {
+      "title": "Boutiques duty-free",
+      "intro": "Voici des boutiques proposant de bonnes affaires avant de quitter le Maroc.",
+      "atelierM": {
+        "name": "Atelier M",
+        "desc": "Collabore avec des familles et artisans de Marrakech pour créer des vêtements et objets de déco ancrés dans la tradition marocaine. De nombreuses pièces sont brodées à la main dans la médina."
+      },
+      "attitude": {
+        "name": "Attitude",
+        "desc": "Prêt-à-porter avec des marques comme Calvin Klein et Superdry. Espace contemporain réunissant des labels phares."
+      },
+      "hudson": {
+        "name": "Hudson",
+        "desc": "Souvenirs de qualité et design soigné — T-shirts, porte-clés, magazines au contenu culturel et présentation soignée."
+      },
+      "tableDuMarche": {
+        "name": "La Table du Marché",
+        "desc": "Pâtisserie appréciée à RAK. Fabrication sur place : éclairs, croissants, macarons, gâteaux, tartes et pains. Bureaux et Wi-Fi gratuit pour travailler."
+      },
+      "montblanc": {
+        "name": "Montblanc",
+        "desc": "Maroquinerie, bijoux, montres, parfums — et stylos iconiques en platine, or ou bois précieux. Idéal pour des cadeaux."
+      },
+      "matsuri": {
+        "name": "Matsuri",
+        "desc": "Cuisine japonaise : sushi, maki, sashimi et plats chauds (soupes, ramen, udon). Design minimaliste moderne ; salons privés disponibles."
+      },
+      "paul": {
+        "name": "Paul",
+        "desc": "Sandwiches, salades et en-cas avec la qualité Paul. Du petit-déjeuner au goûter — ne manquez pas le pain au chocolat."
+      },
+      "segafredo": {
+        "name": "Segafredo",
+        "desc": "Cafés de qualité avec pâtisseries marocaines. Terrasse avec vue piste ; options bio/commerce équitable ; sachets de grains à offrir."
+      },
+      "starbucks": {
+        "name": "Starbucks",
+        "desc": "Large choix d’arabicas et de boissons (latte, cappuccino, espresso, macchiato) avec options végétales, snacks et produits de marque."
+      },
+      "sunCatcher": {
+        "name": "Sun Catcher",
+        "desc": "Lunettes de soleil de qualité avec forte protection UV, styles classiques à modernes, verres fabriqués avec des techniques récentes."
+      },
+      "travelStar": {
+        "name": "Travel Star",
+        "desc": "Bagagerie et accessoires en cuir de qualité — sacs, sacs à dos, portefeuilles — à la fois tendance et intemporels."
+      },
+      "victoriasSecret": {
+        "name": "Victoria’s Secret",
+        "desc": "Sélection de lingerie, accessoires et cadeaux visant à renforcer confort et confiance."
+      },
+      "dutyFree": {
+        "name": "Duty Free",
+        "desc": "Une boutique duty-free dédiée se trouve au terminal des départs de l’aéroport de Marrakech."
+      }
+    },
+    "parking": {
+      "intro": "À Marrakech-Menara, les services de stationnement sont divisés en deux catégories :",
+      "short": "Courte durée — idéal pour dépose/minute : environ 5 MAD/heure ou 60 MAD/jour.",
+      "long": "Longue durée — pour plusieurs jours : environ 60 MAD/jour (réductions possibles pour les longs séjours).",
+      "cleaningTitle": "Services de nettoyage",
+      "cleaningDesc": "Certains parkings nettoient votre véhicule pendant votre absence (environ 50 MAD extérieur, 150 MAD intérieur/extérieur).",
+      "tableTitle": "Frais de stationnement à l’aéroport international de Marrakech",
+      "tableHeaders": { "type": "Type", "duration": "Durée", "price": "Tarif" },
+      "rows": {
+        "short": "Stationnement de courte durée",
+        "long": "Stationnement de longue durée",
+        "perHour": "Par heure",
+        "perDay": "Par jour",
+        "oneDay": "1 jour",
+        "multiDay": "Plusieurs jours",
+        "perDayShort": "jour",
+        "cleaning": "Service de nettoyage",
+        "extWash": "Lavage extérieur",
+        "fullClean": "Nettoyage complet"
+      }
+    },
     "type": "Type",
+    "facilitiesTitle": {
+      "restaurants": "Restaurants & Cafés",
+      "shops": "Boutiques Duty-Free",
+      "terminals": "Terminaux Passagers",
+      "currency": "Change de devises",
+      "parking": "Parking",
+      "wifi": "Wi-Fi gratuit"
+    },
+    "restaurant": {
+      "name": "Restaurant",
+      "zone": "Zone"
+    },
+    "currency": {
+      "agency": "Agence",
+      "zone": "Zone"
+    },
+    "facilitiesDescriptions": {
+      "restaurants": "Un large choix de restaurants pour tous les goûts.",
+      "shops": "Découvrez des articles exclusifs et de bonnes affaires.",
+      "terminals": "Un réseau de terminaux pour accompagner votre voyage.",
+      "currency": "Services pratiques pour les voyageurs internationaux.",
+      "parking": "Parkings courte et longue durée disponibles.",
+      "wifi": "Profitez d'une connexion internet rapide et fiable."
+    },
+    "clickForDetails": "Cliquez pour plus de détails",
     "noDetailedDescription": "Des informations détaillées sur cet aéroport seront disponibles prochainement.",
     "quickInfo": "Informations Rapides",
     "links": "Liens Utiles",

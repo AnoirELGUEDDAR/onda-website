@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Chatbot from './components/chatbot/Chatbot';
 import ScrollToTop from "./ScrollToTop";
 import Header from './components/layout/Header';
@@ -30,10 +30,10 @@ function getModeByTime() {
 
 function AppContent({ blur }) {
   const { i18n } = useTranslation();
-  const [theme, setTheme] = useState(getModeByTime());
-  const [fadeIn, setFadeIn] = useState(false);
+  const [theme, setTheme] = React.useState(getModeByTime());
+  const [fadeIn, setFadeIn] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = i18n.language;
     document.body.classList.add(`lang-${i18n.language}`);
@@ -48,20 +48,19 @@ function AppContent({ blur }) {
     };
   }, [i18n.language]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     document.body.classList.remove('light-mode', 'dark-mode');
     document.body.classList.add(`${theme}-mode`);
   }, [theme]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const interval = setInterval(() => {
       setTheme(getModeByTime());
     }, 30 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    // Short fade-in transition for content (optional)
+  React.useEffect(() => {
     const timeout = setTimeout(() => setFadeIn(true), 30);
     return () => clearTimeout(timeout);
   }, []);
@@ -95,28 +94,23 @@ function AppContent({ blur }) {
 
 export default function App() {
   const { i18n } = useTranslation();
-  const [language, setLanguage] = useState(() => localStorage.getItem('lang') || null);
+
+  // Show modal if user has NOT explicitly chosen language before
+  const showModal = !localStorage.getItem('hasChosenLanguage');
 
   const handleSelectLanguage = async (lang) => {
-    localStorage.setItem('lang', lang);
+    localStorage.setItem('i18nextLng', lang);
+    localStorage.setItem('hasChosenLanguage', 'true');
+    document.cookie = `i18next=${lang}; path=/;`;
     await i18n.changeLanguage(lang);
-    setLanguage(lang);
   };
 
-  useEffect(() => {
-    if (language && i18n.language !== language) {
-      i18n.changeLanguage(language);
-    }
-    // eslint-disable-next-line
-  }, [language]);
-
-  // Blur content if modal is open
-  const blur = !language;
+  const blur = showModal;
 
   return (
     <>
       <AppContent blur={blur} />
-      <LanguageModal show={!language} onSelect={handleSelectLanguage} />
+      <LanguageModal show={showModal} onSelect={handleSelectLanguage} />
     </>
   );
 }

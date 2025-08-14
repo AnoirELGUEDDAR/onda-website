@@ -63,8 +63,6 @@ const Footer = () => {
             <p className="mb-md-0">© {currentYear} {t('app.fullName')}. {t('footer.rights')}.</p>
           </div>
           <div className="col-md-5 text-md-end small">
-            <Link to="/terms" className="text-white text-decoration-none me-3">{t('footer.terms')}</Link>
-            <Link to="/privacy" className="text-white text-decoration-none me-3">{t('footer.privacy')}</Link>
           </div>
         </div>
       </div>

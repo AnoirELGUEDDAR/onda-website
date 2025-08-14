@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Chatbot.css';
-import chatbotLogo from './chatbotlogo.png';
 
 const Chatbot = () => {
     const { t, i18n } = useTranslation();
@@ -161,7 +160,7 @@ const Chatbot = () => {
                         <i className="fas fa-exclamation-circle"></i>
                     ) : (
                         <img
-                            src={chatbotLogo}
+                            src={"/images/chatbotlogo.png"}
                             alt="Chatbot"
                             id={"logo"}
                             style={{ width: 100, height: 100, borderRadius: '50%' }}

@@ -135,8 +135,91 @@
     "seeMore": "See More Airports",
     "about": "About",
     "facilitiesTitle": "Facilities & Services",
+	
+    "wifi": {
+      "title": "Free Wi-Fi",
+      "body": "The airport provides free Wi-Fi in all the terminals, including public halls, restaurants, and cafés.\nIt can be accessed from any smartphone or tablet by logging in with a valid email address.\n\nInternet speed can vary depending on your location at the airport. It’s fine for WhatsApp texting and social media, but it’s rarely good enough for Wi-Fi calling."
+    },
+    "dutyfree": {
+      "title": "Duty-Free Shops",
+      "intro": "Listed below are shops offering great airport bargains before you leave Morocco.",
+      "atelierM": {
+        "name": "Atelier M",
+        "desc": "Works with Marrakech families and artisans to create clothing and home décor rooted in Moroccan traditions. Many items feature hand embroidery, crafted in the medina by people working from home."
+      },
+      "attitude": {
+        "name": "Attitude",
+        "desc": "Popular ready-to-wear store with brands like Calvin Klein and Superdry. A contemporary space bringing top fashion labels under one roof."
+      },
+      "hudson": {
+        "name": "Hudson",
+        "desc": "Known for high-quality souvenirs and distinctive designs — T-shirts, keychains, and magazines with cultural content and polished presentation."
+      },
+      "tableDuMarche": {
+        "name": "La Table du Marché",
+        "desc": "Beloved pastry spot at RAK. Fresh on-site baking: éclairs, croissants, macarons, cakes, pies, and breads. Desks and free Wi-Fi for working travelers."
+      },
+      "montblanc": {
+        "name": "Montblanc",
+        "desc": "Premium leather goods, jewelry, watches, fragrances — and iconic fountain pens crafted from platinum, gold, or fine woods. Great for gifts."
+      },
+      "matsuri": {
+        "name": "Matsuri",
+        "desc": "Japanese cuisine: sushi, maki, sashimi, plus hot dishes like soups, ramen, and udon. Modern minimalist design; private rooms available."
+      },
+      "paul": {
+        "name": "Paul",
+        "desc": "Sandwiches, salads, and snacks with hallmark Paul quality. Breakfast to snack time — don’t miss the famous chocolate bread."
+      },
+      "segafredo": {
+        "name": "Segafredo",
+        "desc": "Premium coffee beans with Moroccan pastries for a quick bite. Terrace with airport views; organic and fair-trade options; giftable coffee bean bags."
+      },
+      "starbucks": {
+        "name": "Starbucks",
+        "desc": "Wide selection of arabicas and specialty drinks (lattes, cappuccinos, espressos, macchiatos) with vegan options, plus snacks and branded merchandise."
+      },
+      "sunCatcher": {
+        "name": "Sun Catcher",
+        "desc": "Quality sunglasses with strong UV protection, from classic to modern styles, using modern lens manufacturing for sharp vision."
+      },
+      "travelStar": {
+        "name": "Travel Star",
+        "desc": "High-quality luggage and leather accessories — purses, backpacks, and wallets — trendy yet timeless."
+      },
+      "victoriasSecret": {
+        "name": "Victoria’s Secret",
+        "desc": "Popular selection of lingerie, accessories, and gifts designed to help women feel confident and stylish."
+      },
+      "dutyFree": {
+        "name": "Duty Free",
+        "desc": "Marrakesh Airport has a dedicated duty-free store in the departures terminal."
+      }
+    },
+    "parking": {
+      "intro": "At Marrakech-Menara, parking services are split into two main categories:",
+      "short": "Short-term parking — ideal for drop-off/pick-up: about 5 MAD/hour or 60 MAD/day.",
+      "long": "Long-term parking — for several days: about 60 MAD/day (discounts may apply for longer stays).",
+      "cleaningTitle": "Car cleaning services",
+      "cleaningDesc": "Some car parks offer cleaning while you’re away (about 50 MAD for exterior wash, 150 MAD for full interior/exterior).",
+      "tableTitle": "Parking fees at Marrakech International Airport",
+      "tableHeaders": { "type": "Type", "duration": "Duration", "price": "Price" },
+      "rows": {
+        "short": "Short-term parking",
+        "long": "Long-term parking",
+        "perHour": "Per hour",
+        "perDay": "Per day",
+        "oneDay": "1 day",
+        "multiDay": "Multiple days",
+        "perDayShort": "day",
+        "cleaning": "Cleaning service",
+        "extWash": "Exterior wash",
+        "fullClean": "Full clean"
+      }
+    },
     "code": "Airport Code",
     "location": "Location",
+    "clickForDetails": "Click for details",
     "type": "Type",
     "noDetailedDescription": "Detailed information about this airport will be available soon.",
     "quickInfo": "Quick Information",
@@ -155,6 +238,15 @@
       "parking": "Parking",
       "currency": "Currency Exchange"
     },
+	"facilitiesDescriptions": {
+      "terminals": "A network of terminals to serve your journey.",
+      "shops": "Find exclusive goods and great deals.",
+      "restaurants": "A wide selection of dining options for all tastes.",
+      "wifi": "Enjoy fast and reliable internet access.",
+      "parking": "Short-term and long-term parking available.",
+      "currency": "Convenient services for international travelers."
+    },
+	
     "names": {
       "mohammed_v": "Mohammed V International Airport",
       "menara": "Marrakech Menara Airport",
