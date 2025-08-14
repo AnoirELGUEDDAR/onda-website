@@ -41,23 +41,6 @@ const AirportDetail = () => {
   // All-airports modal
   const [showWifi, setShowWifi] = useState(false);
 // Images for each Duty-Free item (put files in /public/images/dutyfree/)
-const dutyFreeItems = [
-  { key: 'atelierM',         img: '/images/dutyfree/atelierm.jpg' },
-  { key: 'attitude',         img: '/images/dutyfree/attitude.jpg' },
-  { key: 'hudson',           img: '/images/dutyfree/hudson.jpg' },
-  { key: 'tableDuMarche',    img: '/images/dutyfree/tableDuMarche.jpg' },
-  { key: 'montblanc',        img: '/images/dutyfree/montblanc.jpg' },
-  { key: 'matsuri',          img: '/images/dutyfree/matsuri.jpg' },
-  { key: 'paul',             img: '/images/dutyfree/paul.jpg' },
-  { key: 'segafredo',        img: '/images/dutyfree/segafredo.jpg' },
-  { key: 'starbucks',        img: '/images/dutyfree/starbucks.jpg' },
-  { key: 'sunCatcher',       img: '/images/dutyfree/suncatcher.jpg' },
-  { key: 'travelStar',       img: '/images/dutyfree/travelstar.jpg' },
-  { key: 'victoriasSecret',  img: '/images/dutyfree/victoriasSecret.jpg' },
-  { key: 'dutyFree',         img: '/images/dutyfree/dutyFree.jpg' }
-];
-
-
   useEffect(() => {
     const findAirport = () => {
       try {
