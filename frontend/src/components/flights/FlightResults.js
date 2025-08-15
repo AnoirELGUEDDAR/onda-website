@@ -1,173 +1,159 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const airlineDataByCode = {
-  'AT': {
-    name: 'Royal Air Maroc',
-    logo: '/images/airlines/royal-air-maroc.png'
-  },
-  '3O': {
-    name: 'Air Arabia Maroc',
-    logo: '/images/airlines/air-arabia.png'
-  },
-    'BA': {
-    name: 'British-Airways',
-    logo: '/images/airlines/british-airways.png'
-  },
-    'TB': {
-    name: 'Tuifly',
-    logo: '/images/airlines/tuifly.png'
-  },
-      'AF': {
-    name: 'Air France',
-    logo: '/images/airlines/air-france.png'
-  },
-      'EY': {
-    name: 'Etihad Airways',
-    logo: '/images/airlines/etihad-airways.png'
-  },
-    'IB': {
-    name: 'Iberia',
-    logo: '/images/airlines/iberia.png'
-  },
-      'FR': {
-    name: 'Ryanair',
-    logo: '/images/airlines/ryanair.png'
-  },
-    'TK': {
-    name: 'Turkish Airlines',
-    logo: '/images/airlines/turkish-airlines.png'
-  },
-      'VY': {
-    name: 'Vueling',
-    logo: '/images/airlines/vueling.png'
-  },
-        'QR': {
-    name: 'Qatar Airways',
-    logo: '/images/airlines/qatar-airways.png'
-  },
-          'EK': {
-    name: 'Emirates',
-    logo: '/images/airlines/emirates.png'
-  },
-            'LH': {
-    name: 'Lufthansa',
-    logo: '/images/airlines/lufthansa.png'
-  },
-  
-};
+// Compact source -> build a map once
+const AIRLINES = [
+  ['AT', 'Royal Air Maroc', 'royal-air-maroc.png'],
+  ['3O', 'Air Arabia Maroc', 'air-arabia.png'],
+  ['BA', 'British-Airways', 'british-airways.png'],
+  ['TB', 'Tuifly', 'tuifly.png'],
+  ['AF', 'Air France', 'air-france.png'],
+  ['EY', 'Etihad Airways', 'etihad-airways.png'],
+  ['IB', 'Iberia', 'iberia.png'],
+  ['FR', 'Ryanair', 'ryanair.png'],
+  ['TK', 'Turkish Airlines', 'turkish-airlines.png'],
+  ['VY', 'Vueling', 'vueling.png'],
+  ['QR', 'Qatar Airways', 'qatar-airways.png'],
+  ['EK', 'Emirates', 'emirates.png'],
+  ['LH', 'Lufthansa', 'lufthansa.png'],
+];
 
-function getAirlineInfo(flight) {
-  let code = '';
-  const flightNumber = flight.flight_number || flight.flightNumber || '';
-  if (flightNumber.length >= 2) {
-    code = flightNumber.substring(0, 2).toUpperCase();
+const buildAirlineMap = () =>
+  Object.fromEntries(
+    AIRLINES.map(([code, name, file]) => [code, { name, logo: `/images/airlines/${file}` }])
+  );
+
+const pick = (obj, keys) => {
+  for (const k of keys) {
+    const v = obj?.[k];
+    if (v !== undefined && v !== null && v !== '') return v;
   }
-  if (airlineDataByCode[code]) return airlineDataByCode[code];
-  // fallback: match by airline name
-  const known = Object.values(airlineDataByCode).find(a =>
-      a.name === (flight.airline_name || flight.airline || ''));
-  return known || {};
-}
-
-const formatTime = (dateStr, i18n) => {
-  if (!dateStr) return '';
-  const d = new Date(dateStr);
-  if (isNaN(d)) return '';
-  return d.toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' });
+  return '';
 };
+
+const formatTime = (v, locale) => {
+  if (!v) return '';
+  const d = new Date(v);
+  if (Number.isNaN(+d)) return '';
+  return d.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+};
+
+const airportDisplay = (city, code) => {
+  if (!city && !code) return '';
+  if (!city) return code;
+  if (!code) return city;
+  return `${city} (${code})`;
+};
+
+const AirlineCell = ({ airline, fallbackName }) => {
+  if (!airline?.logo && !airline?.name && !fallbackName) return <span>N/A</span>;
+  return (
+    <div className="airline-cell" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      {airline?.logo && (
+        <img
+          src={airline.logo}
+          alt={airline?.name || fallbackName || 'airline'}
+          className="airline-logo"
+          style={{ width: 150, height: 150, objectFit: 'contain' }}
+          onError={(e) => (e.currentTarget.style.display = 'none')}
+        />
+      )}
+      <span>{airline?.name || fallbackName || 'N/A'}</span>
+    </div>
+  );
+};
+
+const HEADERS = [
+  'flights.status',
+  'flights.flightNumber',
+  'flights.via',
+  'flights.destination',
+  'flights.origin',
+  'flights.airline',
+  'flights.depart',
+  'flights.arrive',
+];
 
 const FlightResults = ({ flights, loading, error, searchParams }) => {
   const { t, i18n } = useTranslation();
-  const currentTime = new Date();
-  const formattedDate = currentTime.toLocaleDateString(i18n.language);
+  const airlineByCode = useMemo(buildAirlineMap, []);
+  const locale = i18n.language;
 
-  if (loading) {
-    return <div className="loading-container">{t('flights.loadingFlights')}</div>;
-  }
-  if (error) {
-    return <div className="alert alert-danger">{error}</div>;
-  }
-  const flightArray = Array.isArray(flights) ? flights : [];
+  const now = new Date();
+  const formattedDate = now.toLocaleDateString(locale);
+  const formattedTime = now.toLocaleTimeString(locale);
 
-  const airportDisplay = (city, code) => {
-    if (!city && !code) return '';
-    if (!city && code) return code;
-    if (city && !code) return city;
-    return `${city} (${code})`;
-  };
+  if (loading) return <div className="loading-container">{t('flights.loadingFlights')}</div>;
+  if (error) return <div className="alert alert-danger">{error}</div>;
+
+  const rows = Array.isArray(flights) ? flights : [];
 
   return (
-      <div className="flight-results-container">
-        <div className="flights-header">
-          <div className="current-time">
-            {formattedDate} | {currentTime.toLocaleTimeString()}
-          </div>
-        </div>
-        <div className="flight-results-table">
-          <table className="flight-table">
-            <thead>
-            <tr>
-              <th>{t('flights.status')}</th>
-              <th>{t('flights.flightNumber')}</th>
-              <th>{t('flights.via')}</th>
-              <th>{t('flights.destination')}</th>
-              <th>{t('flights.origin')}</th>
-              <th>{t('flights.airline')}</th>
-              <th>{t('flights.depart')}</th>
-              <th>{t('flights.arrive')}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {flightArray.length > 0 ? (
-                flightArray.map((flight, index) => {
-                  // Find airline info (logo, name)
-                  const airlineInfo = getAirlineInfo(flight);
-                  const destination = airportDisplay(
-                      flight.destination_city || flight.destinationCity || flight.arrivalAirportCity,
-                      flight.destination_code || flight.destinationCode || flight.arrivalAirportCode
-                  );
-                  const origin = airportDisplay(
-                      flight.origin_city || flight.originCity || flight.departureAirportCity,
-                      flight.origin_code || flight.originCode || flight.departureAirportCode
-                  );
-                  const depTime = formatTime(flight.departure_time || flight.departureTime, i18n);
-                  const arrTime = formatTime(flight.arrival_time || flight.arrivalTime, i18n);
-
-                  return (
-                      <tr key={flight.id || index}>
-                        <td>{flight.status || t('flights.statusScheduled')}</td>
-                        <td>{flight.flight_number || flight.flightNumber || 'N/A'}</td>
-                        <td>{flight.via || t('flights.direct')}</td>
-                        <td>{destination}</td>
-                        <td>{origin}</td>
-                        <td className="airline-cell">
-                          {airlineInfo.logo && (
-                              <img
-                                  src={airlineInfo.logo}
-                                  alt={airlineInfo.name}
-                                  className="airline-logo"
-                                  style={{ width: 150, height: 150, objectFit: 'contain', marginRight: 8 }}
-                                  onError={e => e.target.style.display = 'none'}
-                              />
-                          )}
-                          <span>{airlineInfo.name || flight.airline_name || flight.airline || 'N/A'}</span>
-                        </td>
-                        <td>{depTime}</td>
-                        <td>{arrTime}</td>
-                      </tr>
-                  );
-                })
-            ) : (
-                <tr>
-                  <td colSpan="8" className="no-flights">{t('flights.noFlights')}</td>
-                </tr>
-            )}
-            </tbody>
-          </table>
+    <div className="flight-results-container">
+      <div className="flights-header">
+        <div className="current-time">
+          {formattedDate} | {formattedTime}
         </div>
       </div>
+
+      <div className="flight-results-table">
+        <table className="flight-table">
+          <thead>
+            <tr>
+              {HEADERS.map((key) => (
+                <th key={key}>{t(key)}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.length > 0 ? (
+              rows.map((f, idx) => {
+                // Normalize once
+                const status = pick(f, ['status']) || t('flights.statusScheduled');
+                const number = pick(f, ['flight_number', 'flightNumber']) || 'N/A';
+                const via = pick(f, ['via']) || t('flights.direct');
+
+                const destCity = pick(f, ['destination_city', 'destinationCity', 'arrivalAirportCity']);
+                const destCode = pick(f, ['destination_code', 'destinationCode', 'arrivalAirportCode']);
+
+                const origCity = pick(f, ['origin_city', 'originCity', 'departureAirportCity']);
+                const origCode = pick(f, ['origin_code', 'originCode', 'departureAirportCode']);
+
+                const dep = formatTime(pick(f, ['departure_time', 'departureTime']), locale);
+                const arr = formatTime(pick(f, ['arrival_time', 'arrivalTime']), locale);
+
+                const airlineFallback = pick(f, ['airline_name', 'airline']) || '';
+                const prefix = String(number).slice(0, 2).toUpperCase();
+                const airline = airlineByCode[prefix] || null;
+
+                return (
+                  <tr key={f.id ?? `${number}-${idx}`}>
+                    <td>{status}</td>
+                    <td>{number}</td>
+                    <td>{via}</td>
+                    <td>{airportDisplay(destCity, destCode)}</td>
+                    <td>{airportDisplay(origCity, origCode)}</td>
+                    <td>
+                      <AirlineCell airline={airline} fallbackName={airlineFallback} />
+                    </td>
+                    <td>{dep}</td>
+                    <td>{arr}</td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan={HEADERS.length} className="no-flights">
+                  {t('flights.noFlights')}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 
 export default FlightResults;
+
