@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Chatbot from './components/chatbot/Chatbot';
@@ -80,7 +81,7 @@ function AppContent({ blur }) {
               <Route path="/weather" element={<WeatherPage />} />
               <Route path="/services" element={<Services />} />
               <Route path="/about" element={<AboutPage />} />
-              <Route path="/Contact" element={<Contact />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
@@ -91,6 +92,14 @@ function AppContent({ blur }) {
     </Router>
   );
 }
+
+AppContent.propTypes = {
+  blur: PropTypes.bool,
+};
+
+AppContent.defaultProps = {
+  blur: false,
+};
 
 export default function App() {
   const { i18n } = useTranslation();
@@ -114,3 +123,4 @@ export default function App() {
     </>
   );
 }
+
