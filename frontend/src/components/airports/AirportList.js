@@ -1,158 +1,85 @@
-import React, { useState, useEffect } from 'react';
+// src/components/airports/AirportList.js
+import React, { useState, useEffect, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import FlightLoader from '../../FlightLoader'; // Adjust path if needed
+import FlightLoader from '../../FlightLoader';
 import './AirportList.css';
 
-export const airports = [
-    {
-    code: 'RAK',
-    city: 'marrakech',
-    name: 'menara',
-    type: 'international',
-    image: '/images/airports/marrakech-airport.jpg',
-  },
-  {
-    code: 'CMN',
-    city: 'casablanca',
-    name: 'mohammed_v',
-    type: 'international',
-    image: '/images/airports/casablanca-airport.jpg',
-  },
-  {
-    code: 'AGA',
-    city: 'agadir',
-    name: 'al_massira',
-    type: 'international',
-    image: '/images/airports/agadir-airport.jpg',
-  },
-  {
-    code: 'AHU',
-    city: 'al_hoceima',
-    name: 'cherif_al_idrissi',
-    type: 'regional',
-    image: '/images/airports/cherif-al-idrissi-airport.jpg',
-  },
-  {
-    code: 'BEM',
-    city: 'beni_mellal',
-    name: 'beni_mellal',
-    type: 'regional',
-    image: '/images/airports/beni-mellal-airport.jpg',
-  },
-  {
-    code: 'ERH',
-    city: 'errachidia',
-    name: 'moulay_ali_cherif',
-    type: 'regional',
-    image: '/images/airports/moulay-ali-cherif-airport.jpg',
-  },
-  {
-    code: 'ESU',
-    city: 'essaouira',
-    name: 'essaouira_mogador',
-    type: 'regional',
-    image: '/images/airports/essaouira-airport.jpg',
-  },
-  {
-    code: 'FEZ',
-    city: 'fes',
-    name: 'fes_sais',
-    type: 'international',
-    image: '/images/airports/fes-airport.jpg',
-  },
-  {
-    code: 'NDR',
-    city: 'nador',
-    name: 'nador_international',
-    type: 'international',
-    image: '/images/airports/nador-airport.jpg',
-  },
-  {
-    code: 'OZZ',
-    city: 'ouarzazate',
-    name: 'ouarzazate',
-    type: 'regional',
-    image: '/images/airports/ouarzazate-airport.jpg',
-  },
-  {
-    code: 'OUD',
-    city: 'oujda',
-    name: 'oujda_angads',
-    type: 'international',
-    image: '/images/airports/oujda-airport.jpg',
-  },
-  {
-    code: 'RBA',
-    city: 'rabat',
-    name: 'rabat_sale',
-    type: 'international',
-    image: '/images/airports/rabat-airport.jpg',
-  },
-  {
-    code: 'TNG',
-    city: 'tangier',
-    name: 'tangier_ibn_battouta',
-    type: 'international',
-    image: '/images/airports/tangier-airport.jpg',
-  },
-  {
-    code: 'TTU',
-    city: 'tetouan',
-    name: 'tetouan_sania_ramel',
-    type: 'regional',
-    image: '/images/airports/tetouan-airport.jpg',
-  },
-  {
-    code: 'VIL',
-    city: 'dakhla',
-    name: 'dakhla',
-    type: 'regional',
-    image: '/images/airports/dakhla-airport.jpg',
-  },
-  {
-    code: 'EUN',
-    city: 'laayoune',
-    name: 'hassan_i',
-    type: 'international',
-    image: '/images/airports/laayoune-airport.jpg',
-  },
-  {
-    code: 'TTA',
-    city: 'tan_tan',
-    name: 'tan_tan_plage_blanche',
-    type: 'regional',
-    image: '/images/airports/tan-tan-airport.jpg',
-  },
-  {
-    code: 'GLN',
-    city: 'guelmim',
-    name: 'guelmim',
-    type: 'regional',
-    image: '/images/airports/guelmim-airport.jpg',
-  },
-  {
-    code: 'OZG',
-    city: 'zagora',
-    name: 'zagora',
-    type: 'regional',
-    image: '/images/airports/zagora-airport.jpg',
-  },
-  {
-    code: 'UAR',
-    city: 'bouarfa',
-    name: 'bouarfa',
-    type: 'regional',
-    image: '/images/airports/bouarfa-airport.jpg',
-  }
+/**
+ * Compact airport rows to reduce duplication
+ * [code, city, nameKey, type, imageFile]
+ */
+const AIRPORT_ROWS = [
+  ['RAK','marrakech','menara','international','marrakech-airport.jpg'],
+  ['CMN','casablanca','mohammed_v','international','casablanca-airport.jpg'],
+  ['AGA','agadir','al_massira','international','agadir-airport.jpg'],
+  ['AHU','al_hoceima','cherif_al_idrissi','regional','cherif-al-idrissi-airport.jpg'],
+  ['BEM','beni_mellal','beni_mellal','regional','beni-mellal-airport.jpg'],
+  ['ERH','errachidia','moulay_ali_cherif','regional','moulay-ali-cherif-airport.jpg'],
+  ['ESU','essaouira','essaouira_mogador','regional','essaouira-airport.jpg'],
+  ['FEZ','fes','fes_sais','international','fes-airport.jpg'],
+  ['NDR','nador','nador_international','international','nador-airport.jpg'],
+  ['OZZ','ouarzazate','ouarzazate','regional','ouarzazate-airport.jpg'],
+  ['OUD','oujda','oujda_angads','international','oujda-airport.jpg'],
+  ['RBA','rabat','rabat_sale','international','rabat-airport.jpg'],
+  ['TNG','tangier','tangier_ibn_battouta','international','tangier-airport.jpg'],
+  ['TTU','tetouan','tetouan_sania_ramel','regional','tetouan-airport.jpg'],
+  ['VIL','dakhla','dakhla','regional','dakhla-airport.jpg'],
+  ['EUN','laayoune','hassan_i','international','laayoune-airport.jpg'],
+  ['TTA','tan_tan','tan_tan_plage_blanche','regional','tan-tan-airport.jpg'],
+  ['GLN','guelmim','guelmim','regional','guelmim-airport.jpg'],
+  ['OZG','zagora','zagora','regional','zagora-airport.jpg'],
+  ['UAR','bouarfa','bouarfa','regional','bouarfa-airport.jpg'],
 ];
+
+// Single source of truth for airports as objects
+export const airports = AIRPORT_ROWS.map(([code, city, name, type, imageFile]) => ({
+  code,
+  city,
+  name,
+  type,
+  image: `/images/airports/${imageFile}`,
+}));
+
+// Small presentational component to avoid JSX repetition
+const AirportCard = memo(function AirportCard({ airport, t }) {
+  const title = t(`airports.names.${airport.name}`);
+  const city = t(`cities.${airport.city}`);
+  const type = t(`airports.types.${airport.type}`);
+
+  return (
+    <div className="col-lg-4 col-md-6" key={airport.code}>
+      <div className="airport-card h-100">
+        <img
+          src={airport.image}
+          alt={title}
+          className="airport-image"
+          loading="lazy"
+        />
+        <div className="airport-content">
+          <h2 className="airport-title">{title}</h2>
+          <div className="airport-code-city">
+            {airport.code} - {city}
+          </div>
+          <p className="airport-description">
+            {t(`airports.descriptions.${airport.code}`, { city, type })}
+          </p>
+          <div className="airport-actions">
+            <Link to={`/airports/${airport.code}`} className="btn btn-primary">
+              {t('airports.viewDetails')}
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
 
 const AirportList = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading for 1 second
     const timeout = setTimeout(() => setLoading(false), 1000);
     return () => clearTimeout(timeout);
   }, []);
@@ -160,44 +87,18 @@ const AirportList = () => {
   if (loading) return <FlightLoader />;
 
   return (
-      <div className="airports-page" style={{backgroundColor: 'white'}}>
-        <div className="container py-5">
-          <h1 className="mb-5">{t('airports.pageTitle', 'Morocco Airports')}</h1>
-          <div className="row g-4">
-            {airports.map((airport) => (
-                <div className="col-lg-4 col-md-6" key={airport.code}>
-                  <div className="airport-card h-100">
-                    <img
-                        src={airport.image}
-                        alt={t(`airports.names.${airport.name}`)}
-                        className="airport-image"
-                    />
-                    <div className="airport-content">
-                      <h2 className="airport-title">
-                        {t(`airports.names.${airport.name}`)}
-                      </h2>
-                      <div className="airport-code-city">
-                        {airport.code} - {t(`cities.${airport.city}`)}
-                      </div>
-                      <p className="airport-description">
-                        {t(`airports.descriptions.${airport.code}`, {
-                          city: t(`cities.${airport.city}`),
-                          type: t(`airports.types.${airport.type}`)
-                        })}
-                      </p>
-                      <div className="airport-actions">
-                        <Link to={`/airports/${airport.code}`} className="btn btn-primary">
-                          {t('airports.viewDetails')}
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            ))}
-          </div>
+    <div className="airports-page" style={{ backgroundColor: 'white' }}>
+      <div className="container py-5">
+        <h1 className="mb-5">{t('airports.pageTitle', 'Morocco Airports')}</h1>
+        <div className="row g-4">
+          {airports.map((airport) => (
+            <AirportCard key={airport.code} airport={airport} t={t} />
+          ))}
         </div>
       </div>
+    </div>
   );
 };
 
 export default AirportList;
+
