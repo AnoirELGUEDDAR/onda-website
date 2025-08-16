@@ -21,7 +21,9 @@ jest.mock('react-i18next', () => ({
   initReactI18next: { type: '3rdParty', init: jest.fn() },
   useTranslation: () => {
     const t = (k, opts) => (opts?.defaultValue ? opts.defaultValue : k);
-    return { t, i18n: { language: 'en', changeLanguage: jest.fn() } };
+    return { t, i18n: { language: 'en', changeLanguage: jest.fn(),        dir: () => 'ltr',
+ } };
+    
   },
 }));
 

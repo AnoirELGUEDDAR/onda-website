@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1755357828550" clover="3.2.0">
-  <project timestamp="1755357828550" name="All files">
-    <metrics statements="709" coveredstatements="78" conditionals="394" coveredconditionals="12" methods="187" coveredmethods="25" elements="1290" coveredelements="115" complexity="0" loc="709" ncloc="709" packages="9" files="31" classes="31"/>
+<coverage generated="1755368403832" clover="3.2.0">
+  <project timestamp="1755368403832" name="All files">
+    <metrics statements="738" coveredstatements="78" conditionals="394" coveredconditionals="12" methods="198" coveredmethods="25" elements="1330" coveredelements="115" complexity="0" loc="738" ncloc="738" packages="9" files="32" classes="32"/>
     <package name="src">
       <metrics statements="84" coveredstatements="3" conditionals="31" coveredconditionals="0" methods="25" coveredmethods="1"/>
       <file name="App.js" path="/home/anoir/projects/onda-website/frontend/src/App.js">
@@ -265,7 +265,7 @@
       </file>
     </package>
     <package name="src.components.flights">
-      <metrics statements="217" coveredstatements="0" conditionals="173" coveredconditionals="0" methods="47" coveredmethods="0"/>
+      <metrics statements="246" coveredstatements="0" conditionals="173" coveredconditionals="0" methods="58" coveredmethods="0"/>
       <file name="FlightCard.js" path="/home/anoir/projects/onda-website/frontend/src/components/flights/FlightCard.js">
         <metrics statements="35" coveredstatements="0" conditionals="44" coveredconditionals="0" methods="3" coveredmethods="0"/>
         <line num="5" count="0" type="stmt"/>
@@ -497,6 +497,38 @@
         <line num="109" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="123" count="0" type="stmt"/>
         <line num="141" count="0" type="stmt"/>
+      </file>
+      <file name="FlightSearchTest.js" path="/home/anoir/projects/onda-website/frontend/src/components/flights/FlightSearchTest.js">
+        <metrics statements="29" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="11" coveredmethods="0"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="81" count="0" type="stmt"/>
+        <line num="83" count="0" type="stmt"/>
+        <line num="84" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.components.layout">
