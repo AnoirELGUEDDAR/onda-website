@@ -138,10 +138,11 @@ const FlightResults = ({ flights, loading, error }) => {
                 const airline = airlineByCode[prefix] || null;
 
                 // Stable row key (no array index)
-                const rowKey =
-                  f.id ??
-                  [number, depRaw, arrRaw, origCode, destCode].filter(Boolean).join('|') ||
-                  airlineFallback;
+const rowKey =
+  f.id ?? (
+    [number, depRaw, arrRaw, origCode, destCode].filter(Boolean).join('|') || airlineFallback
+  );
+
 
                 return (
                   <tr key={rowKey}>

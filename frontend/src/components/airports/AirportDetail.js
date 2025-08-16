@@ -267,10 +267,10 @@ const AirportDetail = () => {
             <div className="airport-description mb-5">
               <h2 className="h4 fw-semibold mb-3">{t('airports.about', 'About')}</h2>
               <p className="lead">
-                {t(`airports.descriptions.${airport.code}`, {{
+                {t(`airports.descriptions.${airport.code}`, {
                   city: t(`cities.${airport.city}`),
                   type: t(`airports.types.${airport.type}`)
-                }})}
+            })}
               </p>
             </div>
 

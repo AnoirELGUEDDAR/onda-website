@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">61.53% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>8/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>3/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">58.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>7/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -136,26 +136,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -177,7 +177,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -205,26 +205,26 @@
 import { useTranslation } from 'react-i18next';
 import ReactCountryFlag from "react-country-flag";
 &nbsp;
-const LanguageSwitcher = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-  const { i18n } = <span class="cstat-no" title="statement not covered" >useTranslation();</span>
+const LanguageSwitcher = () =&gt; {
+  const { i18n } = useTranslation();
 &nbsp;
-  const languages = <span class="cstat-no" title="statement not covered" >[</span>
+  const languages = [
     { code: 'en', label: 'English', flag: 'gb' },
     { code: 'ar', label: 'العربية', flag: 'ma' },
     { code: 'fr', label: 'Français', flag: 'fr' },
     { code: 'es', label: 'Español', flag: 'es' }
   ];
 &nbsp;
-  const currentLang = <span class="cstat-no" title="statement not covered" >languages.find(<span class="fstat-no" title="function not covered" >l </span>=&gt; <span class="cstat-no" title="statement not covered" >l.code === i18n.language)</span> || languages[0];</span>
+  const currentLang = languages.find(l =&gt; l.code === i18n.language) || <span class="branch-1 cbranch-no" title="branch not covered" >languages[0];</span>
 &nbsp;
-  const changeLanguage = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(l</span>ng) =&gt; {</span>
+  const changeLanguage = <span class="fstat-no" title="function not covered" >(l</span>ng) =&gt; {
 <span class="cstat-no" title="statement not covered" >    i18n.changeLanguage(lng);</span>
 <span class="cstat-no" title="statement not covered" >    localStorage.setItem('i18nextLng', lng);</span>
 <span class="cstat-no" title="statement not covered" >    localStorage.setItem('hasChosenLanguage', 'true');</span>
 <span class="cstat-no" title="statement not covered" >    document.cookie = `i18next=${lng}; path=/;`;</span>
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;div className="dropdown"&gt;
       &lt;button
         className="btn btn-outline-dark dropdown-toggle"
@@ -245,8 +245,8 @@ const LanguageSwitcher = <span class="cstat-no" title="statement not covered" ><
         {currentLang.label}
       &lt;/button&gt;
       &lt;ul className="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"&gt;
-        {languages.map(<span class="fstat-no" title="function not covered" >la</span>ng =&gt; (
-<span class="cstat-no" title="statement not covered" >          &lt;li key={lang.code}&gt;</span>
+        {languages.map(lang =&gt; (
+          &lt;li key={lang.code}&gt;
             &lt;button
               className={`dropdown-item ${lang.code === i18n.language ? 'active' : ''}`}
               onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >changeLanguage(lang.code)}</span>
@@ -277,7 +277,7 @@ export default LanguageSwitcher;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-16T14:00:28.055Z
+                at 2025-08-16T15:23:48.530Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
