@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 // Compact source -> build a map once
@@ -63,6 +64,14 @@ const AirlineCell = ({ airline, fallbackName }) => {
   );
 };
 
+AirlineCell.propTypes = {
+  airline: PropTypes.shape({
+    name: PropTypes.string,
+    logo: PropTypes.string,
+  }),
+  fallbackName: PropTypes.string,
+};
+
 const HEADERS = [
   'flights.status',
   'flights.flightNumber',
@@ -74,7 +83,7 @@ const HEADERS = [
   'flights.arrive',
 ];
 
-const FlightResults = ({ flights, loading, error, searchParams }) => {
+const FlightResults = ({ flights, loading, error /*, searchParams */ }) => {
   const { t, i18n } = useTranslation();
   const airlineByCode = useMemo(buildAirlineMap, []);
   const locale = i18n.language;
@@ -107,7 +116,7 @@ const FlightResults = ({ flights, loading, error, searchParams }) => {
           </thead>
           <tbody>
             {rows.length > 0 ? (
-              rows.map((f, idx) => {
+              rows.map((f) => {
                 // Normalize once
                 const status = pick(f, ['status']) || t('flights.statusScheduled');
                 const number = pick(f, ['flight_number', 'flightNumber']) || 'N/A';
@@ -119,15 +128,23 @@ const FlightResults = ({ flights, loading, error, searchParams }) => {
                 const origCity = pick(f, ['origin_city', 'originCity', 'departureAirportCity']);
                 const origCode = pick(f, ['origin_code', 'originCode', 'departureAirportCode']);
 
-                const dep = formatTime(pick(f, ['departure_time', 'departureTime']), locale);
-                const arr = formatTime(pick(f, ['arrival_time', 'arrivalTime']), locale);
+                const depRaw = pick(f, ['departure_time', 'departureTime']);
+                const arrRaw = pick(f, ['arrival_time', 'arrivalTime']);
+                const dep = formatTime(depRaw, locale);
+                const arr = formatTime(arrRaw, locale);
 
                 const airlineFallback = pick(f, ['airline_name', 'airline']) || '';
                 const prefix = String(number).slice(0, 2).toUpperCase();
                 const airline = airlineByCode[prefix] || null;
 
+                // Stable row key (no array index)
+                const rowKey =
+                  f.id ??
+                  [number, depRaw, arrRaw, origCode, destCode].filter(Boolean).join('|') ||
+                  airlineFallback;
+
                 return (
-                  <tr key={f.id ?? `${number}-${idx}`}>
+                  <tr key={rowKey}>
                     <td>{status}</td>
                     <td>{number}</td>
                     <td>{via}</td>
@@ -153,6 +170,20 @@ const FlightResults = ({ flights, loading, error, searchParams }) => {
       </div>
     </div>
   );
+};
+
+FlightResults.propTypes = {
+  flights: PropTypes.arrayOf(PropTypes.object),
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  searchParams: PropTypes.object,
+};
+
+FlightResults.defaultProps = {
+  flights: [],
+  loading: false,
+  error: '',
+  searchParams: null,
 };
 
 export default FlightResults;

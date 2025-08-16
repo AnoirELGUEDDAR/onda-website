@@ -15,7 +15,7 @@ spec:
         - name: maven-cache
           mountPath: /root/.m2
     - name: node
-      image: node:16
+      image: node:20
       command: ["cat"]
       tty: true
       volumeMounts:
@@ -49,7 +49,6 @@ spec:
 """
         }
     }
-
     environment {
         DOCKER_HUB_USER = 'anoiraeg2003'
         BACKEND_IMAGE = "${DOCKER_HUB_USER}/spring-backend:${BUILD_NUMBER}"
@@ -59,25 +58,20 @@ spec:
         MAVEN_OPTS = "-Dmaven.repo.local=/root/.m2 -Xmx1024m"
         CURRENT_DATE = "2025-08-06 15:23:26"
         CURRENT_USER = "AnoirELGUEDDAR"
+        SONARQ_DONE = 'false'
     }
-
     stages {
         stage('Checkout') {
             steps {
                 script {
                     def gitRepoUrl = 'https://github.com/AnoirELGUEDDAR/onda-website.git'
-                    checkout([$class: 'GitSCM',
-                              branches: [[name: '*/main']],
-                              userRemoteConfigs: [[url: gitRepoUrl]],
-                              extensions: [
-                                      [$class: 'CleanBeforeCheckout'],
-                                      [$class: 'CloneOption', noTags: false, shallow: true, depth: 1]
-                              ]
-                    ])
+                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: gitRepoUrl]], extensions: [
+                            [$class: 'CleanBeforeCheckout'],
+                            [$class: 'CloneOption', noTags: false, shallow: true, depth: 1]
+                    ]])
                 }
             }
         }
-
         stage('Determine Changes') {
             steps {
                 script {
@@ -95,7 +89,6 @@ spec:
                 }
             }
         }
-
         stage('Build and Test') {
             parallel {
                 stage('Backend') {
@@ -147,7 +140,55 @@ spec:
                 }
             }
         }
-
+        // ALWAYS RUN CODE QUALITY STAGE
+        stage('Code Quality (SonarQube)') {
+            steps {
+                script {
+                    withSonarQubeEnv('sonarqube-server') {
+                        if (env.BACKEND_CHANGED == 'true' || env.BACKEND_CHANGED == 'false') {
+                            container('maven') {
+                                dir('backend') {
+                                    sh 'mvn -T 4 -DskipTests sonar:sonar'
+                                    sh 'touch .sonar_backend_done'
+                                }
+                            }
+                        }
+                        if (env.FRONTEND_CHANGED == 'true' || env.FRONTEND_CHANGED == 'false') {
+                            container('node') {
+                                dir('frontend') {
+                                    sh '''
+set -e
+apt-get update -qq
+DEBIAN_FRONTEND=noninteractive apt-get install -y -qq openjdk-17-jre-headless >/dev/null
+java -version
+npm run test -- --watchAll=false --coverage || true
+npx sonar-scanner \
+  -Dsonar.projectKey=frontend \
+  -Dsonar.sources=src \
+  -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+touch .sonar_frontend_done
+'''
+                                }
+                            }
+                        }
+                    }
+                    def done = sh(
+                            script: '([ -f backend/.sonar_backend_done ] || [ -f frontend/.sonar_frontend_done ]) && echo true || echo false',
+                            returnStdout: true
+                    ).trim()
+                    echo "SONARQ_DONE=${done}"
+                    env.SONARQ_DONE = done
+                }
+            }
+        }
+        // ALWAYS RUN QUALITY GATE STAGE
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
         stage('Docker Build & Push') {
             parallel {
                 stage('Backend Docker') {
@@ -180,27 +221,22 @@ spec:
                 }
             }
         }
-
         stage('Deploy to Kubernetes') {
             steps {
                 container('ansible') {
                     sh """
-                    set -e
-                    
-                    # Install kubectl
-                    apk add --no-cache curl
-                    curl -LO "https://dl.k8s.io/release/stable.txt"
-                    curl -LO "https://dl.k8s.io/release/\$(cat stable.txt)/bin/linux/amd64/kubectl"
-                    chmod +x kubectl
-                    mv kubectl /usr/local/bin/
-                    
-                    # Create namespace if not exists
-                    kubectl create namespace onda-app --dry-run=client -o yaml | kubectl apply -f -
-                    
-                    # Create individual YAML files for each component
-                    
-                    # 1. PVC for MySQL
-                    cat > mysql-pvc.yaml << EOL
+set -e
+# Install kubectl
+apk add --no-cache curl
+curl -LO "https://dl.k8s.io/release/stable.txt"
+curl -LO "https://dl.k8s.io/release/\$(cat stable.txt)/bin/linux/amd64/kubectl"
+chmod +x kubectl
+mv kubectl /usr/local/bin/
+# Create namespace if not exists
+kubectl create namespace onda-app --dry-run=client -o yaml | kubectl apply -f -
+# Create individual YAML files for each component
+# 1. PVC for MySQL
+cat > mysql-pvc.yaml << EOL
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -213,9 +249,8 @@ spec:
     requests:
       storage: 1Gi
 EOL
-                    
-                    # 2. ConfigMap for MySQL
-                    cat > mysql-configmap.yaml << EOL
+# 2. ConfigMap for MySQL
+cat > mysql-configmap.yaml << EOL
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -227,9 +262,8 @@ data:
     CREATE DATABASE IF NOT EXISTS onda_flights;
     USE onda_flights;
 EOL
-                    
-                    # 3. MySQL Deployment
-                    cat > mysql-deployment.yaml << EOL
+# 3. MySQL Deployment
+cat > mysql-deployment.yaml << EOL
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -272,9 +306,8 @@ spec:
           configMap:
             name: mysql-init-sql
 EOL
-                    
-                    # 4. MySQL Service (mysql)
-                    cat > mysql-service.yaml << EOL
+# 4. MySQL Service (mysql)
+cat > mysql-service.yaml << EOL
 apiVersion: v1
 kind: Service
 metadata:
@@ -288,9 +321,8 @@ spec:
       port: 3306
       targetPort: 3306
 EOL
-
-                    # 4.1 Additional MySQL Service (db) - alias for the mysql service
-                    cat > db-service.yaml << EOL
+# 4.1 Additional MySQL Service (db) - alias for the mysql service
+cat > db-service.yaml << EOL
 apiVersion: v1
 kind: Service
 metadata:
@@ -304,9 +336,8 @@ spec:
       port: 3306
       targetPort: 3306
 EOL
-                    
-                    # 5. Backend Deployment
-                    cat > backend-deployment.yaml << EOL
+# 5. Backend Deployment
+cat > backend-deployment.yaml << EOL
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -345,9 +376,8 @@ spec:
               memory: "256Mi"
               cpu: "200m"
 EOL
-                    
-                    # 6. Backend Service
-                    cat > backend-service.yaml << EOL
+# 6. Backend Service
+cat > backend-service.yaml << EOL
 apiVersion: v1
 kind: Service
 metadata:
@@ -361,9 +391,8 @@ spec:
       port: 8080
       targetPort: 8080
 EOL
-                    
-                    # 7. Frontend Deployment
-                    cat > frontend-deployment.yaml << EOL
+# 7. Frontend Deployment
+cat > frontend-deployment.yaml << EOL
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -398,9 +427,8 @@ spec:
               memory: "128Mi"
               cpu: "100m"
 EOL
-                    
-                    # 8. Frontend Service
-                    cat > frontend-service.yaml << EOL
+# 8. Frontend Service
+cat > frontend-service.yaml << EOL
 apiVersion: v1
 kind: Service
 metadata:
@@ -415,48 +443,39 @@ spec:
       targetPort: 80
   type: NodePort
 EOL
-                    
-                    # Delete existing deployments first to avoid conflicts
-                    kubectl delete deployment backend -n onda-app --ignore-not-found=true
-                    kubectl delete deployment react-frontend -n onda-app --ignore-not-found=true
-                    
-                    # Wait for pods to terminate
-                    sleep 5
-                    
-                    # Apply all the YAML files in the correct order
-                    kubectl apply -f mysql-pvc.yaml
-                    kubectl apply -f mysql-configmap.yaml
-                    kubectl apply -f mysql-deployment.yaml
-                    kubectl apply -f mysql-service.yaml
-                    kubectl apply -f db-service.yaml
-                    kubectl apply -f backend-deployment.yaml
-                    kubectl apply -f backend-service.yaml
-                    kubectl apply -f frontend-deployment.yaml
-                    kubectl apply -f frontend-service.yaml
-                    
-                    # Start deployment monitoring without blocking the pipeline
-                    echo "Starting deployment monitoring..."
-                    
-                    # Give services a moment to start creating pods
-                    sleep 10
-                    
-                    # Check pod status without blocking the pipeline
-                    echo "==== ALL SERVICES IN NAMESPACE ===="
-                    kubectl get svc -n onda-app || true
-                    
-                    echo "==== ALL PODS STATUS ===="
-                    kubectl get pods -n onda-app || true
-                    
-                    echo "==== ACCESS THE APPLICATION ===="
-                    FRONTEND_PORT=\$(kubectl get svc react-frontend -n onda-app -o jsonpath='{.spec.ports[0].nodePort}')
-                    echo "Frontend should be accessible at: http://YOUR_CLUSTER_IP:\${FRONTEND_PORT}"
-                    echo "Deployment is complete."
-                    """
+# Delete existing deployments first to avoid conflicts
+kubectl delete deployment backend -n onda-app --ignore-not-found=true
+kubectl delete deployment react-frontend -n onda-app --ignore-not-found=true
+# Wait for pods to terminate
+sleep 5
+# Apply all the YAML files in the correct order
+kubectl apply -f mysql-pvc.yaml
+kubectl apply -f mysql-configmap.yaml
+kubectl apply -f mysql-deployment.yaml
+kubectl apply -f mysql-service.yaml
+kubectl apply -f db-service.yaml
+kubectl apply -f backend-deployment.yaml
+kubectl apply -f backend-service.yaml
+kubectl apply -f frontend-deployment.yaml
+kubectl apply -f frontend-service.yaml
+# Start deployment monitoring without blocking the pipeline
+echo "Starting deployment monitoring..."
+# Give services a moment to start creating pods
+sleep 10
+# Check pod status without blocking the pipeline
+echo "==== ALL SERVICES IN NAMESPACE ===="
+kubectl get svc -n onda-app || true
+echo "==== ALL PODS STATUS ===="
+kubectl get pods -n onda-app || true
+echo "==== ACCESS THE APPLICATION ===="
+FRONTEND_PORT=\$(kubectl get svc react-frontend -n onda-app -o jsonpath='{.spec.ports[0].nodePort}')
+echo "Frontend should be accessible at: http://YOUR_CLUSTER_IP:\${FRONTEND_PORT}"
+echo "Deployment is complete."
+"""
                 }
             }
         }
     }
-
     post {
         success {
             echo "✅ Déploiement réussi ! Build by ${CURRENT_USER} on ${CURRENT_DATE}"

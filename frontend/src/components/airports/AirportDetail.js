@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import WeatherWidget from '../weather/WeatherWidget';
@@ -13,23 +14,39 @@ const useToggle = (initial = false) => {
 
 const FacilityCard = ({ icon, title, desc, enabled = true, onClick, hint }) => (
   <div className="col d-flex">
-    <div
+    <button
+      type="button"
       className={`card facility-card clickable h-100 w-100 ${enabled ? '' : 'disabled-card'}`}
-      style={enabled ? { cursor: 'pointer' } : {}}
-      onClick={enabled ? onClick : undefined}
+      onClick={onClick}
+      disabled={!enabled}
+      aria-disabled={!enabled}
     >
-      <i className={`fas ${icon} icon mb-3`}></i>
+      <i className={`fas ${icon} icon mb-3`} aria-hidden="true"></i>
       <h5 className="card-title">{title}</h5>
       <p className="card-text text-muted">{desc}</p>
       {enabled && hint ? <span className="hint">{hint}</span> : null}
-    </div>
+    </button>
   </div>
 );
 
+FacilityCard.propTypes = {
+  icon: PropTypes.string.isRequired,
+  title: PropTypes.node.isRequired,
+  desc: PropTypes.node.isRequired,
+  enabled: PropTypes.bool,
+  onClick: PropTypes.func,
+  hint: PropTypes.node,
+};
+
 const Modal = ({ title, open, onClose, children, wide = false, bodyRef, closeLabel = 'Close' }) => {
   if (!open) return null;
+
+  const handleBackdropKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') onClose();
+  };
+
   return (
-    <div className="rak-restaurants-modal">
+    <div className="rak-restaurants-modal" role="dialog" aria-modal="true" aria-label={typeof title === 'string' ? title : 'Dialog'}>
       <div
         className={`rak-restaurants-modal-content shadow rounded ${wide ? 'container-fluid' : ''}`}
         style={wide ? { maxWidth: '90vw' } : undefined}
@@ -47,27 +64,64 @@ const Modal = ({ title, open, onClose, children, wide = false, bodyRef, closeLab
           </button>
         </div>
       </div>
-      <div className="rak-restaurants-modal-backdrop" onClick={onClose}></div>
+
+      <div
+        className="rak-restaurants-modal-backdrop"
+        role="button"
+        tabIndex={0}
+        aria-label={typeof title === 'string' ? `Close ${title}` : 'Close dialog'}
+        onClick={onClose}
+        onKeyDown={handleBackdropKeyDown}
+      ></div>
     </div>
   );
+};
+
+Modal.propTypes = {
+  title: PropTypes.node.isRequired,
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  children: PropTypes.node,
+  wide: PropTypes.bool,
+  bodyRef: PropTypes.oneOfType([
+    // function ref or object ref
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.any }),
+  ]),
+  closeLabel: PropTypes.node,
 };
 
 const SimpleTable = ({ columns, rows, rowKey }) => (
   <table className="table table-bordered">
     <thead>
-      <tr>{columns.map((c) => <th key={c.key || c.label}>{c.label}</th>)}</tr>
+      <tr>{columns.map((c) => <th key={c.key || String(c.label)}>{c.label}</th>)}</tr>
     </thead>
     <tbody>
-      {rows.map((r, i) => (
-        <tr key={rowKey ? rowKey(r, i) : i}>
-          {columns.map((c) => (
-            <td key={(c.key || c.label) + i}>{c.render ? c.render(r) : r[c.key]}</td>
-          ))}
-        </tr>
-      ))}
+      {rows.map((r, i) => {
+        const key = rowKey ? rowKey(r, i) : i;
+        return (
+          <tr key={key}>
+            {columns.map((c, j) => (
+              <td key={(c.key || String(c.label)) + '-' + j}>{c.render ? c.render(r) : r[c.key]}</td>
+            ))}
+          </tr>
+        );
+      })}
     </tbody>
   </table>
 );
+
+SimpleTable.propTypes = {
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string,          // field in each row object
+      label: PropTypes.node.isRequired,
+      render: PropTypes.func,         // optional custom cell renderer: (row) => node
+    })
+  ).isRequired,
+  rows: PropTypes.arrayOf(PropTypes.object).isRequired,
+  rowKey: PropTypes.func,            // (row, index) => string
+};
 
 /* ---------- Static data (RAK) ---------- */
 const rakRestaurants = [
@@ -141,24 +195,28 @@ const AirportDetail = () => {
 
   const isRAK = airport?.code === 'RAK';
 
-  const parkingRows = useMemo(() => ([
-    { type: t('airports.parking.rows.short'),  duration: t('airports.parking.rows.perHour'),    price: '5 MAD' },
-    { type: t('airports.parking.rows.short'),  duration: t('airports.parking.rows.perDay'),     price: '60 MAD' },
-    { type: t('airports.parking.rows.long'),   duration: t('airports.parking.rows.oneDay'),     price: '60 MAD' },
-    { type: t('airports.parking.rows.long'),   duration: `${t('airports.parking.rows.multiDay')} / ${t('airports.parking.rows.perDayShort')}`, price: '60 MAD' },
-    { type: t('airports.parking.rows.cleaning'), duration: t('airports.parking.rows.extWash'),  price: '50 MAD' },
-    { type: t('airports.parking.rows.cleaning'), duration: t('airports.parking.rows.fullClean'), price: '150 MAD' },
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  ]), [i18n.language]); // recompute on language change
+  const parkingRows = useMemo(
+    () => [
+      { type: t('airports.parking.rows.short'),  duration: t('airports.parking.rows.perHour'),    price: '5 MAD' },
+      { type: t('airports.parking.rows.short'),  duration: t('airports.parking.rows.perDay'),     price: '60 MAD' },
+      { type: t('airports.parking.rows.long'),   duration: t('airports.parking.rows.oneDay'),     price: '60 MAD' },
+      { type: t('airports.parking.rows.long'),   duration: `${t('airports.parking.rows.multiDay')} / ${t('airports.parking.rows.perDayShort')}`, price: '60 MAD' },
+      { type: t('airports.parking.rows.cleaning'), duration: t('airports.parking.rows.extWash'),  price: '50 MAD' },
+      { type: t('airports.parking.rows.cleaning'), duration: t('airports.parking.rows.fullClean'), price: '150 MAD' },
+    ],
+    // recompute on language change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [i18n.language]
+  );
 
   if (loading) {
     return (
       <div className="airport-detail-container">
         <div className="container py-5">
           <div className="loading-indicator text-center">
-            <div className="spinner-border text-primary" role="status">
+            <output className="spinner-border text-primary" aria-live="polite">
               <span className="visually-hidden">{t('common.loading', 'Loading...')}</span>
-            </div>
+            </output>
           </div>
         </div>
       </div>
@@ -189,8 +247,9 @@ const AirportDetail = () => {
             <h1 className="airport-title mb-4 display-5 fw-bold">{t(`airports.names.${airport.name}`)}</h1>
 
             <div className="airport-code-location mb-3">
-              <span className="airport-code h5 text-primary">{airport.code}</span> -
-              <span className="airport-city ms-2 h5">{t(`cities.${airport.city}`)}</span>
+              <span className="airport-code h5 text-primary">{airport.code}</span>
+              <span className="mx-2" aria-hidden="true">–</span>
+              <span className="airport-city h5">{t(`cities.${airport.city}`)}</span>
             </div>
 
             <div className="airport-image-main mb-4">
@@ -374,7 +433,7 @@ const AirportDetail = () => {
                   })
                 }
               >
-                <i className="fas fa-arrow-down"></i>
+                <i className="fas fa-arrow-down" aria-hidden="true"></i>
               </button>
             </Modal>
           </div>
@@ -414,17 +473,17 @@ const AirportDetail = () => {
                   <ul className="list-group list-group-flush">
                     <li className="list-group-item">
                       <Link to="/flights" className="text-decoration-none">
-                        <i className="fas fa-plane me-2"></i> {t('airports.flightSchedules', 'Flight Schedules')}
+                        <i className="fas fa-plane me-2" aria-hidden="true"></i> {t('airports.flightSchedules', 'Flight Schedules')}
                       </Link>
                     </li>
                     <li className="list-group-item">
                       <Link to="/services" className="text-decoration-none">
-                        <i className="fas fa-concierge-bell me-2"></i> {t('airports.services', 'Airport Services')}
+                        <i className="fas fa-concierge-bell me-2" aria-hidden="true"></i> {t('airports.services', 'Airport Services')}
                       </Link>
                     </li>
                     <li className="list-group-item">
                       <Link to="/contact" className="text-decoration-none">
-                        <i className="fas fa-envelope me-2"></i> {t('airports.contact', 'Contact')}
+                        <i className="fas fa-envelope me-2" aria-hidden="true"></i> {t('airports.contact', 'Contact')}
                       </Link>
                     </li>
                   </ul>
@@ -437,7 +496,7 @@ const AirportDetail = () => {
 
         <div className="my-4">
           <Link to="/airports" className="btn btn-outline-primary">
-            <i className="fas fa-arrow-left me-2"></i> {t('common.backToList', 'Back to Airports')}
+            <i className="fas fa-arrow-left me-2" aria-hidden="true"></i> {t('common.backToList', 'Back to Airports')}
           </Link>
         </div>
       </div>
