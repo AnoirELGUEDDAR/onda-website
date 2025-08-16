@@ -9,19 +9,20 @@ const Header = () => {
   const logoRef = useRef(null);
   const navbarCollapseRef = useRef(null);
 
-  // Trigger logo rotation using optional chaining
+  // Trigger logo rotation without using `void`
   const triggerLogoRotation = () => {
     const logo = logoRef.current;
-    logo?.classList.remove('rotate360');
-    // Force reflow to restart animation if clicked rapidly
-    void logo?.offsetWidth;
-    logo?.classList.add('rotate360');
+    if (!logo) return;
+    logo.classList.remove('rotate360');
+    // Force reflow to restart animation
+    logo.getBoundingClientRect();
+    logo.classList.add('rotate360');
   };
 
   // Close the expanded navbar on link click (mobile)
   const handleNavLinkClick = () => {
     const el = navbarCollapseRef.current;
-    const Collapse = window.bootstrap?.Collapse; // optional chain for Bootstrap presence
+    const Collapse = window.bootstrap?.Collapse;
 
     if (el?.classList?.contains('show') && Collapse) {
       const bsCollapse = new Collapse(el, { toggle: false });

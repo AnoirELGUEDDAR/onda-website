@@ -24,12 +24,26 @@ const WeatherPage = () => {
     fetchAirports();
   }, []);
 
-  if (loading) return <div className="container mt-5 text-center"><div className="spinner-border" role="status"></div></div>;
-  if (error) return <div className="container mt-5 alert alert-danger">{error}</div>;
+  if (loading) {
+    return (
+      <div className="container mt-5 text-center">
+        <output className="spinner-border" aria-live="polite">
+          <span className="visually-hidden">Loading…</span>
+        </output>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="container mt-5 alert alert-danger">{error}</div>;
+  }
 
   return (
     <div className="weather-page">
-      <div className="weather-hero py-5 text-center" style={{ backgroundImage: 'url("/images/backgrounds/moroccan-pattern.jpg")' }}>
+      <div
+        className="weather-hero py-5 text-center"
+        style={{ backgroundImage: 'url("/images/backgrounds/moroccan-pattern.jpg")' }}
+      >
         <div className="container">
           <h1 className="display-4">Airport Weather Information</h1>
           <p className="lead">Current conditions at all Moroccan airports</p>
@@ -38,8 +52,8 @@ const WeatherPage = () => {
 
       <div className="container py-5">
         <div className="row">
-          {airports.map(airport => (
-            <div className="col-lg-4 col-md-6 mb-4" key={airport.id}>
+          {airports.map((airport) => (
+            <div className="col-lg-4 col-md-6 mb-4" key={airport.id ?? airport.code}>
               <div className="weather-card">
                 <div className="weather-card-header">
                   <h3>{airport.city}</h3>
@@ -58,3 +72,4 @@ const WeatherPage = () => {
 };
 
 export default WeatherPage;
+

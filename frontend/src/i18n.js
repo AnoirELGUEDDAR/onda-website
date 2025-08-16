@@ -1,3 +1,4 @@
+src/i18n.js
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
@@ -11,12 +12,17 @@ async function translateViaServer({ q, target, source = 'en' }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ q, target, source })
     });
-    if (!res.ok) return null;
+    
+    if (!res.ok) {
+      throw new Error(`Translation API returned ${res.status}`);
+    }
+    
     const data = await res.json();
     // Expecting { translatedText: "..." }
     return data?.translatedText || null;
   } catch (e) {
-    // Silently ignore to avoid breaking UI on network errors
+    // Log error for debugging but don't break the UI
+    console.error('Translation error:', e);
     return null;
   }
 }
@@ -25,14 +31,18 @@ async function translateViaServer({ q, target, source = 'en' }) {
 function getCache(lng, ns, key) {
   try {
     return localStorage.getItem(`i18nCache::${lng}::${ns}::${key}`);
-  } catch {
+  } catch (e) {
+    console.error('Cache read error:', e);
     return null;
   }
 }
+
 function setCache(lng, ns, key, value) {
   try {
     localStorage.setItem(`i18nCache::${lng}::${ns}::${key}`, value);
-  } catch {}
+  } catch (e) {
+    console.error('Cache write error:', e);
+  }
 }
 
 i18n
@@ -67,7 +77,7 @@ i18n
 
     /**
      * NOTE: missingKeyHandler is sync and is mainly for reporting/saving missing keys.
-     * We’ll use it to kick off an async translation fetch in the background.
+     * We'll use it to kick off an async translation fetch in the background.
      * The first render will show fallback/key; when translation arrives,
      * we add it to the resource store and gently re-render the UI.
      */
@@ -86,19 +96,21 @@ i18n
 
       // 2) Fire-and-forget async translation from your server
       const sourceText = fallbackValue || key;
-      translateViaServer({ q: sourceText, target: Array.isArray(lng) ? lng[0] : lng, source: 'en' })
-        .then((translated) => {
-          if (!translated) return;
-          setCache(lng, ns, key, translated);
-          i18n.addResource(lng, ns, key, translated);
-
-          // React-i18next re-renders on resourceStore events;
-          // 'added' is enough, but we can also nudge with a "languageChanged"
-          i18n.emit('added', lng, ns, key);
-          // If your UI doesn’t update in some edge cases, uncomment:
-          // i18n.emit('languageChanged', Array.isArray(lng) ? lng[0] : lng);
-        })
-        .catch(() => {});
+      const targetLang = Array.isArray(lng) ? lng[0] : lng;
+      
+      // Only attempt translation for non-English languages
+      if (targetLang !== 'en') {
+        translateViaServer({ q: sourceText, target: targetLang, source: 'en' })
+          .then((translated) => {
+            if (!translated) return;
+            setCache(lng, ns, key, translated);
+            i18n.addResource(lng, ns, key, translated);
+            i18n.emit('added', lng, ns, key);
+          })
+          .catch((error) => {
+            console.error('Translation background task failed:', error);
+          });
+      }
     },
   });
 

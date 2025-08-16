@@ -1,27 +1,33 @@
+// src/services/flightService.js
 import api from './api';
+
+const formatDate = (d) => d ?? new Date().toISOString().split('T')[0];
 
 const flightService = {
   getAllFlights: async () => {
-    const response = await api.get('/flights');
-    return response.data;
+    const { data } = await api.get('/flights');
+    return data;
   },
 
   getFlightByNumber: async (flightNumber) => {
-    const response = await api.get(`/flights/number/${flightNumber}`);
-    return response.data;
+    const { data } = await api.get(`/flights/number/${flightNumber}`);
+    return data;
   },
 
   getDepartures: async (airportId, date) => {
-    const formattedDate = date ? date : new Date().toISOString().split('T')[0];
-    const response = await api.get(`/flights/departures?airportId=${airportId}&date=${formattedDate}`);
-    return response.data;
+    const { data } = await api.get('/flights/departures', {
+      params: { airportId, date: formatDate(date) },
+    });
+    return data;
   },
 
   getArrivals: async (airportId, date) => {
-    const formattedDate = date ? date : new Date().toISOString().split('T')[0];
-    const response = await api.get(`/flights/arrivals?airportId=${airportId}&date=${formattedDate}`);
-    return response.data;
-  }
+    const { data } = await api.get('/flights/arrivals', {
+      params: { airportId, date: formatDate(date) },
+    });
+    return data;
+  },
 };
 
 export default flightService;
+

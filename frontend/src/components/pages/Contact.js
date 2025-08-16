@@ -53,7 +53,6 @@ const Contact = () => {
         setSent(true);
         setForm({ firstName: "", lastName: "", email: "", message: "" });
       } else {
-        // surface status but avoid raw symbols in JSX elsewhere
         console.error("Server error:", data);
         setError(`${t("contact.errors.send")} (${response.status})`);
       }
@@ -64,6 +63,9 @@ const Contact = () => {
       setSending(false);
     }
   };
+
+  // What will be announced to assistive tech
+  const a11yStatus = error ? error : sent ? t("contact.success") : "";
 
   return (
     <div className="contact-page">
@@ -141,11 +143,26 @@ const Contact = () => {
 
           <p className="contact-privacy">{t("contact.privacy")}</p>
 
-          {/* Status region (no raw > in text) */}
-          <div role="status" aria-live="polite">
-            {error && <div className="contact-error">{error}</div>}
-            {sent && <div className="contact-success">{t("contact.success")}</div>}
-          </div>
+          {/* Native, accessible status element */}
+          <output
+            aria-live="polite"
+            className="visually-hidden"
+            id="form-status"
+          >
+            {a11yStatus}
+          </output>
+
+          {/* Visible messages (hidden from screen readers to avoid double announcements) */}
+          {error && (
+            <div className="contact-error" aria-hidden="true">
+              {error}
+            </div>
+          )}
+          {sent && (
+            <div className="contact-success" aria-hidden="true">
+              {t("contact.success")}
+            </div>
+          )}
 
           <button type="submit" className="contact-submit" disabled={sending}>
             {sending ? t("contact.sending") || "Sending..." : t("contact.submit")}
