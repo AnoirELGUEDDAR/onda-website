@@ -41,7 +41,7 @@ FacilityCard.propTypes = {
 /** Accessible native <dialog> */
 const Modal = ({ title, open, onClose, children, wide = false, bodyRef, closeLabel = 'Close' }) => {
   const dialogRef = useRef(null);
-  const titleId = useMemo(() => `dlg-${Math.random().toString(36).slice(2)}`, []);
+const titleId = useRef(`dlg-${Math.random().toString(36).slice(2)}`).current;
 
   useEffect(() => {
     const dlg = dialogRef.current;
