@@ -1,3 +1,4 @@
+src/.../airports/AirportDetail.js
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, Link } from 'react-router-dom';
@@ -46,21 +47,28 @@ const Modal = ({ title, open, onClose, children, wide = false, bodyRef, closeLab
   useEffect(() => {
     const dlg = dialogRef.current;
     if (!dlg) return;
+    
+    if (open) {
+      dlg.showModal();
+    }
+
     const handleCancel = (e) => {
-      // prevent default close so we run onClose()
       e.preventDefault();
       onClose?.();
     };
+    
     dlg.addEventListener('cancel', handleCancel);
-    return () => dlg.removeEventListener('cancel', handleCancel);
-  }, [onClose]);
+    return () => {
+      dlg.removeEventListener('cancel', handleCancel);
+      dlg.close();
+    };
+  }, [open, onClose]);
 
   if (!open) return null;
 
   return (
     <dialog
       ref={dialogRef}
-      open
       className={`rak-dialog ${wide ? 'container-fluid' : ''}`}
       aria-labelledby={titleId}
     >
@@ -202,7 +210,7 @@ const AirportDetail = () => {
       { type: t('airports.parking.rows.cleaning'), duration: t('airports.parking.rows.extWash'),  price: '50 MAD' },
       { type: t('airports.parking.rows.cleaning'), duration: t('airports.parking.rows.fullClean'), price: '150 MAD' },
     ],
-    [i18n.language] // recompute on language change
+    [i18n.language, t] 
   );
 
   if (loading) {
@@ -244,7 +252,7 @@ const AirportDetail = () => {
 
             <div className="airport-code-location mb-3">
               <span className="airport-code h5 text-primary">{airport.code}</span>
-              <span className="mx-2" aria-hidden="true">–</span>
+              <span className="mx-2" aria-hidden="true">&ndash;</span>
               <span className="airport-city h5">{t(`cities.${airport.city}`)}</span>
             </div>
 
@@ -260,10 +268,10 @@ const AirportDetail = () => {
             <div className="airport-description mb-5">
               <h2 className="h4 fw-semibold mb-3">{t('airports.about', 'About')}</h2>
               <p className="lead">
-                {t(`airports.descriptions.${airport.code}`, {
+                {t(`airports.descriptions.${airport.code}`, {{
                   city: t(`cities.${airport.city}`),
                   type: t(`airports.types.${airport.type}`)
-                })}
+                }})}
               </p>
             </div>
 
@@ -399,7 +407,7 @@ const AirportDetail = () => {
                 <li>{t('airports.parking.long')}</li>
               </ul>
               <p className="mt-3">
-                <strong>{t('airports.parking.cleaningTitle')}</strong> — {t('airports.parking.cleaningDesc')}
+                <strong>{t('airports.parking.cleaningTitle')}</strong> &mdash; {t('airports.parking.cleaningDesc')}
               </p>
 
               <h6 className="fw-bold mt-4">{t('airports.parking.tableTitle')}</h6>
@@ -461,7 +469,7 @@ const AirportDetail = () => {
               </div>
 
               <div className="card mb-4 shadow-sm">
-                <div className="card-header text-white" id="useful_links">
+                <div className="card-header text-white bg-secondary" id="useful_links">
                   <h3 className="h6 mb-0">{t('airports.links', 'Useful Links')}</h3>
                 </div>
                 <div className="card-body">
@@ -486,7 +494,6 @@ const AirportDetail = () => {
               </div>
             </div>
           </div>
-
         </div>
 
         <div className="my-4">
@@ -500,4 +507,3 @@ const AirportDetail = () => {
 };
 
 export default AirportDetail;
-
