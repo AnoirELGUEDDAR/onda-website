@@ -1,4 +1,3 @@
-src/.../airports/AirportDetail.js
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, Link } from 'react-router-dom';
