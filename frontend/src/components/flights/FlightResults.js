@@ -1,3 +1,4 @@
+src/.../flights/FlightResults.js
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
@@ -83,7 +84,7 @@ const HEADERS = [
   'flights.arrive',
 ];
 
-const FlightResults = ({ flights, loading, error /*, searchParams */ }) => {
+const FlightResults = ({ flights, loading, error }) => {
   const { t, i18n } = useTranslation();
   const airlineByCode = useMemo(buildAirlineMap, []);
   const locale = i18n.language;
@@ -176,15 +177,12 @@ FlightResults.propTypes = {
   flights: PropTypes.arrayOf(PropTypes.object),
   loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  searchParams: PropTypes.object,
 };
 
 FlightResults.defaultProps = {
   flights: [],
   loading: false,
   error: '',
-  searchParams: null,
 };
 
 export default FlightResults;
-

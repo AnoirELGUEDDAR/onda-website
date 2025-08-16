@@ -1,3 +1,4 @@
+src/.../flights/FlightSearch.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import airportService from '../../services/airportService';
@@ -37,6 +38,77 @@ const FlightSearch = () => {
     navigate(`/flights/results?from=${fromAirport}&to=${toAirport}&date=${date}`);
   };
 
+  // Extract the nested ternary into an independent statement
+  let formContent;
+  if (loading) {
+    formContent = (
+      <div className="text-center">
+        <output className="spinner-border" aria-live="polite">
+          <span className="visually-hidden">Loading...</span>
+        </output>
+      </div>
+    );
+  } else if (error) {
+    formContent = <div className="alert alert-danger">{error}</div>;
+  } else {
+    formContent = (
+      <form onSubmit={handleSubmit}>
+        <div className="row">
+          <div className="col-md-5 mb-3">
+            <label htmlFor="fromAirport" className="form-label">From</label>
+            <select 
+              id="fromAirport" 
+              className="form-select" 
+              value={fromAirport} 
+              onChange={(e) => setFromAirport(e.target.value)}
+              required
+            >
+              <option value="">Select departure airport</option>
+              {airports.map(airport => (
+                <option key={airport.id} value={airport.id}>
+                  {airport.city} ({airport.code})
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col-md-5 mb-3">
+            <label htmlFor="toAirport" className="form-label">To</label>
+            <select 
+              id="toAirport" 
+              className="form-select" 
+              value={toAirport} 
+              onChange={(e) => setToAirport(e.target.value)}
+              required
+            >
+              <option value="">Select arrival airport</option>
+              {airports.map(airport => (
+                <option key={airport.id} value={airport.id}>
+                  {airport.city} ({airport.code})
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col-md-2 mb-3">
+            <label htmlFor="date" className="form-label">Date</label>
+            <input
+              type="date"
+              id="date"
+              className="form-control"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+            />
+          </div>
+        </div>
+        <div className="d-grid mt-3">
+          <button type="submit" className="btn btn-primary btn-lg">
+            Search Flights
+          </button>
+        </div>
+      </form>
+    );
+  }
+
   return (
     <div className="flight-search">
       {/* Hero Banner */}
@@ -47,8 +119,10 @@ const FlightSearch = () => {
           className="img-fluid w-100"
           style={{ height: '400px', objectFit: 'cover' }}
         />
-        <div className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" 
-             style={{ background: 'rgba(0,0,0,0.5)' }}>
+        <div 
+          className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" 
+          style={{ background: 'rgba(0,0,0,0.5)' }}
+        >
           <div className="container text-white text-center">
             <h1 className="display-4 fw-bold">Find Your Flight</h1>
             <p className="lead">Search for flights between Morocco's airports</p>
@@ -61,66 +135,7 @@ const FlightSearch = () => {
           <div className="col-md-10">
             <div className="card shadow search-card">
               <div className="card-body p-4">
-                {loading ? (
-                  <div className="text-center"><div className="spinner-border" role="status"></div></div>
-                ) : error ? (
-                  <div className="alert alert-danger">{error}</div>
-                ) : (
-                  <form onSubmit={handleSubmit}>
-                    <div className="row">
-                      <div className="col-md-5 mb-3">
-                        <label htmlFor="fromAirport" className="form-label">From</label>
-                        <select 
-                          id="fromAirport" 
-                          className="form-select" 
-                          value={fromAirport} 
-                          onChange={(e) => setFromAirport(e.target.value)}
-                          required
-                        >
-                          <option value="">Select departure airport</option>
-                          {airports.map(airport => (
-                            <option key={airport.id} value={airport.id}>
-                              {airport.city} ({airport.code})
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="col-md-5 mb-3">
-                        <label htmlFor="toAirport" className="form-label">To</label>
-                        <select 
-                          id="toAirport" 
-                          className="form-select" 
-                          value={toAirport} 
-                          onChange={(e) => setToAirport(e.target.value)}
-                          required
-                        >
-                          <option value="">Select arrival airport</option>
-                          {airports.map(airport => (
-                            <option key={airport.id} value={airport.id}>
-                              {airport.city} ({airport.code})
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="col-md-2 mb-3">
-                        <label htmlFor="date" className="form-label">Date</label>
-                        <input
-                          type="date"
-                          id="date"
-                          className="form-control"
-                          value={date}
-                          onChange={(e) => setDate(e.target.value)}
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="d-grid mt-3">
-                      <button type="submit" className="btn btn-primary btn-lg">
-                        Search Flights
-                      </button>
-                    </div>
-                  </form>
-                )}
+                {formContent}
               </div>
             </div>
           </div>
@@ -128,7 +143,10 @@ const FlightSearch = () => {
       </div>
 
       {/* Info Cards Section */}
-      <section className="info-cards py-5" style={{ backgroundImage: 'url("/images/backgrounds/moroccan-pattern.png")' }}>
+      <section 
+        className="info-cards py-5" 
+        style={{ backgroundImage: 'url("/images/backgrounds/moroccan-pattern.png")' }}
+      >
         <div className="container">
           <div className="row">
             <div className="col-md-4 mb-4">
@@ -171,7 +189,11 @@ const FlightSearch = () => {
               <p>From the Atlas Mountains to the Atlantic coastline, each flight offers spectacular views of the kingdom's natural beauty.</p>
             </div>
             <div className="col-md-6">
-              <img src="/images/misc/plane-window-view.jpg" alt="View from plane window" className="img-fluid rounded shadow" />
+              <img 
+                src="/images/misc/plane-window-view.jpg" 
+                alt="View from plane window" 
+                className="img-fluid rounded shadow" 
+              />
             </div>
           </div>
         </div>

@@ -1,23 +1,16 @@
+src/.../pages/AboutPage.js
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import './AboutPage.css';
 
+// Fixed SectionTitle with prop validation
 const SectionTitle = ({ children }) => (
   <h4 className="section-title">{children}</h4>
 );
-
-// Renders a list of i18n items: t(`${base}.${index}`)
-const I18nList = ({ count, base, as: Tag = 'li' }) => (
-  <>
-    {Array.from({ length: count }).map((_, i) => (
-      <Tag key={`${base}-${i}`}>{/* e.g. base = about.development.airports.casablanca.projects */}
-        {/* eslint-disable-next-line jsx-a11y/heading-has-content */}
-        {/** We rely on translation keys existing: base.0, base.1, ... */}
-        {useTranslation().t(`${base}.${i}`)}
-      </Tag>
-    ))}
-  </>
-);
+SectionTitle.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 const AboutPage = () => {
   const { t, i18n } = useTranslation();
@@ -149,4 +142,3 @@ const AboutPage = () => {
 };
 
 export default AboutPage;
-

@@ -5,7 +5,6 @@ import "./Contact.css";
 const Contact = () => {
   const { t } = useTranslation();
 
-  // Form state
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -16,19 +15,16 @@ const Contact = () => {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
 
-  // Handle input changes
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSent(false);
     setError("");
     setSending(true);
 
-    // Basic validation
     if (!form.firstName || !form.lastName || !form.email || !form.message) {
       setError(t("contact.errors.required"));
       setSending(false);
@@ -36,33 +32,28 @@ const Contact = () => {
     }
 
     try {
-      // Use API base URL based on environment
-      // For production, use relative URL; for development, use the full URL
-      const apiUrl = process.env.NODE_ENV === 'production' 
-        ? '/api/contact'  // In production, use relative URL
-        : 'http://localhost:8080/api/contact';  // In development, use full URL
+      const apiUrl =
+        process.env.NODE_ENV === "production"
+          ? "/api/contact"
+          : "http://localhost:8080/api/contact";
 
       const response = await fetch(apiUrl, {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify(form),
-        credentials: 'omit',  // Don't send cookies, which can help with CORS
+        credentials: "omit",
       });
 
-      const data = await response.text(); // Try to get response body
+      const data = await response.text();
 
       if (response.ok) {
         setSent(true);
-        setForm({
-          firstName: "",
-          lastName: "",
-          email: "",
-          message: "",
-        });
+        setForm({ firstName: "", lastName: "", email: "", message: "" });
       } else {
+        // surface status but avoid raw symbols in JSX elsewhere
         console.error("Server error:", data);
         setError(`${t("contact.errors.send")} (${response.status})`);
       }
@@ -77,15 +68,19 @@ const Contact = () => {
   return (
     <div className="contact-page">
       <h1 className="contact-title">{t("contact.title")}</h1>
+
       <div className="contact-content">
-        <form className="contact-form" onSubmit={handleSubmit}>
+        <form className="contact-form" onSubmit={handleSubmit} noValidate>
           <h2>{t("contact.formTitle")}</h2>
+
           <div className="contact-row">
             <div>
-              <label>
-                {t("contact.firstName")}<span>*</span>
+              <label htmlFor="firstName">
+                {t("contact.firstName")}
+                <span aria-hidden="true">*</span>
               </label>
               <input
+                id="firstName"
                 type="text"
                 name="firstName"
                 value={form.firstName}
@@ -94,11 +89,14 @@ const Contact = () => {
                 placeholder={t("contact.placeholders.firstName")}
               />
             </div>
+
             <div>
-              <label>
-                {t("contact.lastName")}<span>*</span>
+              <label htmlFor="lastName">
+                {t("contact.lastName")}
+                <span aria-hidden="true">*</span>
               </label>
               <input
+                id="lastName"
                 type="text"
                 name="lastName"
                 value={form.lastName}
@@ -108,11 +106,14 @@ const Contact = () => {
               />
             </div>
           </div>
+
           <div>
-            <label>
-              {t("contact.email")}<span>*</span>
+            <label htmlFor="email">
+              {t("contact.email")}
+              <span aria-hidden="true">*</span>
             </label>
             <input
+              id="email"
               type="email"
               name="email"
               value={form.email}
@@ -121,9 +122,14 @@ const Contact = () => {
               placeholder={t("contact.placeholders.email")}
             />
           </div>
+
           <div>
-            <label>{t("contact.message")}<span>*</span></label>
+            <label htmlFor="message">
+              {t("contact.message")}
+              <span aria-hidden="true">*</span>
+            </label>
             <textarea
+              id="message"
               name="message"
               rows={4}
               value={form.message}
@@ -132,33 +138,45 @@ const Contact = () => {
               placeholder={t("contact.placeholders.message")}
             />
           </div>
-          <div className="contact-privacy">
-            {t("contact.privacy")}
+
+          <p className="contact-privacy">{t("contact.privacy")}</p>
+
+          {/* Status region (no raw > in text) */}
+          <div role="status" aria-live="polite">
+            {error && <div className="contact-error">{error}</div>}
+            {sent && <div className="contact-success">{t("contact.success")}</div>}
           </div>
-          {error && <div className="contact-error">{error}</div>}
-          {sent && <div className="contact-success">{t("contact.success")}</div>}
-          <button 
-            type="submit" 
-            className="contact-submit" 
-            disabled={sending}
-          >
+
+          <button type="submit" className="contact-submit" disabled={sending}>
             {sending ? t("contact.sending") || "Sending..." : t("contact.submit")}
           </button>
         </form>
+
         <div className="contact-info">
           <h2>{t("contact.infoTitle")}</h2>
-          <p>
-            - {t("contact.emailLabel")}<a href="mailto:contact@onda.ma"> contact@onda.ma</a><br />
-            - {t("contact.phoneLabel")} <a href="tel:+212522539040"> 0522539040</a>
-          </p>
+          <ul className="list-unstyled">
+            <li>
+              <strong>{t("contact.emailLabel")}</strong>{" "}
+              <a href="mailto:contact@onda.ma">contact@onda.ma</a>
+            </li>
+            <li>
+              <strong>{t("contact.phoneLabel")}</strong>{" "}
+              <a href="tel:+212522539040">0522539040</a>
+            </li>
+          </ul>
+
           <p>{t("contact.officeHours")}</p>
+
           <h2>{t("contact.headquartersTitle")}</h2>
-          <p>
-            Office National Des Aéroports (ONDA)<br />
-            Aéroport Mohammed V – Nouasseur<br />
-            Casablanca, Maroc<br />
+          <address>
+            Office National Des Aéroports (ONDA)
+            <br />
+            Aéroport Mohammed V – Nouasseur
+            <br />
+            Casablanca, Maroc
+            <br />
             20100
-          </p>
+          </address>
         </div>
       </div>
     </div>
@@ -166,3 +184,4 @@ const Contact = () => {
 };
 
 export default Contact;
+

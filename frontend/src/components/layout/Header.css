@@ -1,3 +1,4 @@
+src/.../layout/Header.css
 .header-wrapper {
   background: white;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -14,25 +15,6 @@
   animation: fadeInLeft 0.8s ease forwards;
   font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
   text-shadow: 0 1px 1px rgba(0,0,0,0.05);
-}
-
-.logo-img {
-  transition: transform 0.7s cubic-bezier(.32,1.56,.51,.95);
-  will-change: transform;
-}
-.logo-img.rotate360 {
-  animation: rotate360 1.2s cubic-bezier(.32,1.56,.51,.95);
-}
-@keyframes rotate360 {
-  0% {
-    transform: rotate(0deg);
-  }
-  85% {
-    transform: rotate(375deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
 }
 
 .nav-link {
@@ -124,15 +106,22 @@
     transform: translateX(0px);
   }
 }
+
+@keyframes rotate360 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .logo-img {
   transition: transform 0.85s cubic-bezier(.22,1.15,.52,.95);
   will-change: transform;
   backface-visibility: hidden;
 }
+
 .logo-img.rotate360 {
   animation: rotate360 1s cubic-bezier(.22,1.15,.52,.95);
-}
-@keyframes rotate360 {
-  0% { transform: rotateZ(0deg);}
-  100% { transform: rotateZ(360deg);}
 }

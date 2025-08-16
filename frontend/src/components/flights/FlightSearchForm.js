@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+// src/components/flights/FlightSearchForm.js
+import React, { useState, useEffect, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { airportService } from '../../services/api';
 
@@ -11,11 +13,15 @@ const FlightSearchForm = ({ onSearch }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  // stable min date string (today)
+  const todayISO = useMemo(() => new Date().toISOString().split('T')[0], []);
+
   useEffect(() => {
     setLoading(true);
-    
-    airportService.getAllAirports()
-      .then(response => {
+
+    airportService
+      .getAllAirports()
+      .then((response) => {
         setAirports(Array.isArray(response.data) ? response.data : []);
         setLoading(false);
       })
@@ -24,12 +30,17 @@ const FlightSearchForm = ({ onSearch }) => {
         setAirports([]);
         setLoading(false);
       });
+
     setDate(new Date().toISOString().split('T')[0]);
     // eslint-disable-next-line
   }, [t]);
 
+  const optionKey = (a) =>
+    String(a?.id ?? a?.code ?? `${a?.city || 'Unknown'}-${a?.name || ''}`);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!departureAirport) {
       setError(t('flights.errorSelectDeparture'));
       return;
@@ -42,11 +53,12 @@ const FlightSearchForm = ({ onSearch }) => {
       setError(t('flights.errorSameAirport'));
       return;
     }
+
     setError('');
     onSearch({
       departure: departureAirport,
       arrival: arrivalAirport,
-      date: date
+      date,
     });
   };
 
@@ -55,64 +67,80 @@ const FlightSearchForm = ({ onSearch }) => {
   }
 
   return (
-      <div className="flight-search-container">
-        <h2>{t('flights.searchTitle')}</h2>
-        <p>{t('flights.searchDescription')}</p>
-        {error && <div className="alert alert-danger">{error}</div>}
-        <form onSubmit={handleSubmit} className="flight-search-form">
-          <div className="search-fields">
-            <div className="form-field">
-              <label htmlFor="departure">{t('flights.from')}</label>
-              <select
-                  id="departure"
-                  value={departureAirport}
-                  onChange={(e) => setDepartureAirport(e.target.value)}
-                  className="form-control"
-              >
-                <option value="">{t('flights.selectDeparture')}</option>
-                {airports.map(airport => (
-                    <option key={airport.id} value={airport.code || ''}>
-                      {String(airport.city || 'Unknown')} ({String(airport.code || '???')})
-                    </option>
-                ))}
-              </select>
-            </div>
-            <div className="form-field">
-              <label htmlFor="arrival">{t('flights.to')}</label>
-              <select
-                  id="arrival"
-                  value={arrivalAirport}
-                  onChange={(e) => setArrivalAirport(e.target.value)}
-                  className="form-control"
-              >
-                <option value="">{t('flights.selectArrival')}</option>
-                {airports.map(airport => (
-                    <option key={airport.id} value={airport.code || ''}>
-                      {String(airport.city || 'Unknown')} ({String(airport.code || '???')})
-                    </option>
-                ))}
-              </select>
-            </div>
-            <div className="form-field">
-              <label htmlFor="date">{t('flights.date')}</label>
-              <input
-                  type="date"
-                  id="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  min={new Date().toISOString().split('T')[0]}
-                  className="form-control"
-              />
-            </div>
-            <div className="form-field button-field">
-              <button type="submit" className="search-button btn btn-primary">
-                {t('flights.searchButton')}
-              </button>
-            </div>
+    <div className="flight-search-container">
+      <h2>{t('flights.searchTitle')}</h2>
+      <p>{t('flights.searchDescription')}</p>
+
+      {error && <div className="alert alert-danger">{error}</div>}
+
+      <form onSubmit={handleSubmit} className="flight-search-form" noValidate>
+        <div className="search-fields">
+          {/* From */}
+          <div className="form-field">
+            <label htmlFor="departure">{t('flights.from')}</label>
+            <select
+              id="departure"
+              value={departureAirport}
+              onChange={(e) => setDepartureAirport(e.target.value)}
+              className="form-control"
+              aria-invalid={!!error && !departureAirport}
+            >
+              <option value="">{t('flights.selectDeparture')}</option>
+              {airports.map((airport) => (
+                <option key={optionKey(airport)} value={airport.code || ''}>
+                  {String(airport.city || 'Unknown')} ({String(airport.code || '???')})
+                </option>
+              ))}
+            </select>
           </div>
-        </form>
-      </div>
+
+          {/* To */}
+          <div className="form-field">
+            <label htmlFor="arrival">{t('flights.to')}</label>
+            <select
+              id="arrival"
+              value={arrivalAirport}
+              onChange={(e) => setArrivalAirport(e.target.value)}
+              className="form-control"
+              aria-invalid={!!error && !arrivalAirport}
+            >
+              <option value="">{t('flights.selectArrival')}</option>
+              {airports.map((airport) => (
+                <option key={optionKey(airport)} value={airport.code || ''}>
+                  {String(airport.city || 'Unknown')} ({String(airport.code || '???')})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Date */}
+          <div className="form-field">
+            <label htmlFor="date">{t('flights.date')}</label>
+            <input
+              type="date"
+              id="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              min={todayISO}
+              className="form-control"
+            />
+          </div>
+
+          {/* Submit */}
+          <div className="form-field button-field">
+            <button type="submit" className="search-button btn btn-primary">
+              {t('flights.searchButton')}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
   );
 };
 
+FlightSearchForm.propTypes = {
+  onSearch: PropTypes.func.isRequired,
+};
+
 export default FlightSearchForm;
+

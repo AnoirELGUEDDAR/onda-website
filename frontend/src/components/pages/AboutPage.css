@@ -1,3 +1,11 @@
+/* Defaults / tokens */
+:root {
+  --onda-gray: #f5f5f5;
+}
+
+/* ===========================
+   Header strip (date/user/lang)
+   =========================== */
 .about-header {
   display: flex;
   justify-content: space-between;
@@ -14,7 +22,8 @@
   gap: 10px;
 }
 
-.datetime-display, .username-display {
+.datetime-display,
+.username-display {
   display: flex;
   align-items: center;
 }
@@ -27,7 +36,7 @@
 }
 
 .info-value {
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", Courier, monospace;
   background-color: #ffffff;
   padding: 4px 8px;
   border-radius: 4px;
@@ -51,7 +60,6 @@
     align-items: flex-start;
     gap: 20px;
   }
-  
   .language-control-wrapper {
     align-self: flex-start;
     margin-top: 10px;
@@ -59,41 +67,36 @@
 }
 
 @media (max-width: 576px) {
-  .datetime-display, .username-display {
+  .datetime-display,
+  .username-display {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
   }
-  
   .info-label {
     margin-right: 0;
     margin-bottom: 4px;
   }
-  
   .rtl .info-label {
     margin-left: 0;
   }
-  
   .info-value {
     width: 100%;
   }
 }
+
+/* ===========================
+   Page layout / blocks
+   =========================== */
 .about-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.rtl {
-  direction: rtl;
-  text-align: right;
-}
-
-.ltr {
-  direction: ltr;
-  text-align: left;
-}
+.rtl { direction: rtl; text-align: right; }
+.ltr { direction: ltr; text-align: left; }
 
 .about-content {
   background-color: #fff;
@@ -103,9 +106,7 @@
   margin-bottom: 40px;
 }
 
-.about-intro {
-  margin-bottom: 40px;
-}
+.about-intro { margin-bottom: 40px; }
 
 .about-intro h2 {
   color: #c8620e;
@@ -125,10 +126,10 @@
   font-size: 22px;
 }
 
-/* Styles pour les chiffres clés */
-.key-figures {
-  margin-bottom: 40px;
-}
+/* ===========================
+   Key figures
+   =========================== */
+.key-figures { margin-bottom: 40px; }
 
 .key-figures h3 {
   color: #0056b3;
@@ -158,14 +159,16 @@
 }
 
 .figure-card .label {
+  /* FIX: add generic fallback */
+  font-family: "Cairo", Arial, sans-serif;
   color: #3a3434;
   font-size: 16px;
-  font-family: Cairo;
 }
 
-.mission-values {
-  margin-bottom: 40px;
-}
+/* ===========================
+   Mission & values
+   =========================== */
+.mission-values { margin-bottom: 40px; }
 
 .mission-values h3 {
   color: #0056b3;
@@ -178,7 +181,10 @@
   padding: 0;
 }
 
+/* FIX: merged duplicate .mission-values li rules */
 .mission-values li {
+  background-color: var(--onda-gray);
+  margin-bottom: 10px;
   padding: 12px 0;
   border-bottom: 1px solid #eaeaea;
   position: relative;
@@ -203,9 +209,10 @@
   right: 0;
 }
 
-.history-section {
-  margin-bottom: 40px;
-}
+/* ===========================
+   History / timeline
+   =========================== */
+.history-section { margin-bottom: 40px; }
 
 .history-section h3 {
   color: #0056b3;
@@ -258,10 +265,11 @@
   margin-bottom: 5px;
 }
 
-.timeline-content {
-  line-height: 1.6;
-}
+.timeline-content { line-height: 1.6; }
 
+/* ===========================
+   Accidents note
+   =========================== */
 .accidents-section {
   margin-bottom: 40px;
   background-color: #fff5f5;
@@ -280,13 +288,12 @@
   margin-bottom: 15px;
 }
 
-.accidents-section p {
-  line-height: 1.7;
-}
+.accidents-section p { line-height: 1.7; }
 
-.development-section {
-  margin-bottom: 40px;
-}
+/* ===========================
+   Developments
+   =========================== */
+.development-section { margin-bottom: 40px; }
 
 .development-section h3 {
   color: #0056b3;
@@ -309,9 +316,7 @@
   transition: transform 0.3s ease;
 }
 
-.airport-project:hover {
-  transform: translateY(-5px);
-}
+.airport-project:hover { transform: translateY(-5px); }
 
 .airport-project h4 {
   color: #0056b3;
@@ -344,9 +349,10 @@
   margin-top: 20px;
 }
 
-.management-section {
-  margin-bottom: 30px;
-}
+/* ===========================
+   Management
+   =========================== */
+.management-section { margin-bottom: 30px; }
 
 .management-section h3 {
   color: #0056b3;
@@ -373,6 +379,9 @@
   margin-bottom: 10px;
 }
 
+/* ===========================
+   Footer
+   =========================== */
 .onda-footer {
   text-align: center;
   padding: 20px 0;
@@ -381,6 +390,9 @@
   font-size: 14px;
 }
 
+/* ===========================
+   Misc / global tweaks
+   =========================== */
 @media (max-width: 768px) {
   .figures-grid,
   .management-grid,
@@ -388,40 +400,34 @@
     grid-template-columns: 1fr;
   }
 }
-p{
 
-  font-size:20px;
-}
-#ABOUTONDA{
-width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 8px;}
-body{
+p { font-size: 20px; }
 
-background-size: cover;}
-.mission-values li{
-  background-color: var(--onda-gray);
-  margin-bottom: 10px;
-}
-h4{
+body { background-size: cover; }
+
+h4 {
   font-style: italic;
-  color:black;
+  color: #000;
   font-size: 16px;
 }
+
+/* FIX: merged duplicate #ABOUTONDA rules */
 #ABOUTONDA {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
   opacity: 0;
   animation: fadeInVideo 1s ease forwards;
 }
 
 @keyframes fadeInVideo {
-  to {
-    opacity: 1;
-  }
+  to { opacity: 1; }
 }
-/* AboutPage.css */
+
+/* Local section title */
 .section-title {
-  color: black;
+  color: #000;
   font-size: 16px;
   margin: 0 0 0.5rem 0;
 }
