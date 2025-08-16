@@ -1,5 +1,6 @@
 // src/components/airports/AirportList.js
 import React, { useState, useEffect, memo } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import FlightLoader from '../../FlightLoader';
@@ -41,14 +42,24 @@ export const airports = AIRPORT_ROWS.map(([code, city, name, type, imageFile]) =
   image: `/images/airports/${imageFile}`,
 }));
 
+const airportShape = PropTypes.shape({
+  code: PropTypes.string.isRequired,
+  city: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+});
+
 // Small presentational component to avoid JSX repetition
-const AirportCard = memo(function AirportCard({ airport, t }) {
+const AirportCard = memo(function AirportCard({ airport }) {
+  const { t } = useTranslation();
+
   const title = t(`airports.names.${airport.name}`);
   const city = t(`cities.${airport.city}`);
   const type = t(`airports.types.${airport.type}`);
 
   return (
-    <div className="col-lg-4 col-md-6" key={airport.code}>
+    <div className="col-lg-4 col-md-6">
       <div className="airport-card h-100">
         <img
           src={airport.image}
@@ -75,6 +86,10 @@ const AirportCard = memo(function AirportCard({ airport, t }) {
   );
 });
 
+AirportCard.propTypes = {
+  airport: airportShape.isRequired,
+};
+
 const AirportList = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
@@ -92,7 +107,7 @@ const AirportList = () => {
         <h1 className="mb-5">{t('airports.pageTitle', 'Morocco Airports')}</h1>
         <div className="row g-4">
           {airports.map((airport) => (
-            <AirportCard key={airport.code} airport={airport} t={t} />
+            <AirportCard key={airport.code} airport={airport} />
           ))}
         </div>
       </div>

@@ -1,16 +1,20 @@
+/* ===========================
+   Airports page
+   =========================== */
 .airports-page {
-  /* Optional: soft background */
   background: #fff;
 }
 
-/* Make the Bootstrap container wider on desktop */
+/* Optional: scope container width only on this page to avoid global override */
 @media (min-width: 1200px) {
-  .container {
+  .airports-page .container {
     max-width: 1300px;
   }
 }
 
-/* Card styles */
+/* ===========================
+   Card styles (DEDUPED)
+   =========================== */
 .airport-card {
   background: #fff;
   border-radius: 1.5rem;
@@ -19,13 +23,24 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  transition: box-shadow 0.2s;
   margin-bottom: 0;
+
+  /* Interaction + animation */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards;
 }
 
 .airport-card:hover {
-  box-shadow: 0 8px 40px 0 rgba(0,0,0,0.13);
+  box-shadow: 0 8px 40px 0 rgba(0, 0, 0, 0.13);
+  transform: translateY(-5px);
 }
+
+/* Staggered animation (optional) */
+.airport-card:nth-child(1) { animation-delay: 0.1s; }
+.airport-card:nth-child(2) { animation-delay: 0.2s; }
+.airport-card:nth-child(3) { animation-delay: 0.3s; }
+/* add more as needed */
 
 /* Large image, cropped, rounded top */
 .airport-image {
@@ -70,6 +85,7 @@
   margin-top: auto;
 }
 
+/* Primary button */
 .btn-primary {
   background-color: #13336c;
   border: none;
@@ -79,51 +95,13 @@
   font-weight: 500;
   font-size: 1.08rem;
 }
-
 .btn-primary:hover {
   background-color: #1c4fa1;
 }
+
+/* Fade-in animation */
 @keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
-.airport-card {
-  background: #fff;
-  border-radius: 1.5rem;
-  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  margin-bottom: 0;
-
-  /* Animation */
-  opacity: 0;
-  animation: fadeInUp 0.6s ease forwards;
-}
-
-/* Add staggered animation delay if needed */
-.airport-card:nth-child(1) {
-  animation-delay: 0.1s;
-}
-.airport-card:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.airport-card:nth-child(3) {
-  animation-delay: 0.3s;
-}
-/* Add more as needed */
-
-/* Hover animation */
-.airport-card:hover {
-  box-shadow: 0 8px 40px 0 rgba(0, 0, 0, 0.13);
-  transform: translateY(-5px);
-}

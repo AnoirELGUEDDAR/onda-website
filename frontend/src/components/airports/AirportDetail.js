@@ -38,42 +38,47 @@ FacilityCard.propTypes = {
   hint: PropTypes.node,
 };
 
+/** Accessible native <dialog> */
 const Modal = ({ title, open, onClose, children, wide = false, bodyRef, closeLabel = 'Close' }) => {
+  const dialogRef = useRef(null);
+  const titleId = useMemo(() => `dlg-${Math.random().toString(36).slice(2)}`, []);
+
+  useEffect(() => {
+    const dlg = dialogRef.current;
+    if (!dlg) return;
+    const handleCancel = (e) => {
+      // prevent default close so we run onClose()
+      e.preventDefault();
+      onClose?.();
+    };
+    dlg.addEventListener('cancel', handleCancel);
+    return () => dlg.removeEventListener('cancel', handleCancel);
+  }, [onClose]);
+
   if (!open) return null;
 
-  const handleBackdropKeyDown = (e) => {
-    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') onClose();
-  };
-
   return (
-    <div className="rak-restaurants-modal" role="dialog" aria-modal="true" aria-label={typeof title === 'string' ? title : 'Dialog'}>
-      <div
-        className={`rak-restaurants-modal-content shadow rounded ${wide ? 'container-fluid' : ''}`}
-        style={wide ? { maxWidth: '90vw' } : undefined}
-      >
-        <div className="modal-header d-flex justify-content-between align-items-center p-3 border-bottom">
-          <h5 className="modal-title fw-bold">{title}</h5>
-          <button type="button" className="btn-close" aria-label="Close" onClick={onClose}></button>
-        </div>
-        <div className="modal-body p-4" style={{ maxHeight: '80vh', overflowY: 'auto' }} ref={bodyRef}>
-          {children}
-        </div>
-        <div className="modal-footer p-3 border-top text-end">
-          <button type="button" className="btn btn-secondary" onClick={onClose}>
-            {closeLabel}
-          </button>
-        </div>
+    <dialog
+      ref={dialogRef}
+      open
+      className={`rak-dialog ${wide ? 'container-fluid' : ''}`}
+      aria-labelledby={titleId}
+    >
+      <div className="modal-header d-flex justify-content-between align-items-center p-3 border-bottom">
+        <h5 id={titleId} className="modal-title fw-bold">{title}</h5>
+        <button type="button" className="btn-close" aria-label="Close" onClick={onClose}></button>
       </div>
 
-      <div
-        className="rak-restaurants-modal-backdrop"
-        role="button"
-        tabIndex={0}
-        aria-label={typeof title === 'string' ? `Close ${title}` : 'Close dialog'}
-        onClick={onClose}
-        onKeyDown={handleBackdropKeyDown}
-      ></div>
-    </div>
+      <div className="modal-body p-4" style={{ maxHeight: '80vh', overflowY: 'auto' }} ref={bodyRef}>
+        {children}
+      </div>
+
+      <div className="modal-footer p-3 border-top text-end">
+        <button type="button" className="btn btn-secondary" onClick={onClose}>
+          {closeLabel}
+        </button>
+      </div>
+    </dialog>
   );
 };
 
@@ -83,11 +88,7 @@ Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
   children: PropTypes.node,
   wide: PropTypes.bool,
-  bodyRef: PropTypes.oneOfType([
-    // function ref or object ref
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.any }),
-  ]),
+  bodyRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.any })]),
   closeLabel: PropTypes.node,
 };
 
@@ -112,15 +113,13 @@ const SimpleTable = ({ columns, rows, rowKey }) => (
 );
 
 SimpleTable.propTypes = {
-  columns: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string,          // field in each row object
-      label: PropTypes.node.isRequired,
-      render: PropTypes.func,         // optional custom cell renderer: (row) => node
-    })
-  ).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.shape({
+    key: PropTypes.string,
+    label: PropTypes.node.isRequired,
+    render: PropTypes.func,
+  })).isRequired,
   rows: PropTypes.arrayOf(PropTypes.object).isRequired,
-  rowKey: PropTypes.func,            // (row, index) => string
+  rowKey: PropTypes.func,
 };
 
 /* ---------- Static data (RAK) ---------- */
@@ -180,9 +179,8 @@ const AirportDetail = () => {
   useEffect(() => {
     try {
       const found = airports.find((a) => a.code === id.toUpperCase());
-      if (!found) {
-        setError(true);
-      } else {
+      if (!found) setError(true);
+      else {
         setAirport(found);
         setError(false);
       }
@@ -204,9 +202,7 @@ const AirportDetail = () => {
       { type: t('airports.parking.rows.cleaning'), duration: t('airports.parking.rows.extWash'),  price: '50 MAD' },
       { type: t('airports.parking.rows.cleaning'), duration: t('airports.parking.rows.fullClean'), price: '150 MAD' },
     ],
-    // recompute on language change
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [i18n.language]
+    [i18n.language] // recompute on language change
   );
 
   if (loading) {
@@ -421,7 +417,6 @@ const AirportDetail = () => {
                 rowKey={(r, i) => r.type + r.duration + i}
               />
 
-              {/* Scroll FAB */}
               <button
                 type="button"
                 className="scroll-fab"

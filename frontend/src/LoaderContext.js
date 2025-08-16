@@ -9,7 +9,7 @@ export function useLoader() {
   if (!ctx) {
     throw new Error('useLoader must be used within a LoaderProvider');
   }
-  return ctx; // { loading, setLoading }
+  return ctx;
 }
 
 export function LoaderProvider({ children }) {
