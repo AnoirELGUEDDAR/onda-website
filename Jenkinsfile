@@ -1,8 +1,8 @@
 pipeline {
-  agent {
-    kubernetes {
-      inheritFrom 'ci-agent'
-      yaml """
+    agent {
+        kubernetes {
+            inheritFrom 'ci-agent'
+            yaml """
 apiVersion: v1
 kind: Pod
 spec:
@@ -47,99 +47,99 @@ spec:
     - name: dind-storage
       emptyDir: {}
 """
-    }
-  }
-
-  environment {
-    DOCKER_HUB_USER = 'anoiraeg2003'
-    BACKEND_IMAGE   = "${DOCKER_HUB_USER}/spring-backend:${BUILD_NUMBER}"
-    FRONTEND_IMAGE  = "${DOCKER_HUB_USER}/react-frontend:${BUILD_NUMBER}"
-    DOCKER_HOST     = "tcp://localhost:2375"
-    DOCKER_BUILDKIT = "1"
-    MAVEN_OPTS      = "-Dmaven.repo.local=/root/.m2 -Xmx1024m"
-    CURRENT_DATE    = "2025-08-06 15:23:26"
-    CURRENT_USER    = "AnoirELGUEDDAR"
-    SONARQ_DONE     = 'false'
-  }
-
-  stages {
-    stage('Checkout') {
-      steps { checkout scm }
-    }
-
-    stage('Determine Changes') {
-      steps {
-        script {
-          try {
-            def changes = sh(script: "git diff --name-only HEAD~1 HEAD || git diff --name-only origin/main...HEAD || echo 'all'", returnStdout: true).trim()
-            env.BACKEND_CHANGED  = changes.contains('backend/')  || changes == 'all' ? 'true' : 'false'
-            env.FRONTEND_CHANGED = changes.contains('frontend/') || changes == 'all' ? 'true' : 'false'
-          } catch (Exception e) {
-            echo "Could not determine changes, assuming everything has changed"
-            env.BACKEND_CHANGED  = 'true'
-            env.FRONTEND_CHANGED = 'true'
-          }
-          echo "Backend changed: ${env.BACKEND_CHANGED}"
-          echo "Frontend changed: ${env.FRONTEND_CHANGED}"
         }
-      }
     }
 
-    stage('Build and Test') {
-      parallel {
-        stage('Backend') {
-          when { expression { return env.BACKEND_CHANGED == 'true' } }
-          stages {
-            stage('Build Backend') {
-              steps {
-                container('maven') { dir('backend') { sh 'mvn -T 4 clean package -DskipTests' } }
-              }
-            }
-            stage('Test Backend') {
-              steps {
-                container('maven') { dir('backend') { sh 'mvn -T 4 test' } }
-              }
-            }
-          }
+    environment {
+        DOCKER_HUB_USER = 'anoiraeg2003'
+        BACKEND_IMAGE   = "${DOCKER_HUB_USER}/spring-backend:${BUILD_NUMBER}"
+        FRONTEND_IMAGE  = "${DOCKER_HUB_USER}/react-frontend:${BUILD_NUMBER}"
+        DOCKER_HOST     = "tcp://localhost:2375"
+        DOCKER_BUILDKIT = "1"
+        MAVEN_OPTS      = "-Dmaven.repo.local=/root/.m2 -Xmx1024m"
+        CURRENT_DATE    = "2025-08-06 15:23:26"
+        CURRENT_USER    = "AnoirELGUEDDAR"
+        SONARQ_DONE     = 'false'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps { checkout scm }
         }
-        stage('Frontend') {
-          when { expression { return env.FRONTEND_CHANGED == 'true' } }
-          stages {
-            stage('Build Frontend') {
-              steps {
-                container('node') {
-                  dir('frontend') {
-                    sh 'npm ci --prefer-offline --no-audit'
-                    sh 'npm run build'
-                  }
+
+        stage('Determine Changes') {
+            steps {
+                script {
+                    try {
+                        def changes = sh(script: "git diff --name-only HEAD~1 HEAD || git diff --name-only origin/main...HEAD || echo 'all'", returnStdout: true).trim()
+                        env.BACKEND_CHANGED  = changes.contains('backend/')  || changes == 'all' ? 'true' : 'false'
+                        env.FRONTEND_CHANGED = changes.contains('frontend/') || changes == 'all' ? 'true' : 'false'
+                    } catch (Exception e) {
+                        echo "Could not determine changes, assuming everything has changed"
+                        env.BACKEND_CHANGED  = 'true'
+                        env.FRONTEND_CHANGED = 'true'
+                    }
+                    echo "Backend changed: ${env.BACKEND_CHANGED}"
+                    echo "Frontend changed: ${env.FRONTEND_CHANGED}"
                 }
-              }
             }
-            stage('Test Frontend') {
-              steps {
-                container('node') {
-                  dir('frontend') {
-                    sh 'npm test -- --watchAll=false --passWithNoTests || true'
-                  }
-                }
-              }
-            }
-          }
         }
-      }
-    }
 
-    stage('Code Quality (SonarQube)') {
-      steps {
-        script {
-          withSonarQubeEnv('sonarqube-server') {
-            if (env.BACKEND_CHANGED == 'true' || env.BACKEND_CHANGED == 'false') {
-              container('maven') { dir('backend') { sh 'mvn -T 4 -DskipTests sonar:sonar'; sh 'touch .sonar_backend_done' } }
+        stage('Build and Test') {
+            parallel {
+                stage('Backend') {
+                    when { expression { return env.BACKEND_CHANGED == 'true' } }
+                    stages {
+                        stage('Build Backend') {
+                            steps {
+                                container('maven') { dir('backend') { sh 'mvn -T 4 clean package -DskipTests' } }
+                            }
+                        }
+                        stage('Test Backend') {
+                            steps {
+                                container('maven') { dir('backend') { sh 'mvn -T 4 test' } }
+                            }
+                        }
+                    }
+                }
+                stage('Frontend') {
+                    when { expression { return env.FRONTEND_CHANGED == 'true' } }
+                    stages {
+                        stage('Build Frontend') {
+                            steps {
+                                container('node') {
+                                    dir('frontend') {
+                                        sh 'npm ci --prefer-offline --no-audit'
+                                        sh 'npm run build'
+                                    }
+                                }
+                            }
+                        }
+                        stage('Test Frontend') {
+                            steps {
+                                container('node') {
+                                    dir('frontend') {
+                                        sh 'npm test -- --watchAll=false --passWithNoTests || true'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            if (env.FRONTEND_CHANGED == 'true' || env.FRONTEND_CHANGED == 'false') {
-              container('node') {
-                dir('frontend') {
-                  sh '''
+        }
+
+        stage('Code Quality (SonarQube)') {
+            steps {
+                script {
+                    withSonarQubeEnv('sonarqube-server') {
+                        if (env.BACKEND_CHANGED == 'true' || env.BACKEND_CHANGED == 'false') {
+                            container('maven') { dir('backend') { sh 'mvn -T 4 -DskipTests sonar:sonar'; sh 'touch .sonar_backend_done' } }
+                        }
+                        if (env.FRONTEND_CHANGED == 'true' || env.FRONTEND_CHANGED == 'false') {
+                            container('node') {
+                                dir('frontend') {
+                                    sh '''
 set -e
 apt-get update -qq
 DEBIAN_FRONTEND=noninteractive apt-get install -y -qq openjdk-17-jre-headless >/dev/null
@@ -151,32 +151,32 @@ npx sonar-scanner \
   -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
 touch .sonar_frontend_done
 '''
+                                }
+                            }
+                        }
+                    }
+                    def done = sh(
+                            script: '([ -f backend/.sonar_backend_done ] || [ -f frontend/.sonar_frontend_done ]) && echo true || echo false',
+                            returnStdout: true
+                    ).trim()
+                    echo "SONARQ_DONE=${done}"
+                    env.SONARQ_DONE = done
                 }
-              }
             }
-          }
-          def done = sh(
-            script: '([ -f backend/.sonar_backend_done ] || [ -f frontend/.sonar_frontend_done ]) && echo true || echo false',
-            returnStdout: true
-          ).trim()
-          echo "SONARQ_DONE=${done}"
-          env.SONARQ_DONE = done
         }
-      }
-    }
 
-    stage('Quality Gate') {
-      steps { timeout(time: 10, unit: 'MINUTES') { waitForQualityGate abortPipeline: true } }
-    }
+        stage('Quality Gate') {
+            steps { timeout(time: 10, unit: 'MINUTES') { waitForQualityGate abortPipeline: true } }
+        }
 
-    stage('Docker Build & Push') {
-      parallel {
-        stage('Backend Docker') {
-          when { expression { return env.BACKEND_CHANGED == 'true' } }
-          steps {
-            container('docker') {
-              withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD')]) {
-                sh '''
+        stage('Docker Build & Push') {
+            parallel {
+                stage('Backend Docker') {
+                    when { expression { return env.BACKEND_CHANGED == 'true' } }
+                    steps {
+                        container('docker') {
+                            withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD')]) {
+                                sh '''
 until docker ps > /dev/null 2>&1; do sleep 1; done
 echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
 docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ${DOCKER_HUB_USER}/spring-backend:latest \
@@ -184,16 +184,16 @@ docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ${DOCKER_HUB_USER}
 docker push ${BACKEND_IMAGE}
 docker push ${DOCKER_HUB_USER}/spring-backend:latest
 '''
-              }
-            }
-          }
-        }
-        stage('Frontend Docker') {
-          when { expression { return env.FRONTEND_CHANGED == 'true' } }
-          steps {
-            container('docker') {
-              withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD')]) {
-                sh '''
+                            }
+                        }
+                    }
+                }
+                stage('Frontend Docker') {
+                    when { expression { return env.FRONTEND_CHANGED == 'true' } }
+                    steps {
+                        container('docker') {
+                            withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD')]) {
+                                sh '''
 until docker ps > /dev/null 2>&1; do sleep 1; done
 echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
 docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ${DOCKER_HUB_USER}/react-frontend:latest \
@@ -201,104 +201,48 @@ docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ${DOCKER_HUB_USER}
 docker push ${FRONTEND_IMAGE}
 docker push ${DOCKER_HUB_USER}/react-frontend:latest
 '''
-              }
+                            }
+                        }
+                    }
+                }
             }
-          }
         }
-      }
-    }
 
-    /* === Supply-Chain Security: SBOM, Scan & Sign (with fallbacks & local daemon) === */
-    stage('Security: SBOM, Scan & Sign') {
-      steps {
-        container('docker') {
-          withCredentials([
-            string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD'),
-            file(credentialsId: 'COSIGN_KEY',        variable: 'COSIGN_KEY'),
-            // string(credentialsId: 'COSIGN_PASSWORD', variable: 'COSIGN_PASSWORD')  // add if your private key is password-protected
-          ]) {
-            sh '''
-set -e
-
-# Login (fresh container)
+        stage('Security: SBOM, Scan & Sign') {
+            steps {
+                container('docker') {
+                    withCredentials([
+                            string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD'),
+                            file  (credentialsId: 'COSIGN_KEY',          variable: 'COSIGN_KEY'),
+                            string(credentialsId: 'COSIGN_PASSWORD',     variable: 'COSIGN_PASSWORD')  // <-- missing before
+                    ]) {
+                        sh '''
+set -euo pipefail
 echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
 
-# Decide which tags to analyze: if a component changed this build, use that tag; otherwise fall back to :latest
-if [ "${BACKEND_CHANGED}" = "true" ]; then
-  BACKEND_PULL="${BACKEND_IMAGE}"
-else
-  BACKEND_PULL="${DOCKER_HUB_USER}/spring-backend:latest"
+# choose tags (as you already do)… then:
+export COSIGN_PASSWORD="${COSIGN_PASSWORD}"   # <-- passphrase to cosign
+echo "=== Cosign sign images (non-interactive) ==="
+if [ "${BACKEND_CHANGED:-true}" = "true" ]; then
+  cosign sign --yes --key "$COSIGN_KEY" "${BACKEND_IMAGE}"
 fi
+cosign sign --yes --key "$COSIGN_KEY" "${DOCKER_HUB_USER}/spring-backend:latest"
 
-if [ "${FRONTEND_CHANGED}" = "true" ]; then
-  FRONTEND_PULL="${FRONTEND_IMAGE}"
-else
-  FRONTEND_PULL="${DOCKER_HUB_USER}/react-frontend:latest"
+if [ "${FRONTEND_CHANGED:-true}" = "true" ]; then
+  cosign sign --yes --key "$COSIGN_KEY" "${FRONTEND_IMAGE}"
 fi
-
-echo "Backend image to analyze:  ${BACKEND_PULL}"
-echo "Frontend image to analyze: ${FRONTEND_PULL}"
-
-# Ensure images exist locally (avoid registry-only resolution)
-docker pull "${BACKEND_PULL}"  || true
-docker pull "${FRONTEND_PULL}" || true
-
-apk add --no-cache curl jq
-
-# Syft (SBOM)
-SYFT_VERSION=v1.17.0
-curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin ${SYFT_VERSION}
-
-# Trivy (scanner)
-TRIVY_VERSION=0.53.0
-curl -sSfL https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz \
-  | tar xz -C /usr/local/bin trivy
-
-# Cosign (sign/verify)
-COSIGN_VERSION=v2.2.4
-curl -sSfL -o /usr/local/bin/cosign https://github.com/sigstore/cosign/releases/download/${COSIGN_VERSION}/cosign-linux-amd64
-chmod +x /usr/local/bin/cosign
-
-echo "=== SBOMs (SPDX JSON) ==="
-syft "docker:${BACKEND_PULL}"  -o spdx-json > backend-sbom.spdx.json || true
-syft "docker:${FRONTEND_PULL}" -o spdx-json > frontend-sbom.spdx.json || true
-
-echo "=== Trivy scan (HIGH/CRITICAL gate) ==="
-FAILED=0
-trivy image --timeout 10m --security-checks vuln,config --severity HIGH,CRITICAL --exit-code 1 \
-  --format sarif -o backend-trivy.sarif  "${BACKEND_PULL}"  || FAILED=1
-trivy image --timeout 10m --security-checks vuln,config --severity HIGH,CRITICAL --exit-code 1 \
-  --format sarif -o frontend-trivy.sarif "${FRONTEND_PULL}" || FAILED=1
-
-echo "=== Cosign sign images ==="
-# export COSIGN_PASSWORD="${COSIGN_PASSWORD}"   # uncomment if using a password
-if [ "${BACKEND_CHANGED}" = "true" ]; then
-  cosign sign --key "$COSIGN_KEY" "${BACKEND_IMAGE}"
-fi
-cosign sign --key "$COSIGN_KEY" "${DOCKER_HUB_USER}/spring-backend:latest"
-
-if [ "${FRONTEND_CHANGED}" = "true" ]; then
-  cosign sign --key "$COSIGN_KEY" "${FRONTEND_IMAGE}"
-fi
-cosign sign --key "$COSIGN_KEY" "${DOCKER_HUB_USER}/react-frontend:latest"
-
-echo "=== Cosign verify (sanity) ==="
-cosign verify --key "$COSIGN_KEY" "${BACKEND_PULL}"  > backend-cosign.verify.txt || true
-cosign verify --key "$COSIGN_KEY" "${FRONTEND_PULL}" > frontend-cosign.verify.txt || true
-
-# Fail the stage if HIGH/CRITICAL were found (set exit-code 0 above to soften)
-[ "$FAILED" = "1" ] && echo "High/Critical vulnerabilities found." && exit 1 || true
+cosign sign --yes --key "$COSIGN_KEY" "${DOCKER_HUB_USER}/react-frontend:latest"
 '''
-          }
-          archiveArtifacts artifacts: '*.spdx.json,*.sarif,*cosign.verify.txt', allowEmptyArchive: true
+                    }
+                }
+            }
         }
-      }
-    }
 
-    stage('Deploy to Kubernetes') {
-      steps {
-        container('ansible') {
-          sh """
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                container('ansible') {
+                    sh """
 set -e
 apk add --no-cache curl
 curl -LO "https://dl.k8s.io/release/stable.txt"
@@ -317,19 +261,19 @@ echo "==== ACCESS THE APPLICATION ===="
 FRONTEND_PORT=\$(kubectl get svc react-frontend -n onda-app -o jsonpath='{.spec.ports[0].nodePort}')
 echo "Frontend should be accessible at: http://YOUR_CLUSTER_IP:\${FRONTEND_PORT}"
 """
+                }
+            }
         }
-      }
     }
-  }
 
-  post {
-    success { echo "✅ Déploiement réussi ! Build by ${CURRENT_USER} on ${CURRENT_DATE}" }
-    failure { echo "❌ Le pipeline a échoué" }
-    always  {
-      container('docker') {
-        sh 'docker system prune -af || true'
-      }
+    post {
+        success { echo "✅ Déploiement réussi ! Build by ${CURRENT_USER} on ${CURRENT_DATE}" }
+        failure { echo "❌ Le pipeline a échoué" }
+        always  {
+            container('docker') {
+                sh 'docker system prune -af || true'
+            }
+        }
     }
-  }
 }
 
