@@ -14,6 +14,7 @@ spec:
       volumeMounts:
         - name: maven-cache
           mountPath: /root/.m2
+
     - name: node
       image: node:20
       command: ["cat"]
@@ -21,6 +22,7 @@ spec:
       volumeMounts:
         - name: npm-cache
           mountPath: /root/.npm
+
     - name: docker
       image: docker:20.10.16-dind
       securityContext:
@@ -36,12 +38,14 @@ spec:
       volumeMounts:
         - name: dind-storage
           mountPath: /var/lib/docker
-        - name: trivy-cache                 # <<< NEW
-          mountPath: /root/.cache/trivy     # <<< NEW
+        - name: trivy-cache
+          mountPath: /root/.cache/trivy
+
     - name: ansible
       image: cytopia/ansible:latest
       command: ["cat"]
       tty: true
+
   volumes:
     - name: maven-cache
       persistentVolumeClaim:
@@ -51,8 +55,8 @@ spec:
         claimName: npm-cache-pvc
     - name: dind-storage
       emptyDir: {}
-    - name: trivy-cache                     # <<< NEW
-      emptyDir: {}                          # <<< NEW
+    - name: trivy-cache
+      emptyDir: {}
 """
     }
   }
@@ -75,6 +79,7 @@ spec:
   }
 
   stages {
+
     stage('Checkout') {
       steps { checkout scm }
     }
@@ -104,12 +109,16 @@ spec:
           stages {
             stage('Build Backend') {
               steps {
-                container('maven') { dir('backend') { sh 'mvn -T 4 clean package -DskipTests' } }
+                container('maven') {
+                  dir('backend') { sh 'mvn -T 4 clean package -DskipTests' }
+                }
               }
             }
             stage('Test Backend') {
               steps {
-                container('maven') { dir('backend') { sh 'mvn -T 4 test' } }
+                container('maven') {
+                  dir('backend') { sh 'mvn -T 4 test' }
+                }
               }
             }
           }
@@ -242,7 +251,7 @@ echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdi
 docker pull "${BACKEND_PULL}"  || true
 docker pull "${FRONTEND_PULL}" || true
 
-# ---- install tools (alpine) ----
+# ---- install tools ----
 apk add --no-cache curl jq || true
 if ! command -v syft >/dev/null; then
   SYFT_VERSION=v1.17.0
@@ -257,10 +266,6 @@ if ! command -v cosign >/dev/null; then
   curl -sSfL -o /usr/local/bin/cosign https://github.com/sigstore/cosign/releases/download/${COSIGN_VERSION}/cosign-linux-amd64
   chmod +x /usr/local/bin/cosign
 fi
-
-# ---- pre-download Trivy DBs & extend timeouts ----
-trivy --download-db-only --timeout 30m || true
-trivy --download-java-db-only --timeout 30m || true
 
 # ---- SBOMs ----
 echo "=== SBOMs (SPDX JSON) ==="
@@ -359,10 +364,10 @@ spec:
         - name: mysql
           image: mysql:8
           env:
-            - { name: MYSQL_ROOT_PASSWORD, value: root }
-            - { name: MYSQL_DATABASE,       value: onda_flights }
-            - { name: MYSQL_USER,           value: ondauser }
-            - { name: MYSQL_PASSWORD,       value: Anoirelgueddar@2003 }
+            - { name: MYSQL_ROOT_PASSWORD, value: "root" }
+            - { name: MYSQL_DATABASE,       value: "onda_flights" }
+            - { name: MYSQL_USER,           value: "ondauser" }
+            - { name: MYSQL_PASSWORD,       value: "Anoirelgueddar@2003" }
           ports: [ { containerPort: 3306 } ]
           volumeMounts:
             - { name: mysql-storage, mountPath: /var/lib/mysql }
@@ -413,9 +418,9 @@ spec:
           imagePullPolicy: Always
           ports: [ { containerPort: 8080 } ]
           env:
-            - { name: SPRING_DATASOURCE_URL,      value: jdbc:mysql://db:3306/onda_flights?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true }
-            - { name: SPRING_DATASOURCE_USERNAME, value: ondauser }
-            - { name: SPRING_DATASOURCE_PASSWORD, value: Anoirelgueddar@2003 }
+            - { name: SPRING_DATASOURCE_URL,      value: "jdbc:mysql://db:3306/onda_flights?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true" }
+            - { name: SPRING_DATASOURCE_USERNAME, value: "ondauser" }
+            - { name: SPRING_DATASOURCE_PASSWORD, value: "Anoirelgueddar@2003" }
           resources:
             limits:   { memory: "512Mi", cpu: "500m" }
             requests: { memory: "256Mi", cpu: "200m" }
@@ -456,7 +461,7 @@ spec:
           imagePullPolicy: Always
           ports: [ { containerPort: 80 } ]
           env:
-            - { name: REACT_APP_API_URL, value: http://backend:8080/api }
+            - { name: REACT_APP_API_URL, value: "http://backend:8080/api" }
           resources:
             limits:   { memory: "256Mi", cpu: "200m" }
             requests: { memory: "128Mi", cpu: "100m" }
@@ -509,9 +514,9 @@ echo "Frontend should be accessible at: http://YOUR_CLUSTER_IP:\${FRONTEND_PORT}
     success { echo "✅ Déploiement réussi ! Build by ${CURRENT_USER} on ${CURRENT_DATE}" }
     failure { echo "❌ Le pipeline a échoué" }
     always  {
-      container('docker') {
-        sh 'docker system prune -af || true'
-      }
+      // This is what prints the long "deleted: sha256:..." lines (safe cleanup).
+      container('docker') { sh 'docker system prune -af || true' }
+      // If you want to KEEP layers for faster builds, comment the line above.
     }
   }
 }
