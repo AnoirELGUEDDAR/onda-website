@@ -442,7 +442,6 @@ spec:
               memory: "256Mi"
               cpu: "200m"
           securityContext:
-            runAsNonRoot: true
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
@@ -500,7 +499,6 @@ spec:
               memory: "128Mi"
               cpu: "100m"
           securityContext:
-            runAsNonRoot: true
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
