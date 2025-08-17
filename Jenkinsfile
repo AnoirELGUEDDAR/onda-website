@@ -214,15 +214,59 @@ docker push ${DOCKER_HUB_USER}/react-frontend:latest
                     withCredentials([
                             string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD'),
                             file  (credentialsId: 'COSIGN_KEY',          variable: 'COSIGN_KEY'),
-                            string(credentialsId: 'COSIGN_PASSWORD',     variable: 'COSIGN_PASSWORD')  // <-- missing before
+                            string(credentialsId: 'COSIGN_PASSWORD',     variable: 'COSIGN_PASSWORD') // if key has passphrase; else leave but it can be empty
                     ]) {
                         sh '''
 set -euo pipefail
+
+# ensure tools in this (alpine) container
+apk add --no-cache curl jq || true
+
+# install syft (SBOM)
+if ! command -v syft >/dev/null 2>&1; then
+  SYFT_VERSION=v1.17.0
+  curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin ${SYFT_VERSION}
+fi
+
+# install trivy (scanner)
+if ! command -v trivy >/dev/null 2>&1; then
+  TRIVY_VERSION=0.53.0
+  curl -sSfL https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz \
+    | tar xz -C /usr/local/bin trivy
+fi
+
+# install cosign
+if ! command -v cosign >/dev/null 2>&1; then
+  COSIGN_VERSION=v2.2.4
+  curl -sSfL -o /usr/local/bin/cosign https://github.com/sigstore/cosign/releases/download/${COSIGN_VERSION}/cosign-linux-amd64
+  chmod +x /usr/local/bin/cosign
+fi
+
+# login to Docker (fresh container each time)
 echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
 
-# choose tags (as you already do)… then:
-export COSIGN_PASSWORD="${COSIGN_PASSWORD}"   # <-- passphrase to cosign
+# decide which tags to analyze (fallback to :latest)
+if [ "${BACKEND_CHANGED:-true}" = "true" ]; then BACKEND_PULL="${BACKEND_IMAGE}"; else BACKEND_PULL="${DOCKER_HUB_USER}/spring-backend:latest"; fi
+if [ "${FRONTEND_CHANGED:-true}" = "true" ]; then FRONTEND_PULL="${FRONTEND_IMAGE}"; else FRONTEND_PULL="${DOCKER_HUB_USER}/react-frontend:latest"; fi
+
+docker pull "${BACKEND_PULL}"  || true
+docker pull "${FRONTEND_PULL}" || true
+
+echo "=== SBOMs (SPDX JSON) ==="
+syft "docker:${BACKEND_PULL}"  -o spdx-json > backend-sbom.spdx.json || true
+syft "docker:${FRONTEND_PULL}" -o spdx-json > frontend-sbom.spdx.json || true
+
+echo "=== Trivy scan (HIGH/CRITICAL gate) ==="
+FAILED=0
+trivy image --timeout 10m --scanners vuln,misconfig --severity HIGH,CRITICAL --exit-code 1 \
+  --format sarif -o backend-trivy.sarif  "${BACKEND_PULL}"  || FAILED=1
+trivy image --timeout 10m --scanners vuln,misconfig --severity HIGH,CRITICAL --exit-code 1 \
+  --format sarif -o frontend-trivy.sarif "${FRONTEND_PULL}" || FAILED=1
+
 echo "=== Cosign sign images (non-interactive) ==="
+# if your key has no passphrase, set empty; otherwise Jenkins injected COSIGN_PASSWORD
+: "${COSIGN_PASSWORD:=}"
+export COSIGN_PASSWORD
 if [ "${BACKEND_CHANGED:-true}" = "true" ]; then
   cosign sign --yes --key "$COSIGN_KEY" "${BACKEND_IMAGE}"
 fi
@@ -232,8 +276,16 @@ if [ "${FRONTEND_CHANGED:-true}" = "true" ]; then
   cosign sign --yes --key "$COSIGN_KEY" "${FRONTEND_IMAGE}"
 fi
 cosign sign --yes --key "$COSIGN_KEY" "${DOCKER_HUB_USER}/react-frontend:latest"
+
+echo "=== Cosign verify (sanity) ==="
+cosign verify --key "$COSIGN_KEY" "${BACKEND_PULL}"  > backend-cosign.verify.txt  || true
+cosign verify --key "$COSIGN_KEY" "${FRONTEND_PULL}" > frontend-cosign.verify.txt || true
+
+# enforce gate (make soft by changing --exit-code to 0 above)
+[ "$FAILED" = "1" ] && echo "High/Critical vulnerabilities found." && exit 1 || true
 '''
                     }
+                    archiveArtifacts artifacts: '*.spdx.json,*.sarif,*cosign.verify.txt', allowEmptyArchive: true
                 }
             }
         }
