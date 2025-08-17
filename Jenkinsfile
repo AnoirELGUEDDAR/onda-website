@@ -33,7 +33,7 @@ spec:
         - name: DOCKER_BUILDKIT
           value: "1"
         - name: TRIVY_CACHE_DIR
-          value: /root/.cache/trivy           # <- Trivy uses this cache
+          value: /root/.cache/trivy
       command: ["dockerd-entrypoint.sh"]
       args: ["--host=tcp://0.0.0.0:2375","--host=unix:///var/run/docker.sock"]
       tty: true
@@ -41,7 +41,7 @@ spec:
         - name: dind-storage
           mountPath: /var/lib/docker
         - name: trivy-cache
-          mountPath: /root/.cache/trivy       # <- PVC mounted here
+          mountPath: /root/.cache/trivy
 
     - name: ansible
       image: cytopia/ansible:latest
@@ -58,7 +58,7 @@ spec:
     - name: dind-storage
       emptyDir: {}
     - name: trivy-cache
-      persistentVolumeClaim:                   # <- use PVC (not emptyDir)
+      persistentVolumeClaim:
         claimName: trivy-cache-pvc
 """
     }
@@ -313,9 +313,11 @@ metadata:
   name: mysql-pvc
   namespace: onda-app
 spec:
-  accessModes: [ReadWriteOnce]
+  accessModes:
+    - ReadWriteOnce
   resources:
-    requests: { storage: 1Gi }
+    requests:
+      storage: 1Gi
 EOL
 
 cat > mysql-configmap.yaml << 'EOL'
@@ -338,25 +340,40 @@ metadata:
   namespace: onda-app
 spec:
   replicas: 1
-  selector: { matchLabels: { app: mysql } }
+  selector:
+    matchLabels:
+      app: mysql
   template:
-    metadata: { labels: { app: mysql } }
+    metadata:
+      labels:
+        app: mysql
     spec:
       containers:
         - name: mysql
           image: mysql:8
           env:
-            - { name: MYSQL_ROOT_PASSWORD, value: root }
-            - { name: MYSQL_DATABASE,       value: onda_flights }
-            - { name: MYSQL_USER,           value: ondauser }
-            - { name: MYSQL_PASSWORD,       value: Anoirelgueddar@2003 }
-          ports: [ { containerPort: 3306 } ]
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: onda_flights
+            - name: MYSQL_USER
+              value: ondauser
+            - name: MYSQL_PASSWORD
+              value: Anoirelgueddar@2003
+          ports:
+            - containerPort: 3306
           volumeMounts:
-            - { name: mysql-storage, mountPath: /var/lib/mysql }
-            - { name: initdb,        mountPath: /docker-entrypoint-initdb.d }
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+            - name: initdb
+              mountPath: /docker-entrypoint-initdb.d
       volumes:
-        - { name: mysql-storage, persistentVolumeClaim: { claimName: mysql-pvc } }
-        - { name: initdb,        configMap: { name: mysql-init-sql } }
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+        - name: initdb
+          configMap:
+            name: mysql-init-sql
 EOL
 
 cat > mysql-service.yaml << 'EOL'
@@ -366,8 +383,12 @@ metadata:
   name: mysql
   namespace: onda-app
 spec:
-  selector: { app: mysql }
-  ports: [ { protocol: TCP, port: 3306, targetPort: 3306 } ]
+  selector:
+    app: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
 EOL
 
 cat > db-service.yaml << 'EOL'
@@ -377,8 +398,12 @@ metadata:
   name: db
   namespace: onda-app
 spec:
-  selector: { app: mysql }
-  ports: [ { protocol: TCP, port: 3306, targetPort: 3306 } ]
+  selector:
+    app: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
 EOL
 
 cat > backend-deployment.yaml << 'EOL'
@@ -389,28 +414,43 @@ metadata:
   namespace: onda-app
 spec:
   replicas: 1
-  selector: { matchLabels: { app: backend } }
-  strategy: { type: Recreate }
+  selector:
+    matchLabels:
+      app: backend
+  strategy:
+    type: Recreate
   template:
-    metadata: { labels: { app: backend } }
+    metadata:
+      labels:
+        app: backend
     spec:
       containers:
         - name: backend
           image: anoiraeg2003/spring-backend:latest
           imagePullPolicy: Always
-          ports: [ { containerPort: 8080 } ]
+          ports:
+            - containerPort: 8080
           env:
-            - { name: SPRING_DATASOURCE_URL,      value: jdbc:mysql://db:3306/onda_flights?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true }
-            - { name: SPRING_DATASOURCE_USERNAME, value: ondauser }
-            - { name: SPRING_DATASOURCE_PASSWORD, value: Anoirelgueddar@2003 }
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://db:3306/onda_flights?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+            - name: SPRING_DATASOURCE_USERNAME
+              value: ondauser
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: Anoirelgueddar@2003
           resources:
-            limits:   { memory: "512Mi", cpu: "500m" }
-            requests: { memory: "256Mi", cpu: "200m" }
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities: { drop: ["ALL"] }
+            capabilities:
+              drop:
+                - "ALL"
 EOL
 
 cat > backend-service.yaml << 'EOL'
@@ -420,8 +460,12 @@ metadata:
   name: backend
   namespace: onda-app
 spec:
-  selector: { app: backend }
-  ports: [ { protocol: TCP, port: 8080, targetPort: 8080 } ]
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
 EOL
 
 cat > frontend-deployment.yaml << 'EOL'
@@ -432,26 +476,39 @@ metadata:
   namespace: onda-app
 spec:
   replicas: 1
-  selector: { matchLabels: { app: react-frontend } }
-  strategy: { type: Recreate }
+  selector:
+    matchLabels:
+      app: react-frontend
+  strategy:
+    type: Recreate
   template:
-    metadata: { labels: { app: react-frontend } }
+    metadata:
+      labels:
+        app: react-frontend
     spec:
       containers:
         - name: frontend
           image: anoiraeg2003/react-frontend:latest
           imagePullPolicy: Always
-          ports: [ { containerPort: 80 } ]
+          ports:
+            - containerPort: 80
           env:
-            - { name: REACT_APP_API_URL, value: http://backend:8080/api }
+            - name: REACT_APP_API_URL
+              value: http://backend:8080/api
           resources:
-            limits:   { memory: "256Mi", cpu: "200m" }
-            requests: { memory: "128Mi", cpu: "100m" }
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-            capabilities: { drop: ["ALL"] }
+            capabilities:
+              drop:
+                - "ALL"
 EOL
 
 cat > frontend-service.yaml << 'EOL'
@@ -461,8 +518,12 @@ metadata:
   name: react-frontend
   namespace: onda-app
 spec:
-  selector: { app: react-frontend }
-  ports: [ { protocol: TCP, port: 80, targetPort: 80 } ]
+  selector:
+    app: react-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
   type: NodePort
 EOL
 
@@ -502,4 +563,3 @@ echo "Frontend should be accessible at: http://YOUR_CLUSTER_IP:\${FRONTEND_PORT}
     }
   }
 }
-
