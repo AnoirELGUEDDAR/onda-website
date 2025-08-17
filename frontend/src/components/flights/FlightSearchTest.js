@@ -66,20 +66,10 @@ test('submits form and navigates to results', async () => {
       <FlightSearch />
     </MemoryRouter>
   );
-
-  // Wait for form
   await waitFor(() => screen.getByLabelText(/From/i));
-
-  // Select airports
   fireEvent.change(screen.getByLabelText(/From/i), { target: { value: 'CMN' } });
   fireEvent.change(screen.getByLabelText(/To/i), { target: { value: 'RAK' } });
-
-  // Date input should have a value (default today)
-  const dateInput = screen.getByLabelText(/Date/i);
-
-  // Submit form
   fireEvent.click(screen.getByRole('button', { name: /search flights/i }));
-
   await waitFor(() => {
     expect(mockNavigate).toHaveBeenCalledWith(
       expect.stringContaining('/flights/results?from=CMN&to=RAK&date=')

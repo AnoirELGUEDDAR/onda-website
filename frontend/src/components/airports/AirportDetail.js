@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useMemo, useId } from 'react';
 import PropTypes from 'prop-types';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -41,12 +41,12 @@ FacilityCard.propTypes = {
 /** Accessible native <dialog> */
 const Modal = ({ title, open, onClose, children, wide = false, bodyRef, closeLabel = 'Close' }) => {
   const dialogRef = useRef(null);
-const titleId = useRef(`dlg-${Math.random().toString(36).slice(2)}`).current;
+  const titleId = useId(); // safer, stable id
 
   useEffect(() => {
     const dlg = dialogRef.current;
     if (!dlg) return;
-    
+
     if (open) {
       dlg.showModal();
     }
@@ -55,7 +55,7 @@ const titleId = useRef(`dlg-${Math.random().toString(36).slice(2)}`).current;
       e.preventDefault();
       onClose?.();
     };
-    
+
     dlg.addEventListener('cancel', handleCancel);
     return () => {
       dlg.removeEventListener('cancel', handleCancel);
@@ -169,7 +169,7 @@ const DUTYFREE_ITEMS = [
 
 const AirportDetail = () => {
   const { id } = useParams();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation(); // removed i18n (unused after fix)
   const parkingBodyRef = useRef(null);
 
   const [airport, setAirport] = useState(null);
@@ -209,7 +209,7 @@ const AirportDetail = () => {
       { type: t('airports.parking.rows.cleaning'), duration: t('airports.parking.rows.extWash'),  price: '50 MAD' },
       { type: t('airports.parking.rows.cleaning'), duration: t('airports.parking.rows.fullClean'), price: '150 MAD' },
     ],
-    [i18n.language, t] 
+    [t] // ✅ recompute when translations change; no i18n.language needed
   );
 
   if (loading) {
@@ -270,7 +270,7 @@ const AirportDetail = () => {
                 {t(`airports.descriptions.${airport.code}`, {
                   city: t(`cities.${airport.city}`),
                   type: t(`airports.types.${airport.type}`)
-            })}
+                })}
               </p>
             </div>
 
@@ -506,3 +506,4 @@ const AirportDetail = () => {
 };
 
 export default AirportDetail;
+
