@@ -32,6 +32,8 @@ spec:
           value: ""
         - name: DOCKER_BUILDKIT
           value: "1"
+        - name: TRIVY_CACHE_DIR
+          value: /root/.cache/trivy           # <- Trivy uses this cache
       command: ["dockerd-entrypoint.sh"]
       args: ["--host=tcp://0.0.0.0:2375","--host=unix:///var/run/docker.sock"]
       tty: true
@@ -39,7 +41,7 @@ spec:
         - name: dind-storage
           mountPath: /var/lib/docker
         - name: trivy-cache
-          mountPath: /root/.cache/trivy
+          mountPath: /root/.cache/trivy       # <- PVC mounted here
 
     - name: ansible
       image: cytopia/ansible:latest
@@ -56,7 +58,8 @@ spec:
     - name: dind-storage
       emptyDir: {}
     - name: trivy-cache
-      emptyDir: {}
+      persistentVolumeClaim:                   # <- use PVC (not emptyDir)
+        claimName: trivy-cache-pvc
 """
     }
   }
@@ -64,6 +67,8 @@ spec:
   parameters {
     booleanParam(name: 'SECURITY_HARD_GATE', defaultValue: false,
       description: 'Fail build on HIGH/CRITICAL vulnerabilities (true) or keep soft gate (false)')
+    booleanParam(name: 'TRIVY_SKIP_UPDATE', defaultValue: true,
+      description: 'Skip Trivy DB refresh during scans to maximize speed (DB stays cached in PVC)')
   }
 
   environment {
@@ -89,8 +94,8 @@ spec:
         script {
           try {
             def changes = sh(script: "git diff --name-only HEAD~1 HEAD || git diff --name-only origin/main...HEAD || echo 'all'", returnStdout: true).trim()
-            env.BACKEND_CHANGED  = changes.contains('backend/')  || changes == 'all' ? 'true' : 'false'
-            env.FRONTEND_CHANGED = changes.contains('frontend/') || changes == 'all' ? 'true' : 'false'
+            env.BACKEND_CHANGED  = (changes.contains('backend/')  || changes == 'all') ? 'true' : 'false'
+            env.FRONTEND_CHANGED = (changes.contains('frontend/') || changes == 'all') ? 'true' : 'false'
           } catch (Exception e) {
             echo "Could not determine changes, assuming everything has changed"
             env.BACKEND_CHANGED  = 'true'
@@ -109,16 +114,12 @@ spec:
           stages {
             stage('Build Backend') {
               steps {
-                container('maven') {
-                  dir('backend') { sh 'mvn -T 4 clean package -DskipTests' }
-                }
+                container('maven') { dir('backend') { sh 'mvn -T 4 clean package -DskipTests' } }
               }
             }
             stage('Test Backend') {
               steps {
-                container('maven') {
-                  dir('backend') { sh 'mvn -T 4 test' }
-                }
+                container('maven') { dir('backend') { sh 'mvn -T 4 test' } }
               }
             }
           }
@@ -150,7 +151,6 @@ spec:
       }
     }
 
-    /* === Always run Sonar === */
     stage('Code Quality (SonarQube)') {
       steps {
         script {
@@ -228,7 +228,6 @@ docker push ${DOCKER_HUB_USER}/react-frontend:latest
       }
     }
 
-    /* === Security: cache Trivy, longer timeouts, sign by digest, verify with pub key === */
     stage('Security: SBOM, Scan & Sign') {
       steps {
         container('docker') {
@@ -241,58 +240,41 @@ docker push ${DOCKER_HUB_USER}/react-frontend:latest
             sh '''
 set -euo pipefail
 
-# ---- env & login
-export TRIVY_CACHE_DIR=/root/.cache/trivy
-echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
+# Speed knobs
+[ "${TRIVY_SKIP_UPDATE}" = "true" ] && export TRIVY_SKIP_DB_UPDATE=true TRIVY_SKIP_JAVA_DB_UPDATE=true || true
+export TRIVY_CACHE_DIR=${TRIVY_CACHE_DIR:-/root/.cache/trivy}
 
-# ---- choose images (build tag if changed, else :latest) ---
-[ "${BACKEND_CHANGED:-true}" = "true" ]  && BACKEND_PULL="${BACKEND_IMAGE}"  || BACKEND_PULL="${DOCKER_HUB_USER}/spring-backend:latest"
+# Tools (install once per fresh container)
+apk add --no-cache curl jq >/dev/null || true
+command -v syft   >/dev/null || (curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin v1.17.0)
+command -v trivy  >/dev/null || (curl -sSfL https://github.com/aquasecurity/trivy/releases/download/v0.53.0/trivy_0.53.0_Linux-64bit.tar.gz | tar xz -C /usr/local/bin trivy)
+command -v cosign >/dev/null || (curl -sSfL -o /usr/local/bin/cosign https://github.com/sigstore/cosign/releases/download/v2.2.4/cosign-linux-amd64 && chmod +x /usr/local/bin/cosign)
+
+# Choose which tags to scan (fresh BUILD_NUMBER tag if changed, else :latest)
+[ "${BACKEND_CHANGED:-true}"  = "true" ] && BACKEND_PULL="${BACKEND_IMAGE}"  || BACKEND_PULL="${DOCKER_HUB_USER}/spring-backend:latest"
 [ "${FRONTEND_CHANGED:-true}" = "true" ] && FRONTEND_PULL="${FRONTEND_IMAGE}" || FRONTEND_PULL="${DOCKER_HUB_USER}/react-frontend:latest"
+
+echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
 docker pull "${BACKEND_PULL}"  || true
 docker pull "${FRONTEND_PULL}" || true
 
-# ---- install tools ----
-apk add --no-cache curl jq || true
-if ! command -v syft >/dev/null; then
-  SYFT_VERSION=v1.17.0
-  curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin ${SYFT_VERSION}
-fi
-if ! command -v trivy >/dev/null; then
-  TRIVY_VERSION=0.53.0
-  curl -sSfL https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz | tar xz -C /usr/local/bin trivy
-fi
-if ! command -v cosign >/dev/null; then
-  COSIGN_VERSION=v2.2.4
-  curl -sSfL -o /usr/local/bin/cosign https://github.com/sigstore/cosign/releases/download/${COSIGN_VERSION}/cosign-linux-amd64
-  chmod +x /usr/local/bin/cosign
-fi
-
-# ---- SBOMs ----
 echo "=== SBOMs (SPDX JSON) ==="
 syft "docker:${BACKEND_PULL}"  -o spdx-json > backend-sbom.spdx.json  || true
 syft "docker:${FRONTEND_PULL}" -o spdx-json > frontend-sbom.spdx.json || true
 
-# ---- Trivy scan (parameterized gate) ----
-if [ "${SECURITY_HARD_GATE:-false}" = "true" ]; then
-  TRIVY_EXIT=1
-else
-  TRIVY_EXIT=0
-fi
-
+# Trivy gate (parameterized)
+[ "${SECURITY_HARD_GATE}" = "true" ] && TRIVY_EXIT=1 || TRIVY_EXIT=0
 FAILED=0
 trivy image --timeout 30m --scanners vuln,misconfig --severity HIGH,CRITICAL --ignore-unfixed \
   --exit-code ${TRIVY_EXIT} --format sarif -o backend-trivy.sarif  "${BACKEND_PULL}"  || FAILED=1
 trivy image --timeout 30m --scanners vuln,misconfig --severity HIGH,CRITICAL --ignore-unfixed \
   --exit-code ${TRIVY_EXIT} --format sarif -o frontend-trivy.sarif "${FRONTEND_PULL}" || FAILED=1
 
-# ---- resolve digests & sign by digest ----
+# Resolve digests & sign by digest (non-interactive)
 BACKEND_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' "${BACKEND_PULL}"  || true)
 FRONTEND_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' "${FRONTEND_PULL}" || true)
-echo "Backend digest:  ${BACKEND_DIGEST}"
-echo "Frontend digest: ${FRONTEND_DIGEST}"
-
 export COSIGN_PASSWORD="${COSIGN_PASSWORD:-}"
-echo "=== Cosign sign images (by digest) ==="
+
 [ -n "${BACKEND_DIGEST}" ]  && cosign sign --yes --key "$COSIGN_KEY" "${BACKEND_DIGEST}"
 [ -n "${FRONTEND_DIGEST}" ] && cosign sign --yes --key "$COSIGN_KEY" "${FRONTEND_DIGEST}"
 
@@ -300,8 +282,8 @@ echo "=== Cosign verify (with public key) ==="
 [ -n "${BACKEND_DIGEST}" ]  && cosign verify --key "$COSIGN_PUB" "${BACKEND_DIGEST}"  > backend-cosign.verify.txt  || true
 [ -n "${FRONTEND_DIGEST}" ] && cosign verify --key "$COSIGN_PUB" "${FRONTEND_DIGEST}" > frontend-cosign.verify.txt || true
 
-# ---- enforce gate only when hard gate enabled ----
-if [ "${SECURITY_HARD_GATE:-false}" = "true" ] && [ "$FAILED" = "1" ]; then
+# Enforce gate only if requested
+if [ "${SECURITY_HARD_GATE}" = "true" ] && [ "$FAILED" = "1" ]; then
   echo "High/Critical vulnerabilities found."
   exit 1
 fi
@@ -364,10 +346,10 @@ spec:
         - name: mysql
           image: mysql:8
           env:
-            - { name: MYSQL_ROOT_PASSWORD, value: "root" }
-            - { name: MYSQL_DATABASE,       value: "onda_flights" }
-            - { name: MYSQL_USER,           value: "ondauser" }
-            - { name: MYSQL_PASSWORD,       value: "Anoirelgueddar@2003" }
+            - { name: MYSQL_ROOT_PASSWORD, value: root }
+            - { name: MYSQL_DATABASE,       value: onda_flights }
+            - { name: MYSQL_USER,           value: ondauser }
+            - { name: MYSQL_PASSWORD,       value: Anoirelgueddar@2003 }
           ports: [ { containerPort: 3306 } ]
           volumeMounts:
             - { name: mysql-storage, mountPath: /var/lib/mysql }
@@ -418,9 +400,9 @@ spec:
           imagePullPolicy: Always
           ports: [ { containerPort: 8080 } ]
           env:
-            - { name: SPRING_DATASOURCE_URL,      value: "jdbc:mysql://db:3306/onda_flights?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true" }
-            - { name: SPRING_DATASOURCE_USERNAME, value: "ondauser" }
-            - { name: SPRING_DATASOURCE_PASSWORD, value: "Anoirelgueddar@2003" }
+            - { name: SPRING_DATASOURCE_URL,      value: jdbc:mysql://db:3306/onda_flights?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true }
+            - { name: SPRING_DATASOURCE_USERNAME, value: ondauser }
+            - { name: SPRING_DATASOURCE_PASSWORD, value: Anoirelgueddar@2003 }
           resources:
             limits:   { memory: "512Mi", cpu: "500m" }
             requests: { memory: "256Mi", cpu: "200m" }
@@ -461,7 +443,7 @@ spec:
           imagePullPolicy: Always
           ports: [ { containerPort: 80 } ]
           env:
-            - { name: REACT_APP_API_URL, value: "http://backend:8080/api" }
+            - { name: REACT_APP_API_URL, value: http://backend:8080/api }
           resources:
             limits:   { memory: "256Mi", cpu: "200m" }
             requests: { memory: "128Mi", cpu: "100m" }
@@ -514,9 +496,9 @@ echo "Frontend should be accessible at: http://YOUR_CLUSTER_IP:\${FRONTEND_PORT}
     success { echo "✅ Déploiement réussi ! Build by ${CURRENT_USER} on ${CURRENT_DATE}" }
     failure { echo "❌ Le pipeline a échoué" }
     always  {
-      // This is what prints the long "deleted: sha256:..." lines (safe cleanup).
-      container('docker') { sh 'docker system prune -af || true' }
-      // If you want to KEEP layers for faster builds, comment the line above.
+      container('docker') {
+        sh 'docker system prune -af || true'
+      }
     }
   }
 }
