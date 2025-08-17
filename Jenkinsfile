@@ -14,7 +14,6 @@ spec:
       volumeMounts:
         - name: maven-cache
           mountPath: /root/.m2
-
     - name: node
       image: node:20
       command: ["cat"]
@@ -22,7 +21,6 @@ spec:
       volumeMounts:
         - name: npm-cache
           mountPath: /root/.npm
-
     - name: docker
       image: docker:20.10.16-dind
       securityContext:
@@ -42,12 +40,10 @@ spec:
           mountPath: /var/lib/docker
         - name: trivy-cache
           mountPath: /root/.cache/trivy
-
     - name: ansible
       image: cytopia/ansible:latest
       command: ["cat"]
       tty: true
-
   volumes:
     - name: maven-cache
       persistentVolumeClaim:
@@ -67,11 +63,11 @@ spec:
 
     parameters {
         booleanParam(name: 'SECURITY_HARD_GATE', defaultValue: false,
-                description: 'Fail build on HIGH/CRITICAL vulnerabilities (true) or keep soft gate (false)')
+            description: 'Fail build on HIGH/CRITICAL vulnerabilities (true) or keep soft gate (false)')
         booleanParam(name: 'TRIVY_SKIP_UPDATE', defaultValue: true,
-                description: 'Skip Trivy DB refresh during scans (use cached DB in PVC)')
+            description: 'Skip Trivy DB refresh during scans (use cached DB in PVC)')
         booleanParam(name: 'CLEANUP_DOCKER', defaultValue: false,
-                description: 'If true, run docker system prune at the end (slower next build)')
+            description: 'If true, run docker system prune at the end (slower next build)')
     }
 
     environment {
@@ -87,7 +83,6 @@ spec:
     }
 
     stages {
-
         stage('Checkout') {
             steps { checkout scm }
         }
@@ -181,8 +176,8 @@ touch .sonar_frontend_done
                         }
                     }
                     def done = sh(
-                            script: '([ -f backend/.sonar_backend_done ] || [ -f frontend/.sonar_frontend_done ]) && echo true || echo false',
-                            returnStdout: true
+                        script: '([ -f backend/.sonar_backend_done ] || [ -f frontend/.sonar_frontend_done ]) && echo true || echo false',
+                        returnStdout: true
                     ).trim()
                     echo "SONARQ_DONE=${done}"
                     env.SONARQ_DONE = done
@@ -235,51 +230,41 @@ docker push ${DOCKER_HUB_USER}/react-frontend:latest
             steps {
                 container('docker') {
                     withCredentials([
-                            string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD'),
-                            file  (credentialsId: 'COSIGN_KEY',          variable: 'COSIGN_KEY'),
-                            string(credentialsId: 'COSIGN_PASSWORD',     variable: 'COSIGN_PASSWORD'),
-                            file  (credentialsId: 'COSIGN_PUB',          variable: 'COSIGN_PUB')
+                        string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD'),
+                        file  (credentialsId: 'COSIGN_KEY',          variable: 'COSIGN_KEY'),
+                        string(credentialsId: 'COSIGN_PASSWORD',     variable: 'COSIGN_PASSWORD'),
+                        file  (credentialsId: 'COSIGN_PUB',          variable: 'COSIGN_PUB')
                     ]) {
                         sh '''
 set -euo pipefail
-
 [ "${TRIVY_SKIP_UPDATE}" = "true" ] && export TRIVY_SKIP_DB_UPDATE=true TRIVY_SKIP_JAVA_DB_UPDATE=true || true
 export TRIVY_CACHE_DIR=${TRIVY_CACHE_DIR:-/root/.cache/trivy}
-
 apk add --no-cache curl jq >/dev/null || true
 command -v syft   >/dev/null || (curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin v1.17.0)
 command -v trivy  >/dev/null || (curl -sSfL https://github.com/aquasecurity/trivy/releases/download/v0.53.0/trivy_0.53.0_Linux-64bit.tar.gz | tar xz -C /usr/local/bin trivy)
 command -v cosign >/dev/null || (curl -sSfL -o /usr/local/bin/cosign https://github.com/sigstore/cosign/releases/download/v2.2.4/cosign-linux-amd64 && chmod +x /usr/local/bin/cosign)
-
 [ "${BACKEND_CHANGED:-true}"  = "true" ] && BACKEND_PULL="${BACKEND_IMAGE}"  || BACKEND_PULL="${DOCKER_HUB_USER}/spring-backend:latest"
 [ "${FRONTEND_CHANGED:-true}" = "true" ] && FRONTEND_PULL="${FRONTEND_IMAGE}" || FRONTEND_PULL="${DOCKER_HUB_USER}/react-frontend:latest"
-
 echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
 docker pull "${BACKEND_PULL}"  || true
 docker pull "${FRONTEND_PULL}" || true
-
 echo "=== SBOMs (SPDX JSON) ==="
 syft "docker:${BACKEND_PULL}"  -o spdx-json > backend-sbom.spdx.json  || true
 syft "docker:${FRONTEND_PULL}" -o spdx-json > frontend-sbom.spdx.json || true
-
 [ "${SECURITY_HARD_GATE}" = "true" ] && TRIVY_EXIT=1 || TRIVY_EXIT=0
 FAILED=0
 trivy image --timeout 20m --scanners vuln,misconfig --severity HIGH,CRITICAL --ignore-unfixed \
   --exit-code ${TRIVY_EXIT} --format sarif -o backend-trivy.sarif  "${BACKEND_PULL}"  || FAILED=1
 trivy image --timeout 20m --scanners vuln,misconfig --severity HIGH,CRITICAL --ignore-unfixed \
   --exit-code ${TRIVY_EXIT} --format sarif -o frontend-trivy.sarif "${FRONTEND_PULL}" || FAILED=1
-
 BACKEND_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' "${BACKEND_PULL}"  || true)
 FRONTEND_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' "${FRONTEND_PULL}" || true)
 export COSIGN_PASSWORD="${COSIGN_PASSWORD:-}"
-
 [ -n "${BACKEND_DIGEST}" ]  && cosign sign --yes --key "$COSIGN_KEY" "${BACKEND_DIGEST}"
 [ -n "${FRONTEND_DIGEST}" ] && cosign sign --yes --key "$COSIGN_KEY" "${FRONTEND_DIGEST}"
-
 echo "=== Cosign verify (with public key) ==="
 [ -n "${BACKEND_DIGEST}" ]  && cosign verify --key "$COSIGN_PUB" "${BACKEND_DIGEST}"  > backend-cosign.verify.txt  || true
 [ -n "${FRONTEND_DIGEST}" ] && cosign verify --key "$COSIGN_PUB" "${FRONTEND_DIGEST}" > frontend-cosign.verify.txt || true
-
 if [ "${SECURITY_HARD_GATE}" = "true" ] && [ "$FAILED" = "1" ]; then
   echo "High/Critical vulnerabilities found."
   exit 1
@@ -442,6 +427,7 @@ spec:
               memory: "256Mi"
               cpu: "200m"
           securityContext:
+            # runAsNonRoot: true   # commented out as you requested
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
@@ -499,11 +485,18 @@ spec:
               memory: "128Mi"
               cpu: "100m"
           securityContext:
+            runAsNonRoot: true
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
               drop:
                 - "ALL"
+          volumeMounts:
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+      volumes:
+        - name: nginx-cache
+          emptyDir: {}
 EOL
 
 cat > frontend-service.yaml << 'EOL'
