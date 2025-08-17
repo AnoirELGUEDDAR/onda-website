@@ -14,6 +14,8 @@ spec:
       volumeMounts:
         - name: maven-cache
           mountPath: /root/.m2
+        - name: sonar-cache
+          mountPath: /root/.sonar
 
     - name: node
       image: node:20
@@ -22,6 +24,17 @@ spec:
       volumeMounts:
         - name: npm-cache
           mountPath: /root/.npm
+
+    - name: sonar
+      image: sonarsource/sonar-scanner-cli:5.0
+      command: ["cat"]
+      tty: true
+      env:
+        - name: SONAR_USER_HOME
+          value: /sonar-cache
+      volumeMounts:
+        - name: sonar-cache
+          mountPath: /sonar-cache
 
     - name: docker
       image: docker:20.10.16-dind
@@ -55,11 +68,14 @@ spec:
     - name: npm-cache
       persistentVolumeClaim:
         claimName: npm-cache-pvc
-    - name: dind-storage
-      emptyDir: {}
+    - name: sonar-cache
+      persistentVolumeClaim:
+        claimName: sonar-cache-pvc
     - name: trivy-cache
       persistentVolumeClaim:
         claimName: trivy-cache-pvc
+    - name: dind-storage
+      emptyDir: {}
 """
     }
   }
@@ -68,7 +84,9 @@ spec:
     booleanParam(name: 'SECURITY_HARD_GATE', defaultValue: false,
       description: 'Fail build on HIGH/CRITICAL vulnerabilities (true) or keep soft gate (false)')
     booleanParam(name: 'TRIVY_SKIP_UPDATE', defaultValue: true,
-      description: 'Skip Trivy DB refresh during scans to maximize speed (DB stays cached in PVC)')
+      description: 'Skip Trivy DB refresh to maximize speed (cached in PVC)')
+    string(name: 'TRIVY_SCANNERS', defaultValue: 'vuln',
+      description: 'Trivy scanners: "vuln" (fast) or "vuln,misconfig" (slower, more checks)')
   }
 
   environment {
@@ -97,7 +115,7 @@ spec:
             env.BACKEND_CHANGED  = (changes.contains('backend/')  || changes == 'all') ? 'true' : 'false'
             env.FRONTEND_CHANGED = (changes.contains('frontend/') || changes == 'all') ? 'true' : 'false'
           } catch (Exception e) {
-            echo "Could not determine changes, assuming everything has changed"
+            echo "Could not determine changes, assuming everything changed"
             env.BACKEND_CHANGED  = 'true'
             env.FRONTEND_CHANGED = 'true'
           }
@@ -107,10 +125,10 @@ spec:
       }
     }
 
-    stage('Build and Test') {
+    stage('Build & Test') {
       parallel {
         stage('Backend') {
-          when { expression { return env.BACKEND_CHANGED == 'true' } }
+          when { expression { env.BACKEND_CHANGED == 'true' } }
           stages {
             stage('Build Backend') {
               steps {
@@ -125,7 +143,7 @@ spec:
           }
         }
         stage('Frontend') {
-          when { expression { return env.FRONTEND_CHANGED == 'true' } }
+          when { expression { env.FRONTEND_CHANGED == 'true' } }
           stages {
             stage('Build Frontend') {
               steps {
@@ -137,11 +155,11 @@ spec:
                 }
               }
             }
-            stage('Test Frontend') {
+            stage('Test Frontend (coverage)') {
               steps {
                 container('node') {
                   dir('frontend') {
-                    sh 'npm test -- --watchAll=false --passWithNoTests || true'
+                    sh 'npm test -- --watchAll=false --coverage || true'
                   }
                 }
               }
@@ -152,37 +170,40 @@ spec:
     }
 
     stage('Code Quality (SonarQube)') {
-      steps {
-        script {
-          withSonarQubeEnv('sonarqube-server') {
-            if (env.BACKEND_CHANGED == 'true' || env.BACKEND_CHANGED == 'false') {
-              container('maven') { dir('backend') { sh 'mvn -T 4 -DskipTests sonar:sonar'; sh 'touch .sonar_backend_done' } }
-            }
-            if (env.FRONTEND_CHANGED == 'true' || env.FRONTEND_CHANGED == 'false') {
-              container('node') {
-                dir('frontend') {
-                  sh '''
-set -e
-apt-get update -qq
-DEBIAN_FRONTEND=noninteractive apt-get install -y -qq openjdk-17-jre-headless >/dev/null
-java -version
-npm run test -- --watchAll=false --coverage || true
-npx sonar-scanner \
-  -Dsonar.projectKey=frontend \
-  -Dsonar.sources=src \
-  -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-touch .sonar_frontend_done
-'''
+      parallel {
+        stage('Backend Sonar') {
+          steps {
+            script {
+              withSonarQubeEnv('sonarqube-server') {
+                container('maven') {
+                  dir('backend') {
+                    sh 'mvn -T 4 -DskipTests sonar:sonar'
+                    sh 'touch .sonar_backend_done'
+                  }
                 }
               }
             }
           }
-          def done = sh(
-            script: '([ -f backend/.sonar_backend_done ] || [ -f frontend/.sonar_frontend_done ]) && echo true || echo false',
-            returnStdout: true
-          ).trim()
-          echo "SONARQ_DONE=${done}"
-          env.SONARQ_DONE = done
+        }
+        stage('Frontend Sonar') {
+          steps {
+            script {
+              withSonarQubeEnv('sonarqube-server') {
+                container('sonar') {
+                  dir('frontend') {
+                    sh '''
+sonar-scanner \
+  -Dsonar.projectKey=frontend \
+  -Dsonar.sources=src \
+  -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+  -Dsonar.exclusions=**/coverage/**,**/*.test.js,**/*.test.jsx
+touch .sonar_frontend_done
+'''
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -194,7 +215,7 @@ touch .sonar_frontend_done
     stage('Docker Build & Push') {
       parallel {
         stage('Backend Docker') {
-          when { expression { return env.BACKEND_CHANGED == 'true' } }
+          when { expression { env.BACKEND_CHANGED == 'true' } }
           steps {
             container('docker') {
               sh 'until docker ps > /dev/null 2>&1; do sleep 1; done'
@@ -210,7 +231,7 @@ docker push ${DOCKER_HUB_USER}/spring-backend:latest
           }
         }
         stage('Frontend Docker') {
-          when { expression { return env.FRONTEND_CHANGED == 'true' } }
+          when { expression { env.FRONTEND_CHANGED == 'true' } }
           steps {
             container('docker') {
               sh 'until docker ps > /dev/null 2>&1; do sleep 1; done'
@@ -242,15 +263,16 @@ set -euo pipefail
 
 # Speed knobs
 [ "${TRIVY_SKIP_UPDATE}" = "true" ] && export TRIVY_SKIP_DB_UPDATE=true TRIVY_SKIP_JAVA_DB_UPDATE=true || true
+: "${TRIVY_SCANNERS:=vuln}"
 export TRIVY_CACHE_DIR=${TRIVY_CACHE_DIR:-/root/.cache/trivy}
 
-# Tools (install once per fresh container)
+# Tools
 apk add --no-cache curl jq >/dev/null || true
 command -v syft   >/dev/null || (curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin v1.17.0)
 command -v trivy  >/dev/null || (curl -sSfL https://github.com/aquasecurity/trivy/releases/download/v0.53.0/trivy_0.53.0_Linux-64bit.tar.gz | tar xz -C /usr/local/bin trivy)
 command -v cosign >/dev/null || (curl -sSfL -o /usr/local/bin/cosign https://github.com/sigstore/cosign/releases/download/v2.2.4/cosign-linux-amd64 && chmod +x /usr/local/bin/cosign)
 
-# Choose which tags to scan (fresh BUILD_NUMBER tag if changed, else :latest)
+# Which tags to scan
 [ "${BACKEND_CHANGED:-true}"  = "true" ] && BACKEND_PULL="${BACKEND_IMAGE}"  || BACKEND_PULL="${DOCKER_HUB_USER}/spring-backend:latest"
 [ "${FRONTEND_CHANGED:-true}" = "true" ] && FRONTEND_PULL="${FRONTEND_IMAGE}" || FRONTEND_PULL="${DOCKER_HUB_USER}/react-frontend:latest"
 
@@ -258,31 +280,28 @@ echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdi
 docker pull "${BACKEND_PULL}"  || true
 docker pull "${FRONTEND_PULL}" || true
 
-echo "=== SBOMs (SPDX JSON) ==="
+# SBOMs
 syft "docker:${BACKEND_PULL}"  -o spdx-json > backend-sbom.spdx.json  || true
 syft "docker:${FRONTEND_PULL}" -o spdx-json > frontend-sbom.spdx.json || true
 
-# Trivy gate (parameterized)
+# Trivy (fast defaults)
 [ "${SECURITY_HARD_GATE}" = "true" ] && TRIVY_EXIT=1 || TRIVY_EXIT=0
 FAILED=0
-trivy image --timeout 30m --scanners vuln,misconfig --severity HIGH,CRITICAL --ignore-unfixed \
+trivy image --timeout 20m --scanners "${TRIVY_SCANNERS}" --severity HIGH,CRITICAL --ignore-unfixed \
   --exit-code ${TRIVY_EXIT} --format sarif -o backend-trivy.sarif  "${BACKEND_PULL}"  || FAILED=1
-trivy image --timeout 30m --scanners vuln,misconfig --severity HIGH,CRITICAL --ignore-unfixed \
+trivy image --timeout 20m --scanners "${TRIVY_SCANNERS}" --severity HIGH,CRITICAL --ignore-unfixed \
   --exit-code ${TRIVY_EXIT} --format sarif -o frontend-trivy.sarif "${FRONTEND_PULL}" || FAILED=1
 
-# Resolve digests & sign by digest (non-interactive)
+# Sign by digest
 BACKEND_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' "${BACKEND_PULL}"  || true)
 FRONTEND_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' "${FRONTEND_PULL}" || true)
 export COSIGN_PASSWORD="${COSIGN_PASSWORD:-}"
-
 [ -n "${BACKEND_DIGEST}" ]  && cosign sign --yes --key "$COSIGN_KEY" "${BACKEND_DIGEST}"
 [ -n "${FRONTEND_DIGEST}" ] && cosign sign --yes --key "$COSIGN_KEY" "${FRONTEND_DIGEST}"
-
-echo "=== Cosign verify (with public key) ==="
 [ -n "${BACKEND_DIGEST}" ]  && cosign verify --key "$COSIGN_PUB" "${BACKEND_DIGEST}"  > backend-cosign.verify.txt  || true
 [ -n "${FRONTEND_DIGEST}" ] && cosign verify --key "$COSIGN_PUB" "${FRONTEND_DIGEST}" > frontend-cosign.verify.txt || true
 
-# Enforce gate only if requested
+# Enforce hard gate only when requested
 if [ "${SECURITY_HARD_GATE}" = "true" ] && [ "$FAILED" = "1" ]; then
   echo "High/Critical vulnerabilities found."
   exit 1
@@ -563,3 +582,4 @@ echo "Frontend should be accessible at: http://YOUR_CLUSTER_IP:\${FRONTEND_PORT}
     }
   }
 }
+
