@@ -209,7 +209,6 @@ touch .sonar_frontend_done
                 container('docker') {
                     withCredentials([
                             file(credentialsId: 'COSIGN_KEY',        variable: 'COSIGN_KEY'),
-                            string(credentialsId: 'COSIGN_PASSWORD', variable: 'COSIGN_PASSWORD')
                     ]) {
                         sh '''
 set -e
