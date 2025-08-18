@@ -486,7 +486,6 @@ spec:
               cpu: "100m"
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
             capabilities:
               drop:
                 - "ALL"
