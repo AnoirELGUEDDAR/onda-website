@@ -155,7 +155,6 @@ const DUTYFREE_ITEMS = [
   ['atelierM', 'atelierm.jpg', 'Atelier M'],
   ['attitude', 'attitude.jpg', 'Attitude'],
   ['hudson', 'hudson.jpg', 'Hudson'],
-  ['tableDuMarche', 'tabledumarche.jpg', 'Table du Marche'],
   ['montblanc', 'montblanc.jpg', 'Montblanc'],
   ['matsuri', 'matsuri.jpg', 'Matsuri'],
   ['paul', 'paul.jpg', 'Paul'],
@@ -163,8 +162,6 @@ const DUTYFREE_ITEMS = [
   ['starbucks', 'starbucks.jpg', 'Starbucks'],
   ['sunCatcher', 'suncatcher.jpg', 'Sun Catcher'],
   ['travelStar', 'travelstar.jpg', 'Travel Star'],
-  ['victoriasSecret', 'victoriassecret.jpg', "Victoria Secret"],
-  ['dutyFree', 'dutyfree.jpg', 'Duty Free'],
 ];
 
 const AirportDetail = () => {
