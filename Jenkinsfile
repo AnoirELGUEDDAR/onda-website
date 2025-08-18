@@ -427,9 +427,7 @@ spec:
               memory: "256Mi"
               cpu: "200m"
           securityContext:
-            # runAsNonRoot: true   # commented out as you requested
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
             capabilities:
               drop:
                 - "ALL"
