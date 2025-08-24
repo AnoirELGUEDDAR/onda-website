@@ -95,6 +95,7 @@
   "firstName": "First name",
   "lastName": "Last name",
   "email": "Email",
+  "sending": "Sending",
   "message": "Message",
   "submit": "Submit",
   "placeholders": {
@@ -122,7 +123,6 @@
   "nav": {
     "home": "Home",
     "airports": "Airports",
-    "flights": "Flights",
     "services": "Services",
     "about": "About",
     "contact": "Contact"
