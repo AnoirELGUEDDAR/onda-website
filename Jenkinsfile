@@ -205,8 +205,7 @@ touch .sonar_frontend_done
           when { expression { return env.BACKEND_CHANGED == 'true' } }
           steps {
             container('docker') {
-              sh 'apk add --no-cache bash'
-              sh 'timeout 90s bash -c "until docker info >/dev/null 2>&1; do sleep 2; done"'
+              sh 'timeout 90s sh -c "until docker info >/dev/null 2>&1; do sleep 2; done"'
               sh "docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ${DOCKER_HUB_USER}/spring-backend:latest -t ${env.BACKEND_IMAGE} -t ${DOCKER_HUB_USER}/spring-backend:latest -f backend/Dockerfile backend"
               withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD')]) {
                 sh """
