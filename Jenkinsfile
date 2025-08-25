@@ -463,10 +463,17 @@ kind: Service
 metadata:
   name: backend
   namespace: onda-app
+  labels:
+    app: backend
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+    prometheus.io/path: "/actuator/prometheus"
 spec:
   selector:
     app: backend
   ports:
+    - name: http
     - protocol: TCP
       port: 8080
       targetPort: 8080

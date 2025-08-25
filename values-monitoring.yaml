@@ -1,0 +1,13 @@
+grafana:
+  adminUser: admin
+  adminPassword: admin123        # change later
+  service:
+    type: NodePort               # easy local access (we'll also show port-forward)
+    nodePort: 32000
+prometheus:
+  prometheusSpec:
+    retention: 15d
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+alertmanager:
+  enabled: true
