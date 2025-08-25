@@ -1,0 +1,24 @@
+# --- Force H2 in tests (no MySQL) ---
+spring.datasource.url=jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.datasource.hikari.maximum-pool-size=1
+
+# Hibernate for tests
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.show-sql=false
+
+# Disable DB initializers/migrations if you have them
+spring.sql.init.mode=never
+spring.flyway.enabled=false
+spring.liquibase.enabled=false
+
+# Actuator for tests
+management.endpoints.web.exposure.include=health,info,prometheus
+management.endpoint.prometheus.enabled=true
+
+# Bind to all
+server.address=0.0.0.0
+
