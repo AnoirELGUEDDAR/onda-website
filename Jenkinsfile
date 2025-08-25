@@ -474,9 +474,9 @@ spec:
     app: backend
   ports:
     - name: http
-    - protocol: TCP
       port: 8080
       targetPort: 8080
+      protocol: TCP
 EOL
 
 cat > frontend-deployment.yaml << 'EOL'
