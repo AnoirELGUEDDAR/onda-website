@@ -1,0 +1,48 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: amcfg-slack
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  route:
+    groupBy: ["alertname","job","namespace"]
+    groupWait: 30s
+    groupInterval: 5m
+    repeatInterval: 2h
+    receiver: slack-default
+    routes:
+      - matchers:
+          - name: severity
+            value: critical
+            matchType: "="
+        receiver: slack-critical
+  receivers:
+    - name: slack-default
+      slackConfigs:
+        - apiURL:
+            name: alertmanager-slack-webhook
+            key: url
+          channel: "#alerts"
+          sendResolved: true
+          title: "{{ .CommonAnnotations.summary }}"
+          text: >-
+            {{ range .Alerts -}}
+            *{{ .Labels.alertname }}* ({{ .Labels.severity }})
+            {{ .Annotations.description }}
+            Labels: {{ .Labels }}
+            {{ end }}
+    - name: slack-critical
+      slackConfigs:
+        - apiURL:
+            name: alertmanager-slack-webhook
+            key: url
+          channel: "#alerts-critical"
+          sendResolved: true
+          title: "CRITICAL: {{ .CommonAnnotations.summary }}"
+          text: >-
+            {{ range .Alerts -}}
+            *{{ .Labels.alertname }}*
+            {{ .Annotations.description }}
+            {{ end }}

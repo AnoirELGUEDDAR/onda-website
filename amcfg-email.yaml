@@ -1,0 +1,26 @@
+# amcfg-email.yaml (fixed)
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: amcfg-email
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+spec:
+  route:
+    receiver: gmail-receiver
+    groupBy: ["alertname","job","namespace"]
+    groupWait: 30s
+    groupInterval: 5m
+    repeatInterval: 2h
+  receivers:
+    - name: gmail-receiver
+      emailConfigs:
+        - to: "elgueddaranoir@gmail.com"             # <-- literal string
+          from: "anoirkazakh4@gmail.com"               # <-- literal string
+          smarthost: "smtp.gmail.com:587"      # <-- literal string
+          authUsername: "anoirkazakh4@gmail.com"       # <-- literal string
+          authPassword:                         # <-- only this uses a secret
+            name: gmail-secret
+            key: password
+          requireTLS: true
