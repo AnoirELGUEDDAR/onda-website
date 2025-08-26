@@ -85,8 +85,9 @@ spec:
 
   environment {
     DOCKER_HUB_USER = 'anoiraeg2003'
-    BACKEND_IMAGE   = "${DOCKER_HUB_USER}/spring-backend:${BUILD_NUMBER}"
-    FRONTEND_IMAGE  = "${DOCKER_HUB_USER}/react-frontend:${ BUILD_NUMBER }"
+    BACKEND_IMAGE = "${DOCKER_HUB_USER}/spring-backend:${BUILD_NUMBER}"
+    FRONTEND_IMAGE = "${DOCKER_HUB_USER}/react-frontend:${BUILD_NUMBER}"
+
     DOCKER_HOST     = "unix:///var/run/docker.sock"   // use the unix socket inside docker container
     DOCKER_BUILDKIT = "1"
     MAVEN_OPTS      = "-Dmaven.repo.local=/root/.m2 -Xmx1024m"
