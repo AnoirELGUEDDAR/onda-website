@@ -3,6 +3,7 @@ package ma.onda.website.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,22 +23,28 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // stateless API; consider token-based auth later
+            // Stateless REST API → CSRF disabled
+            .csrf(csrf -> csrf.disable())
+            // Enable CORS with our config below
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            // No sessions
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                // allow Prometheus + health/info
+                // Actuator + Prometheus must stay open
                 .requestMatchers(
                     "/actuator/health",
                     "/actuator/health/**",
                     "/actuator/info",
                     "/actuator/prometheus"
                 ).permitAll()
-                // your API stays open as before
+                // Contact & Chatbot endpoints (public)
+                .requestMatchers(HttpMethod.POST, "/api/contact/**").permitAll()
+                .requestMatchers("/api/chatbot/**").permitAll()
+                // In general: open API (you can restrict later)
                 .requestMatchers("/api/**").permitAll()
-                // everything else requires auth (tighten when you add real auth)
+                // Everything else requires auth
                 .anyRequest().authenticated()
             );
 
@@ -54,8 +61,10 @@ public class SecurityConfig {
         CorsConfiguration cfg = new CorsConfiguration();
         cfg.setAllowedOrigins(allowedOrigins);
         cfg.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        cfg.setAllowedHeaders(Arrays.asList("*"));
-        cfg.setAllowCredentials(false); // keep false with non-specific origins
+        cfg.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"));
+        cfg.setExposedHeaders(List.of("Content-Disposition")); // optional, for file downloads
+        cfg.setAllowCredentials(true); // safe since we configure explicit origins
+        cfg.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", cfg);

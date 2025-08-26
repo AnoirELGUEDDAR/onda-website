@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FlightService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ONDA Website</a> &gt; <a href="index.source.html" class="el_package">ma.onda.website.services</a> &gt; <span class="el_source">FlightService.java</span></div><h1>FlightService.java</h1><pre class="source lang-java linenums">package ma.onda.website.services;
+
+import ma.onda.website.models.Airport;
+import ma.onda.website.models.Flight;
+import ma.onda.website.models.dto.AirportDto;
+import ma.onda.website.models.dto.FlightDto;
+import ma.onda.website.repositories.AirportRepository;
+import ma.onda.website.repositories.FlightRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class FlightService {
+    
+    private final FlightRepository flightRepository;
+    private final AirportRepository airportRepository;
+    private final ModelMapper modelMapper;
+    
+    @Autowired
+    public FlightService(
+        FlightRepository flightRepository, 
+        AirportRepository airportRepository,
+        ModelMapper modelMapper
+<span class="nc" id="L32">    ) {</span>
+<span class="nc" id="L33">        this.flightRepository = flightRepository;</span>
+<span class="nc" id="L34">        this.airportRepository = airportRepository;</span>
+<span class="nc" id="L35">        this.modelMapper = modelMapper;</span>
+<span class="nc" id="L36">    }</span>
+    
+    public List&lt;FlightDto&gt; getAllFlights() {
+<span class="nc" id="L39">        List&lt;Flight&gt; flights = flightRepository.findAll();</span>
+<span class="nc" id="L40">        return flights.stream()</span>
+<span class="nc" id="L41">            .map(this::convertToDto)</span>
+<span class="nc" id="L42">            .collect(Collectors.toList());</span>
+    }
+
+    public List&lt;FlightDto&gt; searchFlights(String departureCode, String arrivalCode, LocalDate date) {
+<span class="nc" id="L46">        Airport departureAirport = airportRepository.findByCode(departureCode)</span>
+<span class="nc" id="L47">            .orElseThrow(() -&gt; new EntityNotFoundException(&quot;Departure airport not found: &quot; + departureCode));</span>
+        
+<span class="nc" id="L49">        Airport arrivalAirport = airportRepository.findByCode(arrivalCode)</span>
+<span class="nc" id="L50">            .orElseThrow(() -&gt; new EntityNotFoundException(&quot;Arrival airport not found: &quot; + arrivalCode));</span>
+        
+<span class="nc" id="L52">        LocalDateTime startOfDay = date.atStartOfDay();</span>
+<span class="nc" id="L53">        LocalDateTime endOfDay = date.atTime(LocalTime.MAX);</span>
+        
+<span class="nc" id="L55">        List&lt;Flight&gt; flights = flightRepository.findByDepartureAirportAndArrivalAirportAndDepartureTimeBetween(</span>
+            departureAirport, arrivalAirport, startOfDay, endOfDay);
+        
+<span class="nc" id="L58">        return flights.stream()</span>
+<span class="nc" id="L59">            .map(this::convertToDto)</span>
+<span class="nc" id="L60">            .collect(Collectors.toList());</span>
+    }
+    
+    private FlightDto convertToDto(Flight flight) {
+<span class="nc" id="L64">        FlightDto dto = new FlightDto();</span>
+<span class="nc" id="L65">        dto.setId(flight.getId());</span>
+<span class="nc" id="L66">        dto.setFlightNumber(flight.getFlightNumber());</span>
+<span class="nc" id="L67">        dto.setAirlineName(flight.getAirline().getName());</span>
+<span class="nc" id="L68">        dto.setAirlineCode(flight.getAirline().getCode());</span>
+<span class="nc" id="L69">        dto.setAirlineLogoUrl(flight.getAirline().getLogoUrl());</span>
+        
+<span class="nc" id="L71">        AirportDto departureAirportDto = new AirportDto(</span>
+<span class="nc" id="L72">            flight.getDepartureAirport().getId(),</span>
+<span class="nc" id="L73">            flight.getDepartureAirport().getCode(),</span>
+<span class="nc" id="L74">            flight.getDepartureAirport().getName(),</span>
+<span class="nc" id="L75">            flight.getDepartureAirport().getCity(),</span>
+<span class="nc" id="L76">            flight.getDepartureAirport().getInternational(),</span>
+<span class="nc" id="L77">            flight.getDepartureAirport().getDescriptionEn()</span>
+        );
+<span class="nc" id="L79">        dto.setDepartureAirport(departureAirportDto);</span>
+        
+<span class="nc" id="L81">        AirportDto arrivalAirportDto = new AirportDto(</span>
+<span class="nc" id="L82">            flight.getArrivalAirport().getId(),</span>
+<span class="nc" id="L83">            flight.getArrivalAirport().getCode(),</span>
+<span class="nc" id="L84">            flight.getArrivalAirport().getName(),</span>
+<span class="nc" id="L85">            flight.getArrivalAirport().getCity(),</span>
+<span class="nc" id="L86">            flight.getArrivalAirport().getInternational(),</span>
+<span class="nc" id="L87">            flight.getArrivalAirport().getDescriptionEn()</span>
+        );
+<span class="nc" id="L89">        dto.setArrivalAirport(arrivalAirportDto);</span>
+        
+<span class="nc" id="L91">        dto.setDepartureTime(flight.getDepartureTime());</span>
+<span class="nc" id="L92">        dto.setArrivalTime(flight.getArrivalTime());</span>
+<span class="nc" id="L93">        dto.setStatus(flight.getStatus());</span>
+<span class="nc" id="L94">        dto.setAircraftType(flight.getAircraftType());</span>
+<span class="nc" id="L95">        dto.setPrice(flight.getPrice());</span>
+<span class="nc" id="L96">        dto.setSeatsAvailable(flight.getSeatsAvailable());</span>
+<span class="nc" id="L97">        dto.setTerminal(flight.getTerminal());</span>
+<span class="nc" id="L98">        dto.setGate(flight.getGate());</span>
+        
+<span class="nc" id="L100">        return dto;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

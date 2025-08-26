@@ -95,7 +95,6 @@
   "firstName": "First name",
   "lastName": "Last name",
   "email": "Email",
-  "sending": "Sending",
   "message": "Message",
   "submit": "Submit",
   "placeholders": {

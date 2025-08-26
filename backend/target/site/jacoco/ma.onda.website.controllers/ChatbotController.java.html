@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ChatbotController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ONDA Website</a> &gt; <a href="index.source.html" class="el_package">ma.onda.website.controllers</a> &gt; <span class="el_source">ChatbotController.java</span></div><h1>ChatbotController.java</h1><pre class="source lang-java linenums">package ma.onda.website.controllers;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import java.util.*;
+
+@RestController
+@RequestMapping(&quot;/api/chat&quot;)
+<span class="nc" id="L11">public class ChatbotController {</span>
+
+    // Inject the Groq API key from application.properties
+    @Value(&quot;${groq.api.key}&quot;)
+    private String groqApiKey;
+
+    @PostMapping
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; chat(@RequestBody Map&lt;String, String&gt; request) {
+        try {
+<span class="nc bnc" id="L20" title="All 4 branches missed.">            if (request == null || !request.containsKey(&quot;message&quot;)) {</span>
+<span class="nc" id="L21">                return ResponseEntity.badRequest()</span>
+<span class="nc" id="L22">                        .body(Map.of(&quot;error&quot;, &quot;Message is required&quot;));</span>
+            }
+
+<span class="nc" id="L25">            HttpHeaders headers = new HttpHeaders();</span>
+<span class="nc" id="L26">            headers.setContentType(MediaType.APPLICATION_JSON);</span>
+<span class="nc" id="L27">            headers.set(&quot;Authorization&quot;, &quot;Bearer &quot; + groqApiKey);</span>
+
+<span class="nc" id="L29">            String apiUrl = &quot;https://api.groq.com/openai/v1/chat/completions&quot;;</span>
+
+<span class="nc" id="L31">            Map&lt;String, Object&gt; body = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L32">            body.put(&quot;model&quot;, &quot;llama3-70b-8192&quot;);</span>
+
+<span class="nc" id="L34">            List&lt;Map&lt;String, String&gt;&gt; messages = new ArrayList&lt;&gt;();</span>
+            // Add system prompt to restrict answers to airport topics
+<span class="nc" id="L36">            messages.add(Map.of(&quot;role&quot;, &quot;system&quot;, &quot;content&quot;,</span>
+                &quot;You are an expert assistant who only answers questions about airports. &quot; +
+                &quot;If asked about anything else, politely reply that you can only answer questions related to airports.&quot;));
+<span class="nc" id="L39">            messages.add(Map.of(&quot;role&quot;, &quot;user&quot;, &quot;content&quot;, request.get(&quot;message&quot;)));</span>
+<span class="nc" id="L40">            body.put(&quot;messages&quot;, messages);</span>
+
+<span class="nc" id="L42">            RestTemplate restTemplate = new RestTemplate();</span>
+<span class="nc" id="L43">            HttpEntity&lt;Map&lt;String, Object&gt;&gt; entity = new HttpEntity&lt;&gt;(body, headers);</span>
+
+<span class="nc" id="L45">            Map&lt;String, Object&gt; response = restTemplate.postForObject(apiUrl, entity, Map.class);</span>
+
+<span class="nc" id="L47">            List choices = (List) response.get(&quot;choices&quot;);</span>
+<span class="nc bnc" id="L48" title="All 4 branches missed.">            if (choices != null &amp;&amp; !choices.isEmpty()) {</span>
+<span class="nc" id="L49">                Map choice = (Map) choices.get(0);</span>
+<span class="nc" id="L50">                Map message = (Map) choice.get(&quot;message&quot;);</span>
+<span class="nc" id="L51">                String reply = (String) message.get(&quot;content&quot;);</span>
+<span class="nc" id="L52">                return ResponseEntity.ok(Map.of(&quot;reply&quot;, reply));</span>
+            }
+
+<span class="nc" id="L55">            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L56">                    .body(Map.of(&quot;error&quot;, &quot;Invalid response from AI service&quot;));</span>
+<span class="nc" id="L57">        } catch (Exception e) {</span>
+<span class="nc" id="L58">            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L59">                    .body(Map.of(</span>
+                            &quot;error&quot;, &quot;Chatbot service unavailable&quot;,
+<span class="nc" id="L61">                            &quot;details&quot;, e.getMessage()</span>
+                    ));
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
