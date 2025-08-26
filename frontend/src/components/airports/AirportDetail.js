@@ -364,31 +364,6 @@ const AirportDetail = () => {
             >
               <p style={{ whiteSpace: 'pre-line' }}>{t('airports.wifi.body')}</p>
             </Modal>
-
-            {/* --- RAK: Duty-Free Modal --- */}
-            <Modal
-              title={`${t('airports.dutyfree.title', 'Duty-Free Shops')} - ${airport.code}`}
-              open={isRAK && showDutyFree}
-              onClose={closeDutyFree}
-              closeLabel={t('common.close', 'Close')}
-              wide
-            >
-              <div className="row g-4">
-                {DUTYFREE_ITEMS.map(([key, img, alt]) => (
-                  <div className="col-md-6 dutyfree-item" key={key}>
-                    <img
-                      src={`/images/dutyfree/${img}`}
-                      alt={alt}
-                      className="img-fluid rounded mb-2"
-                      loading="lazy"
-                    />
-                    <h6 className="fw-bold">{t(`airports.dutyfree.${key}.name`)}</h6>
-                    <p>{t(`airports.dutyfree.${key}.desc`)}</p>
-                  </div>
-                ))}
-              </div>
-            </Modal>
-
             {/* --- RAK: Parking Modal --- */}
             <Modal
               title={`${t('airports.facilitiesTitle.parking', 'Parking')} - ${airport.code}`}
