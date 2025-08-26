@@ -2,16 +2,18 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
-# Copy package files first for better caching
+# For reproducible installs
 COPY package.json package-lock.json ./
+RUN npm ci --prefer-offline --no-audit
 
-# Install dependencies (with fallback to npm install if ci fails)
-RUN npm install --prefer-offline --no-audit
-
-# Copy all other files
+# Copy sources
 COPY . .
 
-# Build the app
+# >>> NEW: allow overriding the API at build time
+ARG REACT_APP_API_URL=/api
+ENV REACT_APP_API_URL=${REACT_APP_API_URL}
+
+# Build
 RUN npm run build
 
 # Serve with Nginx
@@ -30,3 +32,4 @@ RUN chown -R nginx:nginx /usr/share/nginx/html && \
     chown -R nginx:nginx /var/run/nginx.pid
 
 USER nginx
+

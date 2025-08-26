@@ -222,8 +222,8 @@ docker push ${DOCKER_HUB_USER}/spring-backend:latest
           when { expression { return env.FRONTEND_CHANGED == 'true' } }
           steps {
             container('docker') {
-              sh 'timeout 90s bash -c "until docker info >/dev/null 2>&1; do sleep 2; done"'
-              sh "docker build --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ${DOCKER_HUB_USER}/react-frontend:latest -t ${env.FRONTEND_IMAGE} -t ${DOCKER_HUB_USER}/react-frontend:latest -f frontend/Dockerfile frontend"
+              sh 'timeout 90s sh -c "until docker info >/dev/null 2>&1; do sleep 2; done"'
+              sh "docker build   --build-arg REACT_APP_API_URL=/api --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from ${DOCKER_HUB_USER}/react-frontend:latest -t ${env.FRONTEND_IMAGE} -t ${DOCKER_HUB_USER}/react-frontend:latest -f frontend/Dockerfile frontend"
               withCredentials([string(credentialsId: 'DOCKER_HUB_PASSWORD', variable: 'DOCKER_HUB_PASSWORD')]) {
                 sh """
 echo "\$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
