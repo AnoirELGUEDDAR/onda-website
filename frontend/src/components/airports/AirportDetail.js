@@ -41,15 +41,13 @@ FacilityCard.propTypes = {
 /** Accessible native <dialog> */
 const Modal = ({ title, open, onClose, children, wide = false, bodyRef, closeLabel = 'Close' }) => {
   const dialogRef = useRef(null);
-  const titleId = useId(); // safer, stable id
+  const titleId = useId();
 
   useEffect(() => {
     const dlg = dialogRef.current;
     if (!dlg) return;
 
-    if (open) {
-      dlg.showModal();
-    }
+    if (open) dlg.showModal();
 
     const handleCancel = (e) => {
       e.preventDefault();
@@ -166,7 +164,7 @@ const DUTYFREE_ITEMS = [
 
 const AirportDetail = () => {
   const { id } = useParams();
-  const { t } = useTranslation(); // removed i18n (unused after fix)
+  const { t } = useTranslation();
   const parkingBodyRef = useRef(null);
 
   const [airport, setAirport] = useState(null);
@@ -206,7 +204,7 @@ const AirportDetail = () => {
       { type: t('airports.parking.rows.cleaning'), duration: t('airports.parking.rows.extWash'),  price: '50 MAD' },
       { type: t('airports.parking.rows.cleaning'), duration: t('airports.parking.rows.fullClean'), price: '150 MAD' },
     ],
-    [t] // ✅ recompute when translations change; no i18n.language needed
+    [t]
   );
 
   if (loading) {
@@ -355,6 +353,38 @@ const AirportDetail = () => {
               />
             </Modal>
 
+            {/* --- RAK: Duty-Free Modal --- */}
+            <Modal
+              title={`${t('airports.facilitiesTitle.shops', 'Duty-Free Shops')} - ${airport.code}`}
+              open={isRAK && showDutyFree}
+              onClose={closeDutyFree}
+              closeLabel={t('common.close', 'Close')}
+              wide
+            >
+              <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                {DUTYFREE_ITEMS.map(([key, file, fallback], idx) => (
+                  <div className="col" key={key + idx}>
+                    <div className="card h-100">
+                      <img
+                        src={`/images/dutyfree/${file}`}
+                        className="card-img-top"
+                        alt={t(`airports.dutyfree.${key}.name`, fallback)}
+                        loading="lazy"
+                      />
+                      <div className="card-body">
+                        <h6 className="card-title mb-2">
+                          {t(`airports.dutyfree.${key}.name`, fallback)}
+                        </h6>
+                        <p className="card-text text-muted mb-0">
+                          {t(`airports.dutyfree.${key}.desc`, '')}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Modal>
+
             {/* --- All airports: Wi-Fi Modal --- */}
             <Modal
               title={t('airports.wifi.title', 'Free Wi-Fi')}
@@ -364,6 +394,7 @@ const AirportDetail = () => {
             >
               <p style={{ whiteSpace: 'pre-line' }}>{t('airports.wifi.body')}</p>
             </Modal>
+
             {/* --- RAK: Parking Modal --- */}
             <Modal
               title={`${t('airports.facilitiesTitle.parking', 'Parking')} - ${airport.code}`}
