@@ -29,7 +29,6 @@
     <sonar.projectKey>backend</sonar.projectKey>
     <sonar.projectName>backend</sonar.projectName>
 
-    <!-- 🔑 Sonar MUST know where the JaCoCo XML is -->
     <sonar.coverage.jacoco.xmlReportPaths>
       ${project.build.directory}/site/jacoco/jacoco.xml
     </sonar.coverage.jacoco.xmlReportPaths>
@@ -149,7 +148,6 @@
         <version>4.0.0.4121</version>
       </plugin>
 
-      <!-- ✅ JaCoCo: attach agent + produce XML at test phase -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
