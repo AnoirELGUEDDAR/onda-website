@@ -41,6 +41,7 @@ public class SecurityConfig {
                 ).permitAll()
                 // Contact & Chatbot endpoints (public)
                 .requestMatchers(HttpMethod.POST, "/api/contact/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
                 .requestMatchers("/api/chatbot/**").permitAll()
                 // In general: open API (you can restrict later)
                 .requestMatchers("/api/**").permitAll()
