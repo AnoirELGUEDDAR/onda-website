@@ -42,7 +42,9 @@ Le pipeline Jenkins assure :
 3. Conteneurisation (Docker, Docker Hub)  
 4. Sécurité (Syft – SBOM, Trivy – vulnérabilités, Cosign – signature)  
 5. Déploiement Kubernetes automatisé (kubectl + Ansible)  
-6. Supervision (Prometheus + Grafana)  
+6. Supervision (Prometheus + Grafana)
+
+
 ![image](https://github.com/AnoirELGUEDDAR/onda-website/blob/main/pipeline.png?raw=true)
 
 ---
