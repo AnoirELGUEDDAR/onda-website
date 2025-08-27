@@ -1,129 +1,73 @@
-# 🛫 ONDA Institutional Website – DevSecOps Project  
+# 🌐 ONDA Web Platform – DevSecOps Project  
+
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/AnoirELGUEDDAR/onda-website/actions)  
+[![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://hub.docker.com/u/anoiraeg2003)  
+[![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](LICENSE)  
+
+---
 
 ## 📖 Description  
-Ce projet consiste en la **conception et le déploiement d’un site web institutionnel** pour l’Office National des Aéroports (ONDA), visant à moderniser la présentation des aéroports marocains et à améliorer l’accès à l’information pour les usagers.  
 
-Le site inclut :  
-- 🌍 Gestion multilingue (Français, Anglais, Arabe, Espagnol)  
-- 🤖 Chatbot intelligent d’assistance  
-- ☁️ Affichage des conditions météorologiques en temps réel  
-- 🛬 Fiches détaillées pour chaque aéroport  
-- 📑 FAQ et espace réclamations/contact  
-- 🏢 Espace enrichi pour l’aéroport Marrakech (RAK)  
+Ce projet consiste en la **conception et le déploiement** d’un site web institutionnel pour l’**Office National des Aéroports (ONDA)**, afin de moderniser la présentation des aéroports du Maroc et améliorer l’accès à l’information pour les usagers.  
+
+Le site offre :  
+- Gestion multilingue (🇫🇷 🇬🇧 🇲🇦 🇪🇸)  
+- Chatbot d’assistance ✈️  
+- Affichage météo en temps réel ☁️  
+- Fiches détaillées pour chaque aéroport 🛬  
+- Formulaire de contact & réclamations 📩  
+- Espace enrichi dédié à **Marrakech Menara (RAK)**  
 
 ---
 
-## ⚙️ Architecture  
-L’architecture repose sur une organisation en trois couches :  
+## 🏗️ Architecture  
 
-- **Frontend** : React (avec Nginx)  
-- **Backend** : Spring Boot (Maven, Java 17)  
+L’application repose sur une architecture **3-tiers** :  
+
+- **Frontend** : React + Nginx  
+- **Backend** : Spring Boot (Maven)  
 - **Base de données** : MySQL 8  
-- **Infrastructure** : Kubernetes (déploiement automatisé via Jenkins & Ansible)  
-- **Sécurité & Observabilité** : Prometheus, Grafana, Alertmanager, Syft, Trivy, Cosign  
+- **CI/CD & DevSecOps** : GitHub → Jenkins → SonarQube → Docker → Trivy/Syft → Cosign → Kubernetes  
+- **Monitoring** : Prometheus, Grafana, Alertmanager  
 
-![Architecture](docs/architecture.png) <!-- Ajoute ton image ici -->  
-
----
-
-## 🚀 Pipeline DevSecOps  
-Mise en place d’un **pipeline CI/CD automatisé avec Jenkins** :  
-1. **Build & Tests** (Maven pour backend, Node.js pour frontend)  
-2. **Analyse qualité** avec SonarQube  
-3. **Containerisation** avec Docker & push vers Docker Hub  
-4. **Sécurité**  
-   - Syft → SBOM (Software Bill of Materials)  
-   - Trivy → Scan vulnérabilités  
-   - Cosign → Signature des images  
-5. **Déploiement** automatisé sur Kubernetes  
-6. **Monitoring** avec Prometheus, Grafana & Alertmanager  
-
-![Pipeline](docs/pipeline.png)  
+📌 Déploiement sur **Kubernetes** avec namespace `onda-app`.  
 
 ---
 
-## 📊 Supervision et Observabilité  
-- **Prometheus** : collecte des métriques du backend Spring Boot (`/actuator/prometheus`)  
-- **Alertmanager** : envoi d’alertes (mail, Slack)  
-- **Grafana** : dashboards pour suivre :  
-  - l’état global du cluster Kubernetes  
-  - l’utilisation CPU/mémoire des nœuds  
-  - les métriques applicatives (latence, erreurs HTTP, mémoire JVM)  
+## 🚀 Pipeline CI/CD  
 
-![Grafana Dashboard](docs/grafana.png)  
+Le pipeline Jenkins assure :  
+1. Compilation (Maven + Node.js)  
+2. Tests & analyse qualité (SonarQube)  
+3. Conteneurisation (Docker, Docker Hub)  
+4. Sécurité (Syft – SBOM, Trivy – vulnérabilités, Cosign – signature)  
+5. Déploiement Kubernetes automatisé (kubectl + Ansible)  
+6. Supervision (Prometheus + Grafana)  
 
----
-
-## 🔐 Sécurité & Conformité  
-- **Syft** → Génération de SBOM (inventaire complet des dépendances)  
-- **Trivy** → Détection de vulnérabilités et mauvaises configurations  
-- **Cosign** → Signature & vérification des images Docker  
-- **Secrets Kubernetes** → Gestion sécurisée des identifiants MySQL et Alertmanager  
+![Pipeline CI/CD](docs/jenkins_pipeline.png)  
 
 ---
 
-## 🗂️ Structure du projet  
+## 🛠️ Installation & Déploiement  
+
+### 1. Prérequis  
+- 🐳 Docker & Docker Hub  
+- ☸️ Kubernetes cluster (Minikube ou autre)  
+- ⚙️ Jenkins avec agents Kubernetes  
+- 📦 Helm  
+
+---
+
+### 2. Build & Push des images  
 ```bash
-📦 onda-website
- ┣ 📂 backend       # Spring Boot (API REST + sécurité + persistance)
- ┣ 📂 frontend      # React (UI multilingue + chatbot + météo)
- ┣ 📂 k8s           # Manifests Kubernetes (deployments, services, secrets)
- ┣ 📂 jenkins       # Pipeline Jenkinsfile
- ┣ 📂 docs          # Diagrammes, rapports, images pour README
- ┗ README.md
-🛠️ Installation & Déploiement
-1. Prérequis
-
-Docker & Docker Hub
-
-Kubernetes cluster (Minikube ou autre)
-
-Jenkins avec agents Kubernetes
-
-Helm
-
-2. Build & Push des images
+# Backend
 cd backend
 mvn clean package -DskipTests
 docker build -t anoiraeg2003/spring-backend:latest .
 docker push anoiraeg2003/spring-backend:latest
 
+# Frontend
 cd ../frontend
 npm install && npm run build
 docker build -t anoiraeg2003/react-frontend:latest .
 docker push anoiraeg2003/react-frontend:latest
-
-3. Déploiement Kubernetes
-kubectl apply -f k8s/mysql-deployment.yaml
-kubectl apply -f k8s/backend-deployment.yaml
-kubectl apply -f k8s/frontend-deployment.yaml
-
-4. Accès à l’application
-kubectl get svc -n onda-app
-# Frontend accessible via NodePort (http://<cluster-ip>:<nodeport>)
-
-📚 Documentation
-
-Spring Boot
-
-React
-
-MySQL
-
-Jenkins
-
-Kubernetes
-
-Prometheus
-
-Grafana
-
-Trivy
-
-Cosign
-
-👨‍💻 Auteur
-
-Projet réalisé par Anoir EL GUEDDAR
-Encadré par Mme BAYZI Zineb
-📍 ENSA Marrakech – Année académique 2024/2025
