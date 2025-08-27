@@ -71,3 +71,59 @@ Mise en place d’un **pipeline CI/CD automatisé avec Jenkins** :
  ┣ 📂 jenkins       # Pipeline Jenkinsfile
  ┣ 📂 docs          # Diagrammes, rapports, images pour README
  ┗ README.md
+🛠️ Installation & Déploiement
+1. Prérequis
+
+Docker & Docker Hub
+
+Kubernetes cluster (Minikube ou autre)
+
+Jenkins avec agents Kubernetes
+
+Helm
+
+2. Build & Push des images
+cd backend
+mvn clean package -DskipTests
+docker build -t anoiraeg2003/spring-backend:latest .
+docker push anoiraeg2003/spring-backend:latest
+
+cd ../frontend
+npm install && npm run build
+docker build -t anoiraeg2003/react-frontend:latest .
+docker push anoiraeg2003/react-frontend:latest
+
+3. Déploiement Kubernetes
+kubectl apply -f k8s/mysql-deployment.yaml
+kubectl apply -f k8s/backend-deployment.yaml
+kubectl apply -f k8s/frontend-deployment.yaml
+
+4. Accès à l’application
+kubectl get svc -n onda-app
+# Frontend accessible via NodePort (http://<cluster-ip>:<nodeport>)
+
+📚 Documentation
+
+Spring Boot
+
+React
+
+MySQL
+
+Jenkins
+
+Kubernetes
+
+Prometheus
+
+Grafana
+
+Trivy
+
+Cosign
+
+👨‍💻 Auteur
+
+Projet réalisé par Anoir EL GUEDDAR
+Encadré par Mme BAYZI Zineb
+📍 ENSA Marrakech – Année académique 2024/2025
