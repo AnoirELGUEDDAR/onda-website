@@ -1,9 +1,6 @@
 # 🌐 ONDA Web Platform – DevSecOps Project  
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/AnoirELGUEDDAR/onda-website/actions)  
 [![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://hub.docker.com/u/anoiraeg2003)  
-[![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](LICENSE)  
-
 ---
 
 ## 📖 Description  
