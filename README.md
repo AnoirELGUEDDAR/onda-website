@@ -43,8 +43,7 @@ Le pipeline Jenkins assure :
 4. Sécurité (Syft – SBOM, Trivy – vulnérabilités, Cosign – signature)  
 5. Déploiement Kubernetes automatisé (kubectl + Ansible)  
 6. Supervision (Prometheus + Grafana)  
-
-![Pipeline CI/CD](docs/jenkins_pipeline.png)  
+![image](https://github.com/AnoirELGUEDDAR/onda-website/blob/main/pipeline.png?raw=true)
 
 ---
 
